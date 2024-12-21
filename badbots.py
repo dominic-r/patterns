@@ -1,6 +1,7 @@
 import requests
 import os
 import logging
+import json
 
 # Logging setup
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -14,10 +15,10 @@ OUTPUT_DIRS = {
     "haproxy": "waf_patterns/haproxy/"
 }
 
-# Primary and fallback bot lists
+# Primary and fallback bot lists (corrected fallback URL)
 BOT_LIST_SOURCES = [
-    "https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/_generator_lists/bad-user-agents.list",  # Primary
-    "https://raw.githubusercontent.com/atmire/COUNTER-Robots/master/COUNTER_Robots_list.txt",  # Fallback 1
+    "https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/_generator_lists/bad-user-agents.list",
+    "https://raw.githubusercontent.com/atmire/COUNTER-Robots/master/COUNTER_Robots.txt",  # Corrected fallback 1
     "https://raw.githubusercontent.com/monperrus/crawler-user-agents/master/crawler-user-agents.json"  # Fallback 2 (JSON)
 ]
 
@@ -51,7 +52,11 @@ def generate_nginx_conf(bots):
         for bot in bots:
             f.write(f'    "~*{bot}" 1;\n')
         f.write("    default 0;\n}\n")
-        f.write("if ($bad_bot) {\n    return 403;\n}\n")
+
+        # Evil bit simulation (header check) - added here
+        f.write("map $http_x_evil_bit $evil_bit_detected {\n    default 0;\n    \"1\" 1;\n}\n")
+
+        f.write("if ($bad_bot or $evil_bit_detected) {\n    return 403;\n}\n")
     logging.info(f"[+] Generated Nginx bot blocker: {path}")
 
 def generate_caddy_conf(bots):
@@ -61,7 +66,10 @@ def generate_caddy_conf(bots):
         f.write("@bad_bot {\n")
         for bot in bots:
             f.write(f'    header User-Agent *{bot}*\n')
-        f.write("}\nrespond @bad_bot 403\n")
+        f.write("}\n")
+        f.write("@evil_bit {\n    header X-Evil-Bit 1\n}\n") # Evil bit simulation
+        f.write("respond @bad_bot 403\n")
+        f.write("respond @evil_bit 403\n")
     logging.info(f"[+] Generated Caddy bot blocker: {path}")
 
 def generate_apache_conf(bots):
@@ -71,7 +79,9 @@ def generate_apache_conf(bots):
         f.write("SecRuleEngine On\n")
         for bot in bots:
             f.write(f'SecRule REQUEST_HEADERS:User-Agent "@contains {bot}" "id:3000,phase:1,deny,status:403,log,msg:\'Bad Bot Blocked\'"\n')
+        f.write('SecRule REQUEST_HEADERS:X-Evil-Bit "@streq 1" "id:3001,phase:1,deny,status:403,log,msg:\'Evil Bit Blocked\'"\n') # Evil bit simulation
     logging.info(f"[+] Generated Apache bot blocker: {path}")
+
 
 def generate_traefik_conf(bots):
     path = os.path.join(OUTPUT_DIRS['traefik'], "bots.toml")
@@ -83,7 +93,19 @@ def generate_traefik_conf(bots):
         for bot in bots:
             f.write(f'      "{bot}",\n')
         f.write("    ]\n")
+        # Evil bit simulation
+        f.write("  [http.middlewares.evil_bit_block]\n")
+        f.write("    [http.middlewares.evil_bit_block.headers]\n")
+        f.write("      headers = [\n")
+        f.write('          "X-Evil-Bit=1",\n')
+        f.write("      ]\n")
+        f.write("  [http.middlewares.bad_bot_block.chain.middlewares] = [\"evil_bit_block\"]\n")
+        f.write("[http.routers.my_router]\n")
+        f.write("  middlewares = [\"bad_bot_block\"]\n")
+
+
     logging.info(f"[+] Generated Traefik bot blocker: {path}")
+
 
 def generate_haproxy_conf(bots):
     path = os.path.join(OUTPUT_DIRS['haproxy'], "bots.acl")
@@ -91,7 +113,9 @@ def generate_haproxy_conf(bots):
         f.write("# HAProxy WAF - Bad Bot Blocker\n")
         for bot in bots:
             f.write(f'acl bad_bot hdr_sub(User-Agent) -i {bot}\n')
+        f.write("acl evil_bit hdr(X-Evil-Bit) -i 1\n") # Evil bit simulation
         f.write("http-request deny if bad_bot\n")
+        f.write("http-request deny if evil_bit\n") # Evil bit simulation
     logging.info(f"[+] Generated HAProxy bot blocker: {path}")
 
 if __name__ == "__main__":

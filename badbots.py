@@ -9,7 +9,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 OUTPUT_DIRS = {
     "nginx": "waf_patterns/nginx/",
     "caddy": "waf_patterns/caddy/",
-    "apache": "waf_patterns/apache/"
+    "apache": "waf_patterns/apache/",
+    "traefik": "waf_patterns/traefik/",
+    "haproxy": "waf_patterns/haproxy/"
 }
 
 # Primary and fallback bot lists
@@ -71,13 +73,40 @@ def generate_apache_conf(bots):
             f.write(f'SecRule REQUEST_HEADERS:User-Agent "@contains {bot}" "id:3000,phase:1,deny,status:403,log,msg:\'Bad Bot Blocked\'"\n')
     logging.info(f"[+] Generated Apache bot blocker: {path}")
 
-if __name__ == "__main__":
-    os.makedirs(OUTPUT_DIRS['nginx'], exist_ok=True)
-    os.makedirs(OUTPUT_DIRS['caddy'], exist_ok=True)
-    os.makedirs(OUTPUT_DIRS['apache'], exist_ok=True)
+def generate_traefik_conf(bots):
+    path = os.path.join(OUTPUT_DIRS['traefik'], "bots.toml")
+    with open(path, "w") as f:
+        f.write("[http.middlewares]\n")
+        f.write("[http.middlewares.bad_bot_block]\n")
+        f.write("  [http.middlewares.bad_bot_block.plugin.badbot]\n")
+        f.write("    userAgent = [\n")
+        for bot in bots:
+            f.write(f'      "{bot}",\n')
+        f.write("    ]\n")
+    logging.info(f"[+] Generated Traefik bot blocker: {path}")
 
+def generate_haproxy_conf(bots):
+    path = os.path.join(OUTPUT_DIRS['haproxy'], "bots.acl")
+    with open(path, "w") as f:
+        f.write("# HAProxy WAF - Bad Bot Blocker\n")
+        for bot in bots:
+            f.write(f'acl bad_bot hdr_sub(User-Agent) -i {bot}\n')
+        f.write("http-request deny if bad_bot\n")
+    logging.info(f"[+] Generated HAProxy bot blocker: {path}")
+
+if __name__ == "__main__":
+    # Ensure output directories exist
+    for path in OUTPUT_DIRS.values():
+        os.makedirs(path, exist_ok=True)
+
+    # Fetch bot list
     bots = fetch_bot_list()
+
+    # Generate bot blocker configs for each platform
     generate_nginx_conf(bots)
     generate_caddy_conf(bots)
     generate_apache_conf(bots)
-    logging.info("[✔] Bot blocking configurations generated.")
+    generate_traefik_conf(bots)
+    generate_haproxy_conf(bots)
+
+    logging.info("[✔] Bot blocking configurations generated for all platforms.")

@@ -12,7 +12,10 @@ INCLUDE_STATEMENT = "import waf/*.conf"
 def copy_waf_files():
     logging.info("Copying Caddy WAF patterns...")
     os.makedirs(CADDY_WAF_DIR, exist_ok=True)
-    subprocess.run(["cp", "-R", f"{WAF_DIR}/*", CADDY_WAF_DIR], check=True)
+    list_of_files = os.listdir(WAF_DIR)
+    for conf_file in list_of_files:
+        if conf_file.endswith('.conf'):
+            subprocess.run(["cp", f"{WAF_DIR}/{conf_file}", CADDY_WAF_DIR], check=True)
 
 def update_caddyfile():
     logging.info("Ensuring WAF patterns are imported in Caddyfile...")

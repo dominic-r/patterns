@@ -9,10 +9,17 @@ APACHE_WAF_DIR = "/etc/modsecurity.d/"
 APACHE_CONF = "/etc/apache2/apache2.conf"
 INCLUDE_STATEMENT = "IncludeOptional /etc/modsecurity.d/*.conf"
 
+
+
 def copy_waf_files():
     logging.info("Copying Apache WAF patterns...")
     os.makedirs(APACHE_WAF_DIR, exist_ok=True)
-    subprocess.run(["cp", "-R", f"{WAF_DIR}/*", APACHE_WAF_DIR], check=True)
+    list_of_files = os.listdir(WAF_DIR)
+    for conf_file in list_of_files:
+        if conf_file.endswith('.conf'):
+            subprocess.run(["cp", f"{WAF_DIR}/{conf_file}", APACHE_WAF_DIR], check=True)
+
+    
 
 def update_apache_conf():
     logging.info("Ensuring WAF patterns are included in apache2.conf...")

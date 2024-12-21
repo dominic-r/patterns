@@ -51,12 +51,17 @@ jobs:
         python owasp2nginx.py
       continue-on-error: false
 
+    - name: 🔄 Convert OWASP to Apache WAF
+      run: |
+        python owasp2apache.py
+      continue-on-error: false
+      
     # Ensure conf files are pushed even if no changes detected
     - name: 🚀 Commit and Push Caddy and Nginx WAF Configs
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add waf_patterns/caddy/*.conf waf_patterns/nginx/*.conf
+        git add waf_patterns/caddy/*.conf waf_patterns/nginx/*.conf waf_patterns/apache/*.conf
         git commit -m "Automated update: OWASP CRS to Caddy and Nginx WAF rules [$(date)]" || echo "No changes to commit"
         git push
       continue-on-error: true  # Continue even if no changes are made

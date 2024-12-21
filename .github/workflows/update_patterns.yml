@@ -56,6 +56,16 @@ jobs:
         python owasp2apache.py
       continue-on-error: false
 
+    - name: 🔄 Convert OWASP to Traefik WAF
+      run: |
+        python owasp2traefik.py
+      continue-on-error: false
+
+    - name: 🔄 Convert OWASP to HAProxy WAF
+      run: |
+        python owasp2haproxy.py
+      continue-on-error: false
+      
     - name: 🔄 Generate Bad Bot Blockers
       run: |
         python badbots.py

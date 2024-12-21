@@ -4,7 +4,7 @@ from collections import defaultdict
 
 # Paths
 INPUT_FILE = "owasp_rules.json"
-OUTPUT_DIR = "waf_patterns"
+OUTPUT_DIR = "waf_patterns/caddy"
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)

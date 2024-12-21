@@ -1,4 +1,4 @@
-name: Update WAF Rules
+name: Update patterns
 
 on:
   schedule:
@@ -54,6 +54,11 @@ jobs:
     - name: 🔄 Convert OWASP to Apache WAF
       run: |
         python owasp2apache.py
+      continue-on-error: false
+
+    - name: 🔄 Generate Bad Bot Blockers
+      run: |
+        python badbots.py
       continue-on-error: false
       
     # Ensure conf files are pushed even if no changes detected

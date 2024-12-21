@@ -137,7 +137,8 @@ if ($bad_bot) {
 3. **Commit** and push changes.  
 4. Open a **Pull Request**.  
 
----
+> [!TIP]
+> Check the **[limits](https://github.com/fabriziosalmi/limits)** project too, it will be useful to implement rate limits rules for your web servers.
 
 ## 📄 License  
 This project is licensed under the **MIT License**.  

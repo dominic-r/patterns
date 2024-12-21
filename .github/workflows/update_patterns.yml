@@ -1,4 +1,4 @@
-name: Update Caddy WAF Rules
+name: Update WAF Rules
 
 on:
   schedule:

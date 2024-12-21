@@ -18,8 +18,7 @@ patterns/
 │   ├── sql.conf            # SQL Injection patterns
 │   ├── xss.conf            # XSS patterns
 │   └── bots.conf           # Bot detection patterns
-├── scrapers/
-│   └── owasp.py            # 🕵️ OWASP scraper (fetch CRS rules)
+│── owasp.py            # 🕵️ OWASP scraper (fetch CRS rules)
 ├── owasp2caddy.py          # 🔄 Convert OWASP JSON to Caddy WAF configs
 ├── owasp_rules.json        # 📊 Fetched OWASP rules (raw)
 └── .github/workflows/      # 🤖 GitHub Actions for automation

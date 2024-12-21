@@ -1,0 +1,73 @@
+name: Update OWASP WAF Rules
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-owasp-waf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Full history to avoid shallow clone issues
+
+    - name: Set Up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Cache Python Packages
+      id: cache-pip
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Dependencies
+      if: steps.cache-pip.outputs.cache-hit != 'true'
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4
+      continue-on-error: false  # Fail the workflow if dependencies fail to install
+
+    - name: Run OWASP Scraper
+      run: |
+        python owasp.py
+      continue-on-error: false
+
+    - name: Convert OWASP to Caddy WAF
+      run: |
+        python owasp2caddy.py
+      continue-on-error: false
+
+    - name: Check for Changes
+      id: git-check
+      run: |
+        git diff --quiet waf_patterns || echo "changes=true" >> $GITHUB_ENV
+
+    - name: Commit and Push Changes
+      if: env.changes == 'true'
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add waf_patterns/*.conf
+        git commit -m "Automated update: OWASP CRS to Caddy WAF rules [$(date)]"
+        git push
+      continue-on-error: true  # Allow workflow to continue even if no changes
+
+    - name: Cleanup Cache (Optional)
+      run: |
+        rm -rf ~/.cache/pip
+      if: always()  # Run this step even if previous steps fail
+
+    - name: Notify on Failure (Optional)
+      if: failure()
+      run: |
+        echo "Workflow failed. Notify via Slack or Email."
+        # Add Slack webhook or email notification here

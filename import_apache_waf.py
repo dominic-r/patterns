@@ -5,14 +5,29 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 WAF_DIR = "waf_patterns/apache"
-APACHE_WAF_DIR = "/etc/modsecurity.d/"
+# APACHE_WAF_DIR = "/etc/modsecurity.d/" # remember to change this back to this
+APACHE_WAF_DIR = "testing/" # remember to change this back to this
+
 APACHE_CONF = "/etc/apache2/apache2.conf"
 INCLUDE_STATEMENT = "IncludeOptional /etc/modsecurity.d/*.conf"
+
+
 
 def copy_waf_files():
     logging.info("Copying Apache WAF patterns...")
     os.makedirs(APACHE_WAF_DIR, exist_ok=True)
-    subprocess.run(["cp", "-R", f"{WAF_DIR}/*", APACHE_WAF_DIR], check=True)
+    list_of_files = os.listdir(WAF_DIR)
+    workaround = "{"
+    for conf_file in list_of_files:
+        # print(conf_file)
+        if conf_file.endswith('.conf'):
+            subprocess.run(["cp", f"{WAF_DIR}/{conf_file}", APACHE_WAF_DIR], check=True)
+            # print("Match")
+    workaround = workaround[:-1] # removes the last comma
+    workaround += "}"
+    print(workaround)
+
+    
 
 def update_apache_conf():
     logging.info("Ensuring WAF patterns are included in apache2.conf...")
@@ -33,6 +48,7 @@ def reload_apache():
     subprocess.run(["systemctl", "reload", "apache2"], check=True)
 
 if __name__ == "__main__":
+
     copy_waf_files()
     update_apache_conf()
     reload_apache()

@@ -1,4 +1,4 @@
-name: Update OWASP WAF Rules
+name: Update Caddy WAF Rules
 
 on:
   schedule:
@@ -46,6 +46,11 @@ jobs:
         python owasp2caddy.py
       continue-on-error: false
 
+    - name: Convert OWASP to Nginx WAF
+      run: |
+        python owasp2nginx.py
+      continue-on-error: false
+      
     - name: Check for Changes
       id: git-check
       run: |
@@ -56,8 +61,9 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add waf_patterns/*.conf
-        git commit -m "Automated update: OWASP CRS to Caddy WAF rules [$(date)]"
+        git add waf_patterns/caddy/*.conf
+        git add waf_patterns/nginx/*.conf
+        git commit -m "Automated update: OWASP CRS to Caddy and NGinx WAF rules [$(date)]"
         git push
       continue-on-error: true  # Allow workflow to continue even if no changes
 

@@ -152,7 +152,8 @@ See the [LICENSE](LICENSE) file for details.
 
 ## 🌐 Resources  
 - [OWASP CRS](https://github.com/coreruleset/coreruleset)  
-- [Caddy Web Server](https://caddyserver.com/)  
+- [Apache ModSecurity](https://modsecurity.org/)
 - [Nginx](https://nginx.org/)  
-- [Apache ModSecurity](https://modsecurity.org/)  
-
+- [Caddy Web Server](https://caddyserver.com/)  
+- [Traefik](https://github.com/traefik/traefik)
+- [HaProxy](https://www.haproxy.org/)

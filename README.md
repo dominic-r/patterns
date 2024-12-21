@@ -21,6 +21,7 @@ patterns/
 │── owasp.py            # 🕵️ OWASP scraper (fetch CRS rules)
 ├── owasp2caddy.py          # 🔄 Convert OWASP JSON to Caddy WAF configs
 ├── owasp_rules.json        # 📊 Fetched OWASP rules (raw)
+├── requirements.txt        # 🔄 Required tools
 └── .github/workflows/      # 🤖 GitHub Actions for automation
     └── update_patterns.yml
 ```

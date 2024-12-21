@@ -6,7 +6,7 @@ Automate the scraping of **OWASP Core Rule Set (CRS)** patterns and convert them
 ## 🚀 Project Overview  
 - **🎯 Goal**: Automate OWASP CRS rule collection and generate WAF configs for **Caddy, Nginx, and Apache**.  
 - **⚡ Automation**: GitHub Actions fetch rules **daily** and push updated configurations to the repository.  
-- **📄 Output**: WAF `.conf` files categorized by attack type (SQLi, XSS, LFI) for **three web servers**.  
+- **📄 Output**: WAF `.conf` files categorized by attack type (SQLi, XSS, LFI) for all supported web servers.  
 
 ## 📂 Project Structure  
 ```

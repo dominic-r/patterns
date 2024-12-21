@@ -146,7 +146,7 @@ See the [LICENSE](LICENSE) file for details.
 ---
 
 ## 📞 Need Help?  
-- **Issues?** Open a ticket in the [Issues Tab](https://github.com/your-username/patterns/issues).  
+- **Issues?** Open a ticket in the [Issues Tab](https://github.com/fabriziosalmi/patterns/issues).  
 - **Questions?** Feel free to reach out via GitHub Discussions.  
 
 ---

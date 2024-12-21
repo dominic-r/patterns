@@ -1,17 +1,25 @@
-# Patterns: OWASP CRS and Bad Bot Detection rules for web servers
- 
-Automate the scraping of **OWASP Core Rule Set (CRS)** patterns and convert them into **Apache, Nginx, Caddy, Traefik and HaProxy** WAF configurations. Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious web crawlers and scrapers.  
+# 🔒 Patterns: OWASP CRS and Bad Bot Detection for Web Servers  
+Automate the scraping of **OWASP Core Rule Set (CRS)** patterns and convert them into **Apache, Nginx, Caddy, Traefik, and HAProxy** WAF configurations.  
+Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious web crawlers and scrapers.  
 
-> [!NOTE] 
-> This project helps protect web servers against common web attacks like **SQL Injection (SQLi)**, **XSS**, **RCE**, **LFI**, and malicious bots – automatically updated and deployed!  
+> 🚀 **Protect your servers against SQL Injection (SQLi), XSS, RCE, LFI, and malicious bots – with automated daily updates.**  
 
 ---
 
-## 🚀 Project Overview  
-- **🎯 Goal**: Automate OWASP CRS rule collection and generate WAF configs for **Caddy, Nginx, and Apache**.  
-- **⚡ Automation**: GitHub Actions fetch rules **daily** and push updated configurations to the repository.  
-- **🤖 Bad Bot Blocking**: Block harmful bots by generating WAF rules from **public bot lists**.  
-- **📄 Output**: WAF `.conf` files categorized by attack type (SQLi, XSS, LFI) and bot lists.  
+## 📌 Project Highlights  
+- **🛡️ OWASP CRS Protection** – Leverages OWASP Core Rule Set for web application firewall (WAF) defense.  
+- **🤖 Bad Bot Blocking** – Blocks known malicious bots using public bot lists.  
+- **⚙️ Multi-Web Server Support** – Generates WAF configs for **Apache, Nginx, Caddy, Traefik, and HAProxy**.  
+- **🔄 Automatic Updates** – GitHub Actions fetch new rules **daily** and push updated configs.  
+
+---
+
+## 🌐 Supported Web Servers  
+- **🔵 Nginx**  
+- **🟢 Caddy**  
+- **🟠 Apache (ModSecurity)**  
+- **🟣 Traefik**  
+- **🔴 HAProxy**  
 
 ---
 
@@ -21,14 +29,21 @@ patterns/
 ├── waf_patterns/           # 🔧 Generated WAF config files
 │   ├── caddy/              # Caddy WAF configs
 │   ├── nginx/              # Nginx WAF configs
-│   └── apache/             # Apache WAF configs (ModSecurity)
+│   ├── apache/             # Apache WAF configs (ModSecurity)
+│   ├── traefik/            # Traefik WAF configs
+│   └── haproxy/            # HAProxy WAF configs
+│── import_apache_waf.py
+│── import_caddy_waf.py
+│── import_haproxy_waf.py
+│── import_nginx_waf.py
+│── import_traefik_waf.py
 ├── owasp.py                # 🕵️ OWASP scraper (fetch CRS rules)
 ├── owasp2caddy.py          # 🔄 Convert OWASP JSON to Caddy WAF configs
 ├── owasp2nginx.py          # 🔄 Convert OWASP JSON to Nginx WAF configs
 ├── owasp2apache.py         # 🔄 Convert OWASP JSON to Apache ModSecurity configs
-├── badbots.py              # 🔄 Generate WAF configs to block bad bots
-├── owasp_rules.json        # 📊 Fetched OWASP rules (raw)
-├── requirements.txt        # 🔄 Required tools
+├── owasp2haproxy.py        # 🔄 Convert OWASP JSON to HAProxy WAF configs
+├── badbots.py              # 🤖 Generate WAF configs to block bad bots
+├── requirements.txt        # 📄 Required dependencies
 └── .github/workflows/      # 🤖 GitHub Actions for automation
     └── update_patterns.yml
 ```
@@ -37,22 +52,19 @@ patterns/
 
 ## 🛠️ How It Works  
 ### 🔹 1. Scraping OWASP Rules  
-- `owasp.py` scrapes the latest OWASP CRS patterns from GitHub.  
-- Pulls attack patterns for **SQLi**, **XSS**, **RCE**, **LFI** from OWASP CRS `.conf` files.  
+- **`owasp.py`** scrapes the latest OWASP CRS patterns from GitHub.  
+- Extracts **SQLi, XSS, RCE, LFI** patterns from OWASP CRS `.conf` files.  
 
-### 🔹 2. Multi-Platform WAF Config Generation  
-- **`owasp2caddy.py`** – Generates Caddy WAF configs using OWASP patterns.  
-- **`owasp2nginx.py`** – Converts OWASP patterns into Nginx WAF rules.  
-- **`owasp2apache.py`** – Converts OWASP rules into Apache **ModSecurity** configurations.  
+### 🔹 2. Generating WAF Configs for Each Platform  
+- **`owasp2caddy.py`** – Converts OWASP patterns into **Caddy WAF** rules.  
+- **`owasp2nginx.py`** – Generates **Nginx WAF** configurations.  
+- **`owasp2apache.py`** – Outputs **Apache ModSecurity** rules.  
+- **`owasp2traefik.py`** – Creates **Traefik WAF** rules.  
+- **`owasp2haproxy.py`** – Builds **HAProxy ACL** files.  
 
 ### 🔹 3. Bad Bot/User-Agent Detection  
-- `badbots.py` fetches **public bot lists** to block malicious crawlers.  
-- Fallback lists ensure bot detection works even if the main source fails.  
-- Generates `.conf` files for Caddy, Nginx, and Apache.  
-
-### 🔹 4. Automation (GitHub Actions)  
-- GitHub Actions fetch new rules and bot lists **daily at midnight**.  
-- Automatically commits and pushes updated `.conf` files for all three platforms (Caddy, Nginx, Apache).  
+- **`badbots.py`** fetches public bot lists and generates bot-blocking configs.  
+- Supports fallback lists to ensure reliable detection.  
 
 ---
 
@@ -80,58 +92,24 @@ python badbots.py
 ---
 
 ## 🚀 Usage (Web Server Integration)  
-### 🔹 1. Caddy WAF Integration  
+### 🔹 1. Nginx WAF Integration  
 ```bash
-sudo cp waf_patterns/caddy/*.conf /etc/caddy/
+sudo python3 import_nginx_waf.py
 ```
-Add to **Caddyfile**:  
-```caddy
-import waf_patterns/caddy/*.conf
-```
-Reload Caddy:  
+
+### 🔹 2. Caddy WAF Integration  
 ```bash
-caddy reload
+sudo python3 import_caddy_waf.py
+```
+
+### 🔹 3. Apache WAF Integration  
+```bash
+sudo python3 import_apache_waf.py
 ```
 
 ---
 
-### 🔹 2. Nginx WAF Integration  
-```bash
-sudo cp waf_patterns/nginx/*.conf /etc/nginx/waf/
-```
-Modify Nginx config:  
-```nginx
-server {
-    include /etc/nginx/waf/*.conf;
-    location / {
-        # Other configs...
-    }
-}
-```
-Reload Nginx:  
-```bash
-sudo nginx -s reload
-```
-
----
-
-### 🔹 3. Apache ModSecurity Integration  
-```bash
-sudo cp waf_patterns/apache/*.conf /etc/modsecurity.d/
-```
-Add to Apache config:  
-```apache
-IncludeOptional /etc/modsecurity.d/*.conf
-```
-Restart Apache:  
-```bash
-sudo systemctl restart apache2
-```
-
----
-
-## 🧩 Example Output (Bot Blocker – Nginx WAF)  
-**Bot Blocking (waf_patterns/nginx/bots.conf)**:  
+## 🔧 Example Output (Bot Blocker – Nginx)  
 ```nginx
 map $http_user_agent $bad_bot {
     "~*AhrefsBot" 1;
@@ -147,18 +125,17 @@ if ($bad_bot) {
 ---
 
 ## 🤖 Automation (GitHub Workflow)  
-The GitHub Action (`.github/workflows/update_patterns.yml`) automates updates:  
-- 🕛 **Runs Daily at Midnight (UTC)**  
-- 🎯 **Manual Trigger Available** (from GitHub Actions tab)  
-- 🚀 **Pushes Updated WAF Files** to `waf_patterns/`  
+- **🕛 Daily Updates** – GitHub Actions fetch the latest OWASP CRS rules every day.  
+- **🔄 Auto Deployment** – Pushes new `.conf` files directly to `waf_patterns/`.  
+- **🎯 Manual Trigger** – Updates can also be triggered manually.  
 
 ---
 
-## 🔧 Contributing  
-1. Fork the repository.  
-2. Create a feature branch (`feature/new-patterns`).  
-3. Commit and push changes.  
-4. Open a pull request (PR).  
+## 🤝 Contributing  
+1. **Fork** the repository.  
+2. Create a **feature branch** (`feature/new-patterns`).  
+3. **Commit** and push changes.  
+4. Open a **Pull Request**.  
 
 ---
 
@@ -168,14 +145,15 @@ See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🌐 Resources  
-- [OWASP CRS GitHub](https://github.com/coreruleset/coreruleset)  
-- [Caddy Web Server](https://caddyserver.com/)  
-- [Nginx](https://nginx.org/)  
-- [Apache ModSecurity](https://modsecurity.org/)  
-- [MIT License](https://opensource.org/licenses/MIT)  
+## 📞 Need Help?  
+- **Issues?** Open a ticket in the [Issues Tab](https://github.com/your-username/patterns/issues).  
+- **Questions?** Feel free to reach out via GitHub Discussions.  
 
 ---
 
-## 🚨 Issues  
-If you encounter any issues, please open a ticket in the [Issues Tab](https://github.com/your-username/patterns/issues).  
+## 🌐 Resources  
+- [OWASP CRS](https://github.com/coreruleset/coreruleset)  
+- [Caddy Web Server](https://caddyserver.com/)  
+- [Nginx](https://nginx.org/)  
+- [Apache ModSecurity](https://modsecurity.org/)  
+

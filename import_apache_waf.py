@@ -15,7 +15,6 @@ def copy_waf_files():
     logging.info("Copying Apache WAF patterns...")
     os.makedirs(APACHE_WAF_DIR, exist_ok=True)
     list_of_files = os.listdir(WAF_DIR)
-    workaround = "{"
     for conf_file in list_of_files:
         if conf_file.endswith('.conf'):
             subprocess.run(["cp", f"{WAF_DIR}/{conf_file}", APACHE_WAF_DIR], check=True)

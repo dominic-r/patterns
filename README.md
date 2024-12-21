@@ -1,8 +1,8 @@
-# 🔒 Patterns – Automated OWASP CRS and Bad Bot Detection for Caddy, Nginx, and Apache  
-Automate the scraping of **OWASP Core Rule Set (CRS)** patterns and convert them into **Caddy, Nginx, and Apache** WAF configurations.  
+# Patterns: OWASP CRS and Bad Bot Detection rules for web servers
+ 
+Automate the scraping of **OWASP Core Rule Set (CRS)** patterns and convert them into **Apache, Nginx, Caddy, Traefik and HaProxy** WAF configurations. Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious web crawlers and scrapers.  
 
-Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious web crawlers and scrapers.  
-
+> [!NOTE] 
 > This project helps protect web servers against common web attacks like **SQL Injection (SQLi)**, **XSS**, **RCE**, **LFI**, and malicious bots – automatically updated and deployed!  
 
 ---

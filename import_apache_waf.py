@@ -5,8 +5,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 WAF_DIR = "waf_patterns/apache"
-# APACHE_WAF_DIR = "/etc/modsecurity.d/" # remember to change this back to this
-APACHE_WAF_DIR = "testing/" # remember to change this back to this
+APACHE_WAF_DIR = "/etc/modsecurity.d/"
 
 APACHE_CONF = "/etc/apache2/apache2.conf"
 INCLUDE_STATEMENT = "IncludeOptional /etc/modsecurity.d/*.conf"

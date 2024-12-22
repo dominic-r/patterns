@@ -671,3 +671,11 @@
       "zauba.io",
       "zgrab",
     ]
+  [http.middlewares.evil_bit_block]
+    [http.middlewares.evil_bit_block.headers]
+      headers = [
+          "X-Evil-Bit=1",
+      ]
+  [http.middlewares.bad_bot_block.chain.middlewares] = ["evil_bit_block"]
+[http.routers.my_router]
+  middlewares = ["bad_bot_block"]

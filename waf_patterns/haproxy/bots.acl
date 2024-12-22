@@ -667,4 +667,6 @@ acl bad_bot hdr_sub(User-Agent) -i x22Mozilla
 acl bad_bot hdr_sub(User-Agent) -i xpymep1.exe
 acl bad_bot hdr_sub(User-Agent) -i zauba.io
 acl bad_bot hdr_sub(User-Agent) -i zgrab
+acl evil_bit hdr(X-Evil-Bit) -i 1
 http-request deny if bad_bot
+http-request deny if evil_bit

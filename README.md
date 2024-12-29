@@ -1,4 +1,5 @@
 # 🔒 Patterns: OWASP CRS and Bad Bot Detection for Web Servers  
+
 Automate the scraping of **OWASP Core Rule Set (CRS)** patterns and convert them into **Apache, Nginx, Caddy, Traefik, and HAProxy** WAF configurations.  
 Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious web crawlers and scrapers.  
 
@@ -11,6 +12,7 @@ Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious 
 - **🤖 Bad Bot Blocking** – Blocks known malicious bots using public bot lists.  
 - **⚙️ Multi-Web Server Support** – Generates WAF configs for **Apache, Nginx, Caddy, Traefik, and HAProxy**.  
 - **🔄 Automatic Updates** – GitHub Actions fetch new rules **daily** and push updated configs.  
+- **🧩 Scalable and Modular** – Easily extendable to support other web servers or load balancers.  
 
 ---
 
@@ -71,7 +73,7 @@ patterns/
 ## ⚙️ Installation  
 **1. Clone the Repository:**  
 ```bash
-git clone https://github.com/your-username/patterns.git  
+git clone https://github.com/fabriziosalmi/patterns.git  
 cd patterns
 ```
 
@@ -86,6 +88,8 @@ python owasp.py
 python owasp2caddy.py
 python owasp2nginx.py
 python owasp2apache.py
+python owasp2haproxy.py
+python owasp2traefik.py
 python badbots.py
 ```
 
@@ -105,6 +109,16 @@ sudo python3 import_caddy_waf.py
 ### 🔹 3. Apache WAF Integration  
 ```bash
 sudo python3 import_apache_waf.py
+```
+
+### 🔹 4. Traefik WAF Integration  
+```bash
+sudo python3 import_traefik_waf.py
+```
+
+### 🔹 5. HAProxy WAF Integration  
+```bash
+sudo python3 import_haproxy_waf.py
 ```
 
 ---
@@ -137,8 +151,7 @@ if ($bad_bot) {
 3. **Commit** and push changes.  
 4. Open a **Pull Request**.  
 
-> [!TIP]
-> Check the **[limits](https://github.com/fabriziosalmi/limits)** project too, it will be useful to implement rate limits rules for your web servers.
+---
 
 ## 📄 License  
 This project is licensed under the **MIT License**.  
@@ -147,14 +160,14 @@ See the [LICENSE](LICENSE) file for details.
 ---
 
 ## 📞 Need Help?  
-- **Issues?** Open a ticket in the [Issues Tab](https://github.com/fabriziosalmi/patterns/issues).   
+- **Issues?** Open a ticket in the [Issues Tab](https://github.com/your-username/patterns/issues).  
 
 ---
 
 ## 🌐 Resources  
 - [OWASP CRS](https://github.com/coreruleset/coreruleset)  
-- [Apache ModSecurity](https://modsecurity.org/)
+- [Apache ModSecurity](https://modsecurity.org/)  
 - [Nginx](https://nginx.org/)  
 - [Caddy Web Server](https://caddyserver.com/)  
-- [Traefik](https://github.com/traefik/traefik)
-- [HaProxy](https://www.haproxy.org/)
+- [Traefik](https://github.com/traefik/traefik)  
+- [HaProxy](https://www.haproxy.org/)  

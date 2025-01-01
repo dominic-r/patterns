@@ -76,16 +76,24 @@ def parse_bot_list(url: str, response: requests.Response) -> list:
             json_data = response.json()
             if isinstance(json_data, list):
                 for entry in json_data:
-                    bot_patterns.add(entry.get('pattern', entry.get('ua', '')))
+                    user_agent = entry.get('pattern') or entry.get('ua', '')
+                    if user_agent and not user_agent.startswith("#"):
+                        bot_patterns.add(user_agent)
             elif isinstance(json_data, dict):
                 for entry in json_data.get('test_cases', []):
-                    bot_patterns.add(entry.get('user_agent_string', ''))
+                    user_agent = entry.get('user_agent_string', '')
+                    if user_agent and not user_agent.startswith("#"):
+                        bot_patterns.add(user_agent)
         else:
-            bot_patterns.update(response.text.splitlines())
+            for line in response.text.splitlines():
+                # Exclude comments, empty lines, and non-UA strings
+                if line and not line.startswith("#") and len(line) > 3 and "Mozilla" in line:
+                    bot_patterns.add(line)
     except (ValueError, json.JSONDecodeError) as e:
         logging.warning(f"Error parsing {url}: {e}")
 
     return list(bot_patterns)
+
 
 
 def fetch_bot_list():

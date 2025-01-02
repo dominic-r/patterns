@@ -18,29 +18,27 @@ Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious 
 
 ## 🌐 Supported Web Servers  
 - **🔵 Nginx**  
-- **🟢 Caddy** (no more supported, please check the [caddy-waf](https://github.com/fabriziosalmi/caddy-waf) side project :)
 - **🟠 Apache (ModSecurity)**  
 - **🟣 Traefik**  
 - **🔴 HAProxy**  
 
+> [!NOTE]
+> If you are using Caddy check the [caddy-waf](https://github.com/fabriziosalmi/caddy-waf) project.
 ---
 
 ## 📂 Project Structure  
 ```
 patterns/
 ├── waf_patterns/           # 🔧 Generated WAF config files
-│   ├── caddy/              # Caddy WAF configs
 │   ├── nginx/              # Nginx WAF configs
 │   ├── apache/             # Apache WAF configs (ModSecurity)
 │   ├── traefik/            # Traefik WAF configs
 │   └── haproxy/            # HAProxy WAF configs
 │── import_apache_waf.py
-│── import_caddy_waf.py
 │── import_haproxy_waf.py
 │── import_nginx_waf.py
 │── import_traefik_waf.py
 ├── owasp.py                # 🕵️ OWASP scraper (fetch CRS rules)
-├── owasp2caddy.py          # 🔄 Convert OWASP JSON to Caddy WAF configs
 ├── owasp2nginx.py          # 🔄 Convert OWASP JSON to Nginx WAF configs
 ├── owasp2apache.py         # 🔄 Convert OWASP JSON to Apache ModSecurity configs
 ├── owasp2haproxy.py        # 🔄 Convert OWASP JSON to HAProxy WAF configs
@@ -58,7 +56,6 @@ patterns/
 - Extracts **SQLi, XSS, RCE, LFI** patterns from OWASP CRS `.conf` files.  
 
 ### 🔹 2. Generating WAF Configs for Each Platform  
-- **`owasp2caddy.py`** – Converts OWASP patterns into **Caddy WAF** rules.  
 - **`owasp2nginx.py`** – Generates **Nginx WAF** configurations.  
 - **`owasp2apache.py`** – Outputs **Apache ModSecurity** rules.  
 - **`owasp2traefik.py`** – Creates **Traefik WAF** rules.  
@@ -85,7 +82,6 @@ pip install -r requirements.txt
 **3. Run Manually (Optional):**  
 ```bash
 python owasp.py
-python owasp2caddy.py
 python owasp2nginx.py
 python owasp2apache.py
 python owasp2haproxy.py
@@ -101,22 +97,17 @@ python badbots.py
 sudo python3 import_nginx_waf.py
 ```
 
-### 🔹 2. Caddy WAF Integration  
-```bash
-sudo python3 import_caddy_waf.py
-```
-
-### 🔹 3. Apache WAF Integration  
+### 🔹 2. Apache WAF Integration  
 ```bash
 sudo python3 import_apache_waf.py
 ```
 
-### 🔹 4. Traefik WAF Integration  
+### 🔹 3. Traefik WAF Integration  
 ```bash
 sudo python3 import_traefik_waf.py
 ```
 
-### 🔹 5. HAProxy WAF Integration  
+### 🔹 4. HAProxy WAF Integration  
 ```bash
 sudo python3 import_haproxy_waf.py
 ```

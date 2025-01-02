@@ -41,11 +41,6 @@ jobs:
         python owasp.py
       continue-on-error: false
 
-    - name: 🔄 Convert OWASP to Caddy WAF
-      run: |
-        python owasp2caddy.py
-      continue-on-error: false
-
     - name: 🔄 Convert OWASP to Nginx WAF
       run: |
         python owasp2nginx.py
@@ -72,7 +67,7 @@ jobs:
       continue-on-error: false
       
     # Ensure conf files are pushed even if no changes detected
-    - name: 🚀 Commit and Push Caddy and Nginx WAF Configs
+    - name: 🚀 Commit and Push OWASP WAF patterns
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"

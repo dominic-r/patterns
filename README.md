@@ -10,7 +10,7 @@ Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious 
 ## 📌 Project Highlights  
 - **🛡️ OWASP CRS Protection** – Leverages OWASP Core Rule Set for web application firewall (WAF) defense.  
 - **🤖 Bad Bot Blocking** – Blocks known malicious bots using public bot lists.  
-- **⚙️ Multi-Web Server Support** – Generates WAF configs for **Apache, Nginx, Caddy, Traefik, and HAProxy**.  
+- **⚙️ Multi-Web Server Support** – Generates WAF configs for **Apache, Nginx, Traefik, and HAProxy**.  
 - **🔄 Automatic Updates** – GitHub Actions fetch new rules **daily** and push updated configs.  
 - **🧩 Scalable and Modular** – Easily extendable to support other web servers or load balancers.  
 
@@ -159,6 +159,5 @@ See the [LICENSE](LICENSE) file for details.
 - [OWASP CRS](https://github.com/coreruleset/coreruleset)  
 - [Apache ModSecurity](https://modsecurity.org/)  
 - [Nginx](https://nginx.org/)  
-- [Caddy Web Server](https://caddyserver.com/)  
 - [Traefik](https://github.com/traefik/traefik)  
 - [HaProxy](https://www.haproxy.org/)  

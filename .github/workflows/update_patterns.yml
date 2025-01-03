@@ -90,8 +90,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: release-${{ github.run_id }}  # Use GitHub Actions run ID for uniqueness
-        release_name: Release ${{ github.run_id }}
+        tag_name: latest  # Use "latest" as the tag name
+        release_name: Latest Release
         draft: false
         prerelease: false
 

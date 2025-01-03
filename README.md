@@ -161,6 +161,9 @@ fab@Mac patterns % python3 owasp2haproxy.py
 2025-01-03 13:23:08,953 - INFO - [+] Created or verified directory: waf_patterns/haproxy
 2025-01-03 13:23:08,954 - INFO - [+] HAProxy WAF rules generated at waf_patterns/haproxy/waf.acl
 2025-01-03 13:23:08,954 - INFO - [✔] HAProxy WAF configurations generated successfully.
+```
+
+```
 fab@Mac patterns % python3 owasp2traefik.py
 [+] Traefik WAF rules generated at waf_patterns/traefik/middleware.toml
 ```

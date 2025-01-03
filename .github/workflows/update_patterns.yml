@@ -65,14 +65,30 @@ jobs:
       run: |
         python badbots.py
       continue-on-error: false
-      
+
+    - name: 📊 Count Rules for Each Web Server
+      id: count_rules
+      run: |
+        NGINX_RULES=$(grep -c '^' waf_patterns/nginx/*.conf || echo 0)
+        APACHE_RULES=$(grep -c '^' waf_patterns/apache/*.conf || echo 0)
+        TRAEFIK_RULES=$(grep -c '^' waf_patterns/traefik/*.conf || echo 0)
+        HAPROXY_RULES=$(grep -c '^' waf_patterns/haproxy/*.conf || echo 0)
+        echo "nginx_rules=$NGINX_RULES" >> $GITHUB_OUTPUT
+        echo "apache_rules=$APACHE_RULES" >> $GITHUB_OUTPUT
+        echo "traefik_rules=$TRAEFIK_RULES" >> $GITHUB_OUTPUT
+        echo "haproxy_rules=$HAPROXY_RULES" >> $GITHUB_OUTPUT
+
     # Ensure conf files are pushed even if no changes detected
     - name: 🚀 Commit and Push OWASP WAF patterns
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "Update: [$(date)]" || echo "No changes to commit"
+        git commit -m "Update: [$(date)]
+        Nginx Rules: ${{ steps.count_rules.outputs.nginx_rules }}
+        Apache Rules: ${{ steps.count_rules.outputs.apache_rules }}
+        Traefik Rules: ${{ steps.count_rules.outputs.traefik_rules }}
+        HAProxy Rules: ${{ steps.count_rules.outputs.haproxy_rules }}"
         git push
       continue-on-error: true  # Continue even if no changes are made
 

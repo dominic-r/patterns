@@ -79,10 +79,10 @@ jobs:
     - name: 📦 Create Zip Files for Each Web Server
       run: |
         mkdir -p zips
-        zip -r zips/nginx_waf.zip patterns/waf_patterns/nginx/
-        zip -r zips/apache_waf.zip patterns/waf_patterns/apache/
-        zip -r zips/traefik_waf.zip patterns/waf_patterns/traefik/
-        zip -r zips/haproxy_waf.zip patterns/waf_patterns/haproxy/
+        zip -r zips/nginx_waf.zip waf_patterns/nginx/
+        zip -r zips/apache_waf.zip waf_patterns/apache/
+        zip -r zips/traefik_waf.zip waf_patterns/traefik/
+        zip -r zips/haproxy_waf.zip waf_patterns/haproxy/
 
     - name: 🚀 Create GitHub Release
       id: create_release

@@ -12,6 +12,7 @@ Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious 
 - **🤖 Bad Bot Blocking** – Blocks known malicious bots using public bot lists.  
 - **⚙️ Multi-Web Server Support** – Generates WAF configs for **Apache, Nginx, Traefik, and HAProxy**.  
 - **🔄 Automatic Updates** – GitHub Actions fetch new rules **daily** and push updated configs.  
+- **📦 Pre-Generated Configurations** – Download ready-to-use WAF configurations from [GitHub Releases](https://github.com/fabriziosalmi/patterns/releases).  
 - **🧩 Scalable and Modular** – Easily extendable to support other web servers or load balancers.  
 
 ---
@@ -23,7 +24,8 @@ Additionally, **Bad Bot/User-Agent detection** is integrated to block malicious 
 - **🔴 HAProxy**  
 
 > [!NOTE]
-> If you are using Caddy check the [caddy-waf](https://github.com/fabriziosalmi/caddy-waf) project.
+> If you are using Caddy, check the [caddy-waf](https://github.com/fabriziosalmi/caddy-waf) project.
+
 ---
 
 ## 📂 Project Structure  
@@ -65,111 +67,20 @@ patterns/
 - **`badbots.py`** fetches public bot lists and generates bot-blocking configs.  
 - Supports fallback lists to ensure reliable detection.  
 
-### Example
-
-```
-fab@Mac patterns % python3 owasp.py
-2025-01-03 13:22:52,744 - INFO - Latest matching tag: refs/tags/v4.0.0-rc2
-2025-01-03 13:22:52,988 - INFO - Fetching REQUEST-901-INITIALIZATION.conf...
-2025-01-03 13:22:53,164 - INFO - Fetching REQUEST-905-COMMON-EXCEPTIONS.conf...
-2025-01-03 13:22:53,335 - INFO - Fetching REQUEST-911-METHOD-ENFORCEMENT.conf...
-2025-01-03 13:22:53,513 - INFO - Fetching REQUEST-913-SCANNER-DETECTION.conf...
-2025-01-03 13:22:53,683 - INFO - Fetching REQUEST-920-PROTOCOL-ENFORCEMENT.conf...
-2025-01-03 13:22:53,892 - INFO - Fetching REQUEST-921-PROTOCOL-ATTACK.conf...
-2025-01-03 13:22:54,057 - INFO - Fetching REQUEST-922-MULTIPART-ATTACK.conf...
-2025-01-03 13:22:54,218 - INFO - Fetching REQUEST-930-APPLICATION-ATTACK-LFI.conf...
-2025-01-03 13:22:54,388 - INFO - Fetching REQUEST-931-APPLICATION-ATTACK-RFI.conf...
-2025-01-03 13:22:54,563 - INFO - Fetching REQUEST-932-APPLICATION-ATTACK-RCE.conf...
-2025-01-03 13:22:54,784 - INFO - Fetching REQUEST-933-APPLICATION-ATTACK-PHP.conf...
-2025-01-03 13:22:54,947 - INFO - Fetching REQUEST-934-APPLICATION-ATTACK-GENERIC.conf...
-2025-01-03 13:22:55,150 - INFO - Fetching REQUEST-941-APPLICATION-ATTACK-XSS.conf...
-2025-01-03 13:22:55,328 - INFO - Fetching REQUEST-942-APPLICATION-ATTACK-SQLI.conf...
-2025-01-03 13:22:55,560 - INFO - Fetching REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION.conf...
-2025-01-03 13:22:55,750 - INFO - Fetching REQUEST-944-APPLICATION-ATTACK-JAVA.conf...
-2025-01-03 13:22:55,922 - INFO - Fetching REQUEST-949-BLOCKING-EVALUATION.conf...
-2025-01-03 13:22:56,106 - INFO - Fetching RESPONSE-950-DATA-LEAKAGES.conf...
-2025-01-03 13:22:56,530 - INFO - Fetching RESPONSE-951-DATA-LEAKAGES-SQL.conf...
-2025-01-03 13:22:56,705 - INFO - Fetching RESPONSE-952-DATA-LEAKAGES-JAVA.conf...
-2025-01-03 13:22:57,088 - INFO - Fetching RESPONSE-953-DATA-LEAKAGES-PHP.conf...
-2025-01-03 13:22:57,279 - INFO - Fetching RESPONSE-954-DATA-LEAKAGES-IIS.conf...
-2025-01-03 13:22:57,454 - INFO - Fetching RESPONSE-955-WEB-SHELLS.conf...
-2025-01-03 13:22:57,669 - INFO - Fetching RESPONSE-959-BLOCKING-EVALUATION.conf...
-2025-01-03 13:22:57,842 - INFO - Fetching RESPONSE-980-CORRELATION.conf...
-2025-01-03 13:22:58,006 - INFO - Fetched 646 rules.
-2025-01-03 13:22:58,013 - INFO - Rules saved to owasp_rules.json.
-2025-01-03 13:22:58,014 - INFO - All rules fetched and saved successfully.
-```
-
-```
-fab@Mac patterns % python3 owasp2apache.py
-2025-01-03 13:23:02,973 - INFO - [*] Loading OWASP rules...
-2025-01-03 13:23:02,974 - INFO - [*] Generating Apache WAF configs from 646 rules...
-2025-01-03 13:23:02,975 - INFO - [+] Generated waf_patterns/apache/initialization.conf (30 patterns)
-2025-01-03 13:23:02,975 - INFO - [+] Generated waf_patterns/apache/exceptions.conf (5 patterns)
-2025-01-03 13:23:02,975 - INFO - [+] Generated waf_patterns/apache/enforcement.conf (112 patterns)
-2025-01-03 13:23:02,975 - INFO - [+] Generated waf_patterns/apache/detection.conf (9 patterns)
-2025-01-03 13:23:02,976 - INFO - [+] Generated waf_patterns/apache/attack.conf (31 patterns)
-2025-01-03 13:23:02,976 - INFO - [+] Generated waf_patterns/apache/lfi.conf (13 patterns)
-2025-01-03 13:23:02,976 - INFO - [+] Generated waf_patterns/apache/rfi.conf (15 patterns)
-2025-01-03 13:23:02,976 - INFO - [+] Generated waf_patterns/apache/rce.conf (54 patterns)
-2025-01-03 13:23:02,977 - INFO - [+] Generated waf_patterns/apache/php.conf (39 patterns)
-2025-01-03 13:23:02,977 - INFO - [+] Generated waf_patterns/apache/generic.conf (18 patterns)
-2025-01-03 13:23:02,977 - INFO - [+] Generated waf_patterns/apache/xss.conf (43 patterns)
-2025-01-03 13:23:02,977 - INFO - [+] Generated waf_patterns/apache/sqli.conf (73 patterns)
-2025-01-03 13:23:02,977 - INFO - [+] Generated waf_patterns/apache/fixation.conf (14 patterns)
-2025-01-03 13:23:02,977 - INFO - [+] Generated waf_patterns/apache/java.conf (34 patterns)
-2025-01-03 13:23:02,978 - INFO - [+] Generated waf_patterns/apache/evaluation.conf (54 patterns)
-2025-01-03 13:23:02,978 - INFO - [+] Generated waf_patterns/apache/leakages.conf (11 patterns)
-2025-01-03 13:23:02,978 - INFO - [+] Generated waf_patterns/apache/sql.conf (25 patterns)
-2025-01-03 13:23:02,978 - INFO - [+] Generated waf_patterns/apache/iis.conf (13 patterns)
-2025-01-03 13:23:02,978 - INFO - [+] Generated waf_patterns/apache/shells.conf (34 patterns)
-2025-01-03 13:23:02,978 - INFO - [+] Generated waf_patterns/apache/correlation.conf (19 patterns)
-2025-01-03 13:23:02,978 - INFO - [✔] Apache ModSecurity configurations generated successfully.
-```
-
-```
-fab@Mac patterns % python3 owasp2nginx.py
-2025-01-03 13:23:06,134 - INFO - [*] Loading OWASP rules...
-2025-01-03 13:23:06,135 - INFO - [*] Generating Nginx WAF configs from 646 rules...
-2025-01-03 13:23:06,135 - INFO - [+] Generated waf_patterns/nginx/initialization.conf (30 patterns)
-2025-01-03 13:23:06,135 - INFO - [+] Generated waf_patterns/nginx/exceptions.conf (5 patterns)
-2025-01-03 13:23:06,136 - INFO - [+] Generated waf_patterns/nginx/enforcement.conf (112 patterns)
-2025-01-03 13:23:06,136 - INFO - [+] Generated waf_patterns/nginx/detection.conf (9 patterns)
-2025-01-03 13:23:06,136 - INFO - [+] Generated waf_patterns/nginx/attack.conf (31 patterns)
-2025-01-03 13:23:06,136 - INFO - [+] Generated waf_patterns/nginx/lfi.conf (13 patterns)
-2025-01-03 13:23:06,136 - INFO - [+] Generated waf_patterns/nginx/rfi.conf (15 patterns)
-2025-01-03 13:23:06,136 - INFO - [+] Generated waf_patterns/nginx/rce.conf (54 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/php.conf (39 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/generic.conf (18 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/xss.conf (43 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/sqli.conf (73 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/fixation.conf (14 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/java.conf (34 patterns)
-2025-01-03 13:23:06,137 - INFO - [+] Generated waf_patterns/nginx/evaluation.conf (54 patterns)
-2025-01-03 13:23:06,138 - INFO - [+] Generated waf_patterns/nginx/leakages.conf (11 patterns)
-2025-01-03 13:23:06,138 - INFO - [+] Generated waf_patterns/nginx/sql.conf (25 patterns)
-2025-01-03 13:23:06,138 - INFO - [+] Generated waf_patterns/nginx/iis.conf (13 patterns)
-2025-01-03 13:23:06,138 - INFO - [+] Generated waf_patterns/nginx/shells.conf (34 patterns)
-2025-01-03 13:23:06,138 - INFO - [+] Generated waf_patterns/nginx/correlation.conf (19 patterns)
-2025-01-03 13:23:06,138 - INFO - [✔] Nginx WAF configurations generated successfully.
-```
-
-```
-fab@Mac patterns % python3 owasp2haproxy.py
-2025-01-03 13:23:08,952 - INFO - [*] Loading OWASP rules...
-2025-01-03 13:23:08,953 - INFO - [*] Generating HAProxy WAF configs from 646 rules...
-2025-01-03 13:23:08,953 - INFO - [+] Created or verified directory: waf_patterns/haproxy
-2025-01-03 13:23:08,954 - INFO - [+] HAProxy WAF rules generated at waf_patterns/haproxy/waf.acl
-2025-01-03 13:23:08,954 - INFO - [✔] HAProxy WAF configurations generated successfully.
-```
-
-```
-fab@Mac patterns % python3 owasp2traefik.py
-[+] Traefik WAF rules generated at waf_patterns/traefik/middleware.toml
-```
-
+---
 
 ## ⚙️ Installation  
+
+### Option 1: Download Pre-Generated Configurations  
+You can download the latest pre-generated WAF configurations directly from the [GitHub Releases](https://github.com/fabriziosalmi/patterns/releases) page.  
+
+1. Go to the [Releases](https://github.com/fabriziosalmi/patterns/releases) section.  
+2. Download the zip file for your web server (e.g., `nginx_waf.zip`, `apache_waf.zip`).  
+3. Extract the files and follow the integration instructions below.  
+
+### Option 2: Build from Source  
+If you prefer to generate the configurations yourself:  
+
 **1. Clone the Repository:**  
 ```bash
 git clone https://github.com/fabriziosalmi/patterns.git  
@@ -194,25 +105,30 @@ python badbots.py
 ---
 
 ## 🚀 Usage (Web Server Integration)  
+
 ### 🔹 1. Nginx WAF Integration  
-```bash
-sudo python3 import_nginx_waf.py
-```
+1. Download the `nginx_waf.zip` file from the [Releases](https://github.com/fabriziosalmi/patterns/releases) page.  
+2. Extract the files to your Nginx configuration directory.  
+3. Include the generated `.conf` files in your Nginx configuration:  
+   ```nginx
+   include /path/to/waf_patterns/nginx/*.conf;
+   ```
 
 ### 🔹 2. Apache WAF Integration  
-```bash
-sudo python3 import_apache_waf.py
-```
+1. Download the `apache_waf.zip` file from the [Releases](https://github.com/fabriziosalmi/patterns/releases) page.  
+2. Extract the files to your Apache configuration directory.  
+3. Include the generated `.conf` files in your Apache configuration:  
+   ```apache
+   Include /path/to/waf_patterns/apache/*.conf
+   ```
 
 ### 🔹 3. Traefik WAF Integration  
-```bash
-sudo python3 import_traefik_waf.py
-```
+1. Download the `traefik_waf.zip` file from the [Releases](https://github.com/fabriziosalmi/patterns/releases) page.  
+2. Extract the files and use the `middleware.toml` file in your Traefik configuration.  
 
 ### 🔹 4. HAProxy WAF Integration  
-```bash
-sudo python3 import_haproxy_waf.py
-```
+1. Download the `haproxy_waf.zip` file from the [Releases](https://github.com/fabriziosalmi/patterns/releases) page.  
+2. Extract the files and include the `waf.acl` file in your HAProxy configuration.  
 
 ---
 
@@ -234,6 +150,7 @@ if ($bad_bot) {
 ## 🤖 Automation (GitHub Workflow)  
 - **🕛 Daily Updates** – GitHub Actions fetch the latest OWASP CRS rules every day.  
 - **🔄 Auto Deployment** – Pushes new `.conf` files directly to `waf_patterns/`.  
+- **📦 Release Automation** – Automatically creates a new release with pre-generated configurations.  
 - **🎯 Manual Trigger** – Updates can also be triggered manually.  
 
 ---
@@ -253,7 +170,7 @@ See the [LICENSE](LICENSE) file for details.
 ---
 
 ## 📞 Need Help?  
-- **Issues?** Open a ticket in the [Issues Tab](https://github.com/your-username/patterns/issues).  
+- **Issues?** Open a ticket in the [Issues Tab](https://github.com/fabriziosalmi/patterns/issues).  
 
 ---
 

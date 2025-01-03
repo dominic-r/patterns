@@ -84,6 +84,13 @@ jobs:
         zip -r zips/traefik_waf.zip waf_patterns/traefik/
         zip -r zips/haproxy_waf.zip waf_patterns/haproxy/
 
+    - name: 🗑️ Delete Existing 'latest' Tag (if it exists)
+      run: |
+        if git rev-parse --verify --quiet refs/tags/latest; then
+          git tag -d latest
+          git push origin :refs/tags/latest
+        fi
+    
     - name: 🚀 Create GitHub Release
       id: create_release
       uses: actions/create-release@v1

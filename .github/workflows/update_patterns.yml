@@ -90,8 +90,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v$(date +'%Y-%m-%d')  # Use hyphens instead of dots for valid tag format
-        release_name: Release v$(date +'%Y-%m-%d')
+        tag_name: release-$(date +'%Y%m%d%H%M%S')  # Unique and valid tag format
+        release_name: Release $(date +'%Y-%m-%d %H:%M:%S')
         draft: false
         prerelease: false
 

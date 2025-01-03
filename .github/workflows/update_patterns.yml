@@ -84,13 +84,22 @@ jobs:
         zip -r zips/traefik_waf.zip waf_patterns/traefik/
         zip -r zips/haproxy_waf.zip waf_patterns/haproxy/
 
-    - name: 🗑️ Delete Existing 'latest' Tag (if it exists)
+    - name: 🗑️ Delete Existing 'latest' Tag and Release (if they exist)
       run: |
+        # Delete the local 'latest' tag
         if git rev-parse --verify --quiet refs/tags/latest; then
           git tag -d latest
-          git push origin :refs/tags/latest
         fi
-    
+
+        # Delete the remote 'latest' tag
+        git push origin :refs/tags/latest || echo "Tag 'latest' does not exist on remote."
+
+        # Delete the 'latest' release (if it exists)
+        gh release delete latest --yes || echo "Release 'latest' does not exist."
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: 🚀 Create GitHub Release
       id: create_release
       uses: actions/create-release@v1

@@ -6,6 +6,8 @@ import time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import random
+import re
+from tqdm import tqdm  # Import tqdm for progress bar
 
 # Logging setup
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -18,11 +20,13 @@ OUTPUT_DIRS = {
     "haproxy": "waf_patterns/haproxy/"
 }
 
+# Updated list of bot list sources
 BOT_LIST_SOURCES = [
     "https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/_generator_lists/bad-user-agents.list",
-    "https://raw.githubusercontent.com/monperrus/crawler-user-agents/master/crawler-user-agents.json",
-    "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt",
-    "https://perishablepress.com/4g-ultimate-user-agent-blacklist/?format=txt"
+    "https://raw.githubusercontent.com/JayBizzle/Crawler-Detect/master/raw/Crawlers.txt",
+    "https://raw.githubusercontent.com/piwik/referrer-spam-blacklist/master/spammers.txt",
+    "https://raw.githubusercontent.com/Stevie-Ray/referrer-spam-blocker/master/src/hosts.txt",
+    "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/bad-user-agents.txt"
 ]
 
 RATE_LIMIT_DELAY = 600
@@ -32,6 +36,10 @@ EXPONENTIAL_BACKOFF = True
 BACKOFF_MULTIPLIER = 2
 MAX_WORKERS = 4
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+# Regex to detect IP addresses and domains
+IP_REGEX = re.compile(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b")
+DOMAIN_REGEX = re.compile(r"\b([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b")
 
 
 def fetch_with_retries(url: str) -> list:
@@ -91,9 +99,10 @@ def parse_bot_list(url: str, response: requests.Response) -> list:
                         bot_patterns.add(user_agent)
         else:
             for line in response.text.splitlines():
-                # Exclude comments, empty lines, and non-UA strings
-                if line and not line.startswith("#") and len(line) > 3 and "Mozilla" in line:
-                    bot_patterns.add(line)
+                # Exclude comments, empty lines, IPs, and domains
+                if line and not line.startswith("#") and len(line) > 3:
+                    if not IP_REGEX.search(line) and not DOMAIN_REGEX.search(line):
+                        bot_patterns.add(line)
     except (ValueError, json.JSONDecodeError) as e:
         logging.warning(f"Error parsing {url}: {e}")
 
@@ -107,9 +116,11 @@ def fetch_bot_list():
     bot_patterns = set()
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        # Create a dictionary of futures to URLs
         future_to_url = {executor.submit(fetch_with_retries, url): url for url in BOT_LIST_SOURCES}
 
-        for future in as_completed(future_to_url):
+        # Use tqdm to show progress
+        for future in tqdm(as_completed(future_to_url), total=len(BOT_LIST_SOURCES), desc="Fetching bot lists"):
             result = future.result()
             bot_patterns.update(result)
 

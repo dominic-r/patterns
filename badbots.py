@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 # Constants and Configuration
 OUTPUT_DIRS = {
     "nginx": "waf_patterns/nginx/",
-    "caddy": "waf_patterns/caddy/",
     "apache": "waf_patterns/apache/",
     "traefik": "waf_patterns/traefik/",
     "haproxy": "waf_patterns/haproxy/"
@@ -24,7 +23,7 @@ BOT_LIST_SOURCES = [
     "https://raw.githubusercontent.com/monperrus/crawler-user-agents/master/crawler-user-agents.json",
     "https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt",
     "https://perishablepress.com/4g-ultimate-user-agent-blacklist/?format=txt"
-    ]
+]
 
 RATE_LIMIT_DELAY = 600
 RETRY_DELAY = 5
@@ -36,6 +35,9 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 
 def fetch_with_retries(url: str) -> list:
+    """
+    Fetch bot patterns from a URL with retries and rate-limiting handling.
+    """
     retries = 0
     headers = {}
 
@@ -70,6 +72,9 @@ def fetch_with_retries(url: str) -> list:
 
 
 def parse_bot_list(url: str, response: requests.Response) -> list:
+    """
+    Parse bot patterns from the fetched response (JSON or plain text).
+    """
     bot_patterns = set()
     try:
         if url.endswith(".json"):
@@ -95,8 +100,10 @@ def parse_bot_list(url: str, response: requests.Response) -> list:
     return list(bot_patterns)
 
 
-
 def fetch_bot_list():
+    """
+    Fetch bot patterns from all sources using a thread pool.
+    """
     bot_patterns = set()
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
@@ -115,6 +122,9 @@ def fetch_bot_list():
 
 
 def write_to_file(path: Path, content: str):
+    """
+    Write content to a file at the specified path.
+    """
     try:
         with path.open("w") as f:
             f.write(content)
@@ -124,6 +134,9 @@ def write_to_file(path: Path, content: str):
 
 
 def generate_nginx_conf(bots):
+    """
+    Generate Nginx WAF configuration for blocking bots.
+    """
     path = Path(OUTPUT_DIRS['nginx'], "bots.conf")
     content = "map $http_user_agent $bad_bot {\n"
     for bot in bots:
@@ -132,16 +145,10 @@ def generate_nginx_conf(bots):
     write_to_file(path, content)
 
 
-def generate_caddy_conf(bots):
-    path = Path(OUTPUT_DIRS['caddy'], "bots.conf")
-    content = "@bad_bot {\n"
-    for bot in bots:
-        content += f'    header User-Agent *{bot}*\n'
-    content += "}\nrespond @bad_bot 403\n"
-    write_to_file(path, content)
-
-
 def generate_apache_conf(bots):
+    """
+    Generate Apache WAF configuration for blocking bots.
+    """
     path = Path(OUTPUT_DIRS['apache'], "bots.conf")
     content = "SecRuleEngine On\n"
     for bot in bots:
@@ -150,6 +157,9 @@ def generate_apache_conf(bots):
 
 
 def generate_traefik_conf(bots):
+    """
+    Generate Traefik WAF configuration for blocking bots.
+    """
     path = Path(OUTPUT_DIRS['traefik'], "bots.toml")
     content = "[http.middlewares]\n[http.middlewares.bad_bot_block]\n  [http.middlewares.bad_bot_block.plugin.badbot]\n    userAgent = [\n"
     for bot in bots:
@@ -159,6 +169,9 @@ def generate_traefik_conf(bots):
 
 
 def generate_haproxy_conf(bots):
+    """
+    Generate HAProxy WAF configuration for blocking bots.
+    """
     path = Path(OUTPUT_DIRS['haproxy'], "bots.acl")
     content = "# HAProxy WAF - Bad Bot Blocker\n"
     for bot in bots:
@@ -168,13 +181,15 @@ def generate_haproxy_conf(bots):
 
 
 if __name__ == "__main__":
+    # Ensure output directories exist
     for output_dir in OUTPUT_DIRS.values():
         Path(output_dir).mkdir(parents=True, exist_ok=True)
 
+    # Fetch bot patterns
     bots = fetch_bot_list()
 
+    # Generate WAF configurations
     generate_nginx_conf(bots)
-    generate_caddy_conf(bots)
     generate_apache_conf(bots)
     generate_traefik_conf(bots)
     generate_haproxy_conf(bots)

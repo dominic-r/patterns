@@ -90,8 +90,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: release-$(date +'%Y%m%d%H%M%S')  # Unique and valid tag format
-        release_name: Release $(date +'%Y-%m-%d %H:%M:%S')
+        tag_name: release-${{ github.run_id }}  # Use GitHub Actions run ID for uniqueness
+        release_name: Release ${{ github.run_id }}
         draft: false
         prerelease: false
 

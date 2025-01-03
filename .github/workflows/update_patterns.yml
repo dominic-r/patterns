@@ -76,6 +76,65 @@ jobs:
         git push
       continue-on-error: true  # Continue even if no changes are made
 
+    - name: 📦 Create Zip Files for Each Web Server
+      run: |
+        mkdir -p zips
+        zip -r zips/nginx_waf.zip patterns/waf_patterns/nginx/
+        zip -r zips/apache_waf.zip patterns/waf_patterns/apache/
+        zip -r zips/traefik_waf.zip patterns/waf_patterns/traefik/
+        zip -r zips/haproxy_waf.zip patterns/waf_patterns/haproxy/
+
+    - name: 🚀 Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v$(date +'%Y.%m.%d')
+        release_name: Release v$(date +'%Y.%m.%d')
+        draft: false
+        prerelease: false
+
+    - name: 📤 Upload Nginx WAF Zip to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: zips/nginx_waf.zip
+        asset_name: nginx_waf.zip
+        asset_content_type: application/zip
+
+    - name: 📤 Upload Apache WAF Zip to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: zips/apache_waf.zip
+        asset_name: apache_waf.zip
+        asset_content_type: application/zip
+
+    - name: 📤 Upload Traefik WAF Zip to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: zips/traefik_waf.zip
+        asset_name: traefik_waf.zip
+        asset_content_type: application/zip
+
+    - name: 📤 Upload HAProxy WAF Zip to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: zips/haproxy_waf.zip
+        asset_name: haproxy_waf.zip
+        asset_content_type: application/zip
+
     - name: 🧹 Cleanup Cache (Optional)
       run: |
         rm -rf ~/.cache/pip
@@ -85,4 +144,4 @@ jobs:
       if: failure()
       run: |
         echo "🚨 Workflow failed! Please investigate."
-        # Slack or email notification logic (add webhook or SMTP integration here)
+        # Slack or email notification logic (add webhook or SMTP integration here).

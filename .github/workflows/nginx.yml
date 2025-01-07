@@ -48,11 +48,24 @@ jobs:
           exit 1
         fi
 
+    - name: Separate map directives from WAF rules
+      run: |
+        # Extract map directives into a separate file
+        grep -h "map " waf_rules/waf_patterns/nginx/*.conf > map_directives.conf || true
+        echo "Extracted map directives into map_directives.conf"
+        echo "Contents of map_directives.conf:"
+        cat map_directives.conf
+
+        # Remove map directives from the WAF rules
+        grep -L "map " waf_rules/waf_patterns/nginx/*.conf > waf_rules_without_map.conf || true
+        echo "WAF rules without map directives:"
+        cat waf_rules_without_map.conf
+
     - name: Merge WAF rules into a single file with a server block
       run: |
         # Create a merged_waf_rules.conf file with a server block
         echo "server {" > merged_waf_rules.conf
-        cat waf_rules/waf_patterns/nginx/*.conf >> merged_waf_rules.conf
+        cat waf_rules_without_map.conf >> merged_waf_rules.conf
         echo "}" >> merged_waf_rules.conf
         echo "Merged WAF rules into merged_waf_rules.conf"
         echo "Contents of merged_waf_rules.conf:"
@@ -60,11 +73,12 @@ jobs:
 
     - name: Combine Nginx configuration
       run: |
-        # Create a temporary nginx.conf file that includes the merged WAF rules
+        # Create a temporary nginx.conf file that includes the map directives and merged WAF rules
         echo "events {" > temp_nginx.conf
         echo "    worker_connections 1024;" >> temp_nginx.conf
         echo "}" >> temp_nginx.conf
         echo "http {" >> temp_nginx.conf
+        echo "    include /etc/nginx/map_directives.conf;" >> temp_nginx.conf
         echo "    include /etc/nginx/merged_waf_rules.conf;" >> temp_nginx.conf
         echo "    include /etc/nginx/tests/nginx.conf;" >> temp_nginx.conf
         echo "}" >> temp_nginx.conf
@@ -74,8 +88,9 @@ jobs:
 
     - name: Validate Nginx configuration using Docker
       run: |
-        # Copy the merged WAF rules and nginx.conf to a Docker volume
-        docker run --rm -v $(pwd)/merged_waf_rules.conf:/etc/nginx/merged_waf_rules.conf:ro \
+        # Copy the map directives, merged WAF rules, and nginx.conf to a Docker volume
+        docker run --rm -v $(pwd)/map_directives.conf:/etc/nginx/map_directives.conf:ro \
+                       -v $(pwd)/merged_waf_rules.conf:/etc/nginx/merged_waf_rules.conf:ro \
                        -v $(pwd)/tests/nginx.conf:/etc/nginx/tests/nginx.conf:ro \
                        -v $(pwd)/temp_nginx.conf:/etc/nginx/nginx.conf:ro \
                        nginx nginx -t

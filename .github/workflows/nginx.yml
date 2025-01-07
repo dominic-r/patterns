@@ -48,23 +48,32 @@ jobs:
           exit 1
         fi
 
+    - name: Merge WAF rules into a single file
+      run: |
+        # Merge all WAF rules into a single file
+        cat waf_rules/waf_patterns/nginx/*.conf > merged_waf_rules.conf
+        echo "Merged WAF rules into merged_waf_rules.conf"
+        echo "Contents of merged_waf_rules.conf:"
+        cat merged_waf_rules.conf
+
     - name: Combine Nginx configuration
       run: |
-        # Create a temporary file to hold the WAF rules
-        echo "http {" > temp_http_block.conf
-        echo "    include /etc/nginx/waf_rules/*.conf;" >> temp_http_block.conf
-        echo "}" >> temp_http_block.conf
+        # Create a temporary nginx.conf file that includes the merged WAF rules
+        echo "events {" > temp_nginx.conf
+        echo "    worker_connections 1024;" >> temp_nginx.conf
+        echo "}" >> temp_nginx.conf
+        echo "http {" >> temp_nginx.conf
+        echo "    include /etc/nginx/merged_waf_rules.conf;" >> temp_nginx.conf
+        echo "    include /etc/nginx/tests/nginx.conf;" >> temp_nginx.conf
+        echo "}" >> temp_nginx.conf
 
-        # Combine nginx.conf with the WAF rules
-        cat tests/nginx.conf waf_rules/waf_patterns/nginx/*.conf > combined_nginx.conf
         echo "Combined Nginx configuration:"
-        cat combined_nginx.conf
-
-    - name: Debug combined_nginx.conf
-      run: |
-        echo "Contents of combined_nginx.conf:"
-        cat combined_nginx.conf
+        cat temp_nginx.conf
 
     - name: Validate Nginx configuration using Docker
       run: |
-        docker run --rm -v $(pwd)/combined_nginx.conf:/etc/nginx/nginx.conf:ro nginx nginx -t
+        # Copy the merged WAF rules and nginx.conf to a Docker volume
+        docker run --rm -v $(pwd)/merged_waf_rules.conf:/etc/nginx/merged_waf_rules.conf:ro \
+                       -v $(pwd)/tests/nginx.conf:/etc/nginx/tests/nginx.conf:ro \
+                       -v $(pwd)/temp_nginx.conf:/etc/nginx/nginx.conf:ro \
+                       nginx nginx -t

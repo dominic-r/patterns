@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import logging
 from pathlib import Path
 
@@ -14,6 +15,7 @@ logging.basicConfig(
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "waf_patterns/haproxy/"))  # Output directory
 INPUT_FILE = Path(os.getenv("INPUT_FILE", "owasp_rules.json"))  # Input JSON file
 
+UNSUPPORTED_PATTERNS = ["@pmFromFile", "!@eq", "!@within", "@lt", "@ge", "@gt", "@eq"]
 
 def load_owasp_rules(file_path):
     """
@@ -33,6 +35,51 @@ def load_owasp_rules(file_path):
         raise
 
 
+def validate_regex(pattern):
+    """
+    Validate regex pattern for HAProxy.
+    """
+    try:
+        re.compile(pattern)
+        return True
+    except re.error as e:
+        logging.warning(f"[!] Invalid regex: {pattern} - {e}")
+        return False
+
+
+def sanitize_pattern(pattern):
+    """
+    Sanitize unsupported patterns and directives for HAProxy ACLs.
+    """
+    # Skip unsupported patterns
+    if any(directive in pattern for directive in UNSUPPORTED_PATTERNS):
+        logging.warning(f"[!] Skipping unsupported pattern: {pattern}")
+        return None
+
+    # Remove @rx (regex indicator) for HAProxy compatibility
+    pattern = pattern.replace("@rx ", "").strip()
+
+    # Remove case-insensitive flag (?i) as HAProxy uses -i for that
+    pattern = re.sub(r"\(\?i\)", "", pattern)
+
+    # Convert &dollar; to \$
+    pattern = pattern.replace("&dollar;", r"\$")
+
+    # Convert &lbrace; or &lcub; to {
+    pattern = re.sub(r"&l(?:brace|cub);?", r"{", pattern)
+    pattern = re.sub(r"&r(?:brace|cub);?", r"}", pattern)
+
+    # Remove unnecessary \.*
+    pattern = re.sub(r"\\\.\*", r"\.*", pattern)
+    pattern = re.sub(r"(?<!\\)\.(?![\w])", r"\.", pattern)  # Escape dots
+
+    # Replace non-capturing groups (?:...) with capturing groups (...)
+    pattern = re.sub(r"\(\?:", "(", pattern)
+
+    return pattern
+
+
+
 def generate_haproxy_conf(rules):
     """
     Generate HAProxy ACL rules from OWASP rules.
@@ -44,16 +91,24 @@ def generate_haproxy_conf(rules):
 
         # Define the output file path
         config_file = OUTPUT_DIR / "waf.acl"
+        unique_rules = set()
 
         # Write HAProxy ACL rules to the file
         with open(config_file, "w") as f:
             f.write("# HAProxy WAF ACL rules\n\n")
             for rule in rules:
                 try:
-                    category = rule["category"]
+                    category = rule["category"].lower()
                     pattern = rule["pattern"]
-                    f.write(f"acl block_{category} hdr_sub(User-Agent) -i {pattern}\n")
-                    f.write(f"http-request deny if block_{category}\n\n")
+
+                    sanitized_pattern = sanitize_pattern(pattern)
+                    if sanitized_pattern and validate_regex(sanitized_pattern):
+                        if (category, sanitized_pattern) not in unique_rules:
+                            f.write(f"acl block_{category} hdr_sub(User-Agent) -i {sanitized_pattern}\n")
+                            f.write(f"http-request deny if block_{category}\n\n")
+                            unique_rules.add((category, sanitized_pattern))
+                    else:
+                        logging.warning(f"[!] Skipping invalid rule: {pattern}")
                 except KeyError as e:
                     logging.warning(f"[!] Skipping invalid rule (missing key: {e}): {rule}")
                     continue

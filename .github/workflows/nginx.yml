@@ -50,7 +50,13 @@ jobs:
 
     - name: Combine Nginx configuration
       run: |
-        cat tests/nginx.conf waf_rules/waf_patterns/nginx/*.conf > combined_nginx.conf
+        # Wrap WAF rules in a server block
+        echo "server {" > wrapped_waf_rules.conf
+        cat waf_rules/waf_patterns/nginx/*.conf >> wrapped_waf_rules.conf
+        echo "}" >> wrapped_waf_rules.conf
+
+        # Combine nginx.conf with wrapped WAF rules
+        cat tests/nginx.conf wrapped_waf_rules.conf > combined_nginx.conf
         echo "Combined Nginx configuration:"
         cat combined_nginx.conf
 

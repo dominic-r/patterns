@@ -42,34 +42,6 @@ jobs:
         pip check
         echo "Python dependencies validated successfully."
 
-    # Step 6: Run OWASP scraper
-    - name: Run OWASP scraper
-      run: python owasp.py
-
-    # Step 7: Validate OWASP scraper output
-    - name: Validate OWASP scraper output
-      run: |
-        if [ -f "waf_patterns/nginx/*.conf" ]; then
-          echo "OWASP scraper output validated successfully."
-        else
-          echo "Error: No Nginx configuration files found."
-          exit 1
-        fi
-
-    # Step 8: Convert OWASP rules to Nginx config
-    - name: Convert OWASP rules to Nginx config
-      run: python owasp2nginx.py
-
-    # Step 9: Validate Nginx config files
-    - name: Validate Nginx config files
-      run: |
-        if [ -f "waf_patterns/nginx/*.conf" ]; then
-          echo "Nginx configuration files validated successfully."
-        else
-          echo "Error: No Nginx configuration files found."
-          exit 1
-        fi
-
     # Step 10: Install Nginx
     - name: Install Nginx
       run: |

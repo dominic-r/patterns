@@ -59,8 +59,8 @@ jobs:
           echo "}" >> map_directives.conf
         fi
 
-        echo "Contents of map_directives.conf:"
-        cat map_directives.conf
+        echo "First 40 lines of map_directives.conf:"
+        head -n 40 map_directives.conf
 
     - name: Merge WAF rules into a single file with a server block
       run: |
@@ -69,8 +69,8 @@ jobs:
         grep -L "map " waf_rules/waf_patterns/nginx/*.conf >> merged_waf_rules.conf || true
         echo "}" >> merged_waf_rules.conf
         echo "Merged WAF rules into merged_waf_rules.conf"
-        echo "Contents of merged_waf_rules.conf:"
-        cat merged_waf_rules.conf
+        echo "First 40 lines of merged_waf_rules.conf:"
+        head -n 40 merged_waf_rules.conf
 
     - name: Combine Nginx configuration
       run: |
@@ -85,7 +85,8 @@ jobs:
         echo "}" >> temp_nginx.conf
 
         echo "Combined Nginx configuration:"
-        cat temp_nginx.conf
+        echo "First 40 lines of temp_nginx.conf:"
+        head -n 40 temp_nginx.conf
 
     - name: Validate Nginx configuration using Docker
       run: |

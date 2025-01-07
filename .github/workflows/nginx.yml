@@ -54,6 +54,12 @@ jobs:
         nginx -v
         echo "Nginx installed successfully."
 
+    # Create WAF dir
+    - name: Create waf directory
+      run: |
+        mkdir -p /etc/nginx/waf
+        chmod nginx:nginx /etc/nginx/waf
+      
     # Step 12: Import Nginx config
     - name: Import Nginx config
       run: python import_nginx_waf.py  # <-- Correct script name

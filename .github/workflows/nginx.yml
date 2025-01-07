@@ -21,9 +21,27 @@ jobs:
         wget https://github.com/fabriziosalmi/patterns/releases/download/latest/nginx_waf.zip -O nginx_waf.zip
         unzip nginx_waf.zip -d waf_rules
 
+    - name: Verify WAF rules extraction
+      run: |
+        if [ ! -d "waf_rules" ]; then
+          echo "Error: WAF rules directory not found!"
+          exit 1
+        fi
+        if [ -z "$(ls -A waf_rules/*.conf 2>/dev/null)" ]; then
+          echo "Error: No .conf files found in waf_rules!"
+          exit 1
+        fi
+
+    - name: Verify nginx.conf exists
+      run: |
+        if [ ! -f "tests/nginx.conf" ]; then
+          echo "Error: tests/nginx.conf not found in the repository!"
+          exit 1
+        fi
+
     - name: Combine Nginx configuration
       run: |
-        cat nginx.conf waf_rules/*.conf > combined_nginx.conf
+        cat tests/nginx.conf waf_rules/*.conf > combined_nginx.conf
         echo "Combined Nginx configuration:"
         cat combined_nginx.conf
 

@@ -1,102 +1,32 @@
-name: Test Nginx Configuration
+name: Validate Nginx Configuration
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to main branch
   pull_request:
     branches:
-      - main
-  workflow_dispatch:
+      - main  # Trigger on pull request to main branch
 
 jobs:
-  test-nginx-config:
+  validate-nginx:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout repository
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 2: Install essential tools (bash, sudo, etc.)
-    - name: Install essential tools
+    - name: Download WAF rules
       run: |
-        sudo apt-get update
-        sudo apt-get install -y bash sudo python3-pip
+        wget https://github.com/fabriziosalmi/patterns/releases/download/latest/nginx_waf.zip -O nginx_waf.zip
+        unzip nginx_waf.zip -d waf_rules
 
-    # Step 3: Set up Python
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
-    # Step 4: Install Python dependencies
-    - name: Install Python dependencies
+    - name: Combine Nginx configuration
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        cat nginx.conf waf_rules/*.conf > combined_nginx.conf
+        echo "Combined Nginx configuration:"
+        cat combined_nginx.conf
 
-    # Step 5: Validate Python dependencies
-    - name: Validate Python dependencies
+    - name: Validate Nginx configuration using Docker
       run: |
-        pip check
-        echo "Python dependencies validated successfully."
-
-    # Step 6: Run OWASP scraper
-    - name: Run OWASP scraper
-      run: python owasp.py
-
-    # Step 7: Validate OWASP scraper output
-    - name: Validate OWASP scraper output
-      run: |
-        if [ -f "waf_patterns/nginx/*.conf" ]; then
-          echo "OWASP scraper output validated successfully."
-        else
-          echo "Error: No Nginx configuration files found."
-          exit 1
-        fi
-
-    # Step 8: Convert OWASP rules to Nginx config
-    - name: Convert OWASP rules to Nginx config
-      run: python owasp2nginx.py
-
-    # Step 9: Copy WAF files to /tmp
-    - name: Copy WAF files to /tmp
-      run: |
-        mkdir -p /tmp/waf_patterns/nginx
-        cp -r waf_patterns/nginx/*.conf /tmp/waf_patterns/nginx/
-        echo "WAF files copied to /tmp."
-
-    # Step 10: Validate Nginx config files
-    - name: Validate Nginx config files
-      run: |
-        if [ -f "/tmp/waf_patterns/nginx/*.conf" ]; then
-          echo "Nginx configuration files validated successfully."
-        else
-          echo "Error: No Nginx configuration files found in /tmp."
-          exit 1
-        fi
-
-    # Step 11: Install Nginx
-    - name: Install Nginx
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y nginx
-
-    # Step 12: Validate Nginx installation
-    - name: Validate Nginx installation
-      run: |
-        nginx -v
-        echo "Nginx installed successfully."
-
-    # Step 13: Import Nginx config
-    - name: Import Nginx config
-      run: |
-        export WAF_DIR="/tmp/waf_patterns/nginx"
-        python import_nginx_waf.py
-
-    # Step 14: Validate Nginx configuration
-    - name: Validate Nginx configuration
-      run: |
-        sudo nginx -t -c /etc/nginx/nginx.conf
-        echo "Nginx configuration validated successfully."
+        docker run --rm -v $(pwd)/combined_nginx.conf:/etc/nginx/nginx.conf:ro nginx nginx -t

@@ -54,6 +54,11 @@ jobs:
         echo "Combined Nginx configuration:"
         cat combined_nginx.conf
 
+    - name: Debug combined_nginx.conf
+      run: |
+        echo "Contents of combined_nginx.conf:"
+        cat combined_nginx.conf
+
     - name: Validate Nginx configuration using Docker
       run: |
         docker run --rm -v $(pwd)/combined_nginx.conf:/etc/nginx/nginx.conf:ro nginx nginx -t

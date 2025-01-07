@@ -11,7 +11,7 @@ logging.basicConfig(
 )
 
 # Constants (configurable via environment variables)
-WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/nginx"))  # Source directory for WAF files
+WAF_DIR = Path(os.getenv("WAF_DIR", "/tmp/waf_patterns/nginx"))  # Source directory for WAF files
 NGINX_WAF_DIR = Path(os.getenv("NGINX_WAF_DIR", "/etc/nginx/waf/"))  # Target directory
 NGINX_CONF = Path(os.getenv("NGINX_CONF", "/etc/nginx/nginx.conf"))  # Nginx config file
 INCLUDE_STATEMENT = "include /etc/nginx/waf/*.conf;"  # Include directive

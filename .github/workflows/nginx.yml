@@ -34,7 +34,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r patterns/requirements.txt
+        pip install -r requirements.txt  # <-- Correct path to requirements.txt
 
     # Step 5: Validate Python dependencies
     - name: Validate Python dependencies
@@ -45,36 +45,30 @@ jobs:
     # Step 6: Run OWASP scraper
     - name: Run OWASP scraper
       run: python owasp.py
-      working-directory: patterns
-      continue-on-error: false  # Fail the workflow if this step fails
 
     # Step 7: Validate OWASP scraper output
     - name: Validate OWASP scraper output
       run: |
-        if [ -f "patterns/waf_patterns/nginx/*.conf" ]; then
+        if [ -f "waf_patterns/nginx/*.conf" ]; then
           echo "OWASP scraper output validated successfully."
         else
           echo "Error: No Nginx configuration files found."
           exit 1
         fi
-      working-directory: patterns
 
     # Step 8: Convert OWASP rules to Nginx config
     - name: Convert OWASP rules to Nginx config
       run: python owasp2nginx.py
-      working-directory: patterns
-      continue-on-error: false  # Fail the workflow if this step fails
 
     # Step 9: Validate Nginx config files
     - name: Validate Nginx config files
       run: |
-        if [ -f "patterns/waf_patterns/nginx/*.conf" ]; then
+        if [ -f "waf_patterns/nginx/*.conf" ]; then
           echo "Nginx configuration files validated successfully."
         else
           echo "Error: No Nginx configuration files found."
           exit 1
         fi
-      working-directory: patterns
 
     # Step 10: Install Nginx
     - name: Install Nginx
@@ -90,9 +84,7 @@ jobs:
 
     # Step 12: Import Nginx config
     - name: Import Nginx config
-      run: python import2nginx.py
-      working-directory: patterns
-      continue-on-error: false  # Fail the workflow if this step fails
+      run: python import_nginx_waf.py  # <-- Correct script name
 
     # Step 13: Validate Nginx configuration
     - name: Validate Nginx configuration

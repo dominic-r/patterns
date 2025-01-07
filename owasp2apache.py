@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from collections import defaultdict
 import logging
 from pathlib import Path
@@ -23,6 +24,8 @@ MODSEC_RULE_TEMPLATE = (
     'SecRule REQUEST_URI "{pattern}" "id:{rule_id},phase:1,deny,status:403,log,msg:\'{category} attack detected\'"\n'
 )
 
+UNSUPPORTED_PATTERNS = ["@pmFromFile", "!@eq", "!@within", "@lt"]
+
 
 def load_owasp_rules(file_path):
     """
@@ -42,25 +45,57 @@ def load_owasp_rules(file_path):
         raise
 
 
+def validate_regex(pattern):
+    """
+    Validate regex pattern to ensure it is compatible with ModSecurity.
+    """
+    try:
+        re.compile(pattern)
+        return True
+    except re.error as e:
+        logging.warning(f"[!] Skipping invalid regex: {pattern} - {e}")
+        return False
+
+
+def sanitize_pattern(pattern):
+    """
+    Sanitize unsupported patterns and directives for ModSecurity.
+    """
+    if any(directive in pattern for directive in UNSUPPORTED_PATTERNS):
+        logging.warning(f"[!] Skipping unsupported pattern: {pattern}")
+        return None
+
+    # Handle regex patterns prefixed with @rx
+    if pattern.startswith("@rx "):
+        return pattern.replace("@rx ", "").strip()
+
+    return pattern
+
+
 def generate_apache_waf(rules):
     """
     Generate Apache ModSecurity configuration files from OWASP rules.
     """
-    categorized_rules = defaultdict(list)
+    categorized_rules = defaultdict(set)
     rule_id_counter = 1000  # Starting rule ID
 
-    # Group rules by category
+    # Group rules by category and ensure deduplication
     for rule in rules:
         try:
             category = rule.get("category", "generic").lower()
             pattern = rule["pattern"]
-            categorized_rules[category].append((pattern, rule_id_counter))
-            rule_id_counter += 1  # Increment rule ID to avoid collisions
+
+            sanitized_pattern = sanitize_pattern(pattern)
+            if sanitized_pattern and validate_regex(sanitized_pattern):
+                categorized_rules[category].add((sanitized_pattern, rule_id_counter))
+                rule_id_counter += 1
+            else:
+                logging.warning(f"[!] Skipping invalid or unsupported rule: {pattern}")
         except KeyError as e:
-            logging.warning(f"[!] Skipping invalid rule (missing key: {e}): {rule}")
+            logging.warning(f"[!] Skipping malformed rule (missing key: {e}): {rule}")
             continue
 
-    # Convert to Apache conf files
+    # Write rules to per-category configuration files
     for category, patterns in categorized_rules.items():
         output_file = OUTPUT_DIR / f"{category}.conf"
 
@@ -69,10 +104,10 @@ def generate_apache_waf(rules):
                 f.write(f"# Apache ModSecurity rules for {category.upper()}\n")
                 f.write("SecRuleEngine On\n\n")
 
-                # Write rules as ModSecurity SecRules
+                # Write rules with unique IDs
                 for pattern, rule_id in patterns:
                     rule = MODSEC_RULE_TEMPLATE.format(
-                        pattern=pattern, rule_id=rule_id, category=category
+                        pattern=re.escape(pattern), rule_id=rule_id, category=category
                     )
                     f.write(rule)
 

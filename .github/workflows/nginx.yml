@@ -19,16 +19,25 @@ jobs:
     - name: Download WAF rules
       run: |
         wget https://github.com/fabriziosalmi/patterns/releases/download/latest/nginx_waf.zip -O nginx_waf.zip
+        echo "Downloaded nginx_waf.zip"
+        ls -lh nginx_waf.zip
+
+    - name: Extract WAF rules
+      run: |
         unzip nginx_waf.zip -d waf_rules
+        echo "Extracted WAF rules into waf_rules directory"
+        ls -lh waf_rules
 
     - name: Verify WAF rules extraction
       run: |
         if [ ! -d "waf_rules" ]; then
-          echo "Error: WAF rules directory not found!"
+          echo "Error: WAF rules directory not found after extraction!"
           exit 1
         fi
         if [ -z "$(ls -A waf_rules/*.conf 2>/dev/null)" ]; then
           echo "Error: No .conf files found in waf_rules!"
+          echo "Contents of waf_rules:"
+          ls -l waf_rules
           exit 1
         fi
 

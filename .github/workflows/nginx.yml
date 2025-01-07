@@ -48,10 +48,12 @@ jobs:
           exit 1
         fi
 
-    - name: Merge WAF rules into a single file
+    - name: Merge WAF rules into a single file with a server block
       run: |
-        # Merge all WAF rules into a single file
-        cat waf_rules/waf_patterns/nginx/*.conf > merged_waf_rules.conf
+        # Create a merged_waf_rules.conf file with a server block
+        echo "server {" > merged_waf_rules.conf
+        cat waf_rules/waf_patterns/nginx/*.conf >> merged_waf_rules.conf
+        echo "}" >> merged_waf_rules.conf
         echo "Merged WAF rules into merged_waf_rules.conf"
         echo "Contents of merged_waf_rules.conf:"
         cat merged_waf_rules.conf

@@ -67,12 +67,17 @@ jobs:
         # Create a merged_waf_rules.conf file with a server block
         echo "server {" > merged_waf_rules.conf
         for file in $(grep -L "map " waf_rules/waf_patterns/nginx/*.conf); do
+          echo "Merging $file..."
           cat "$file" >> merged_waf_rules.conf
         done
         echo "}" >> merged_waf_rules.conf
 
         echo "Contents of merged_waf_rules.conf:"
         cat merged_waf_rules.conf
+
+        # Debug: Print the problematic line (line 1162)
+        echo "Debugging line 1162 of merged_waf_rules.conf:"
+        sed -n '1162p' merged_waf_rules.conf
 
     - name: Combine Nginx configuration
       run: |

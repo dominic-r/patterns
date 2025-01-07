@@ -29,9 +29,11 @@ jobs:
 
     - name: Run OWASP scraper
       run: python owasp.py
+      working-directory: ./patterns  # Change to the correct directory
 
     - name: Convert OWASP rules to Nginx config
       run: python owasp2nginx.py
+      working-directory: ./patterns  # Change to the correct directory
 
     - name: Install Nginx
       run: |
@@ -40,6 +42,7 @@ jobs:
 
     - name: Import Nginx config
       run: python import2nginx.py
+      working-directory: ./patterns  # Change to the correct directory
 
     - name: Validate Nginx configuration
       run: |

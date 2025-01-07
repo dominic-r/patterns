@@ -66,11 +66,9 @@ jobs:
       run: |
         # Create a merged_waf_rules.conf file with a server block
         echo "server {" > merged_waf_rules.conf
-        grep -L "map " waf_rules/waf_patterns/nginx/*.conf >> merged_waf_rules.conf || true
-        echo "}" >> merged_waf_rules.conf
-
-        # Remove any extra closing braces
-        sed -i '/^\s*}\s*$/d' merged_waf_rules.conf
+        for file in $(grep -L "map " waf_rules/waf_patterns/nginx/*.conf); do
+          cat "$file" >> merged_waf_rules.conf
+        done
         echo "}" >> merged_waf_rules.conf
 
         echo "Contents of merged_waf_rules.conf:"

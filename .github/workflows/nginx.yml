@@ -59,8 +59,10 @@ jobs:
           echo "}" >> map_directives.conf
         fi
 
-        echo "First 40 lines of map_directives.conf:"
-        head -n 40 map_directives.conf
+        echo "First 10 lines of map_directives.conf:"
+        head -n 10 map_directives.conf
+        echo "Last 10 lines of map_directives.conf:"
+        tail -n 10 map_directives.conf
 
     - name: Merge WAF rules into a single file with a server block
       run: |
@@ -73,9 +75,10 @@ jobs:
         sed -i '/^\s*}\s*$/d' merged_waf_rules.conf
         echo "}" >> merged_waf_rules.conf
 
-        echo "Merged WAF rules into merged_waf_rules.conf"
-        echo "First 40 lines of merged_waf_rules.conf:"
-        head -n 40 merged_waf_rules.conf
+        echo "First 10 lines of merged_waf_rules.conf:"
+        head -n 10 merged_waf_rules.conf
+        echo "Last 10 lines of merged_waf_rules.conf:"
+        tail -n 10 merged_waf_rules.conf
 
     - name: Combine Nginx configuration
       run: |
@@ -89,18 +92,10 @@ jobs:
         echo "    include /etc/nginx/tests/nginx.conf;" >> temp_nginx.conf
         echo "}" >> temp_nginx.conf
 
-        echo "Combined Nginx configuration:"
-        echo "First 40 lines of temp_nginx.conf:"
-        head -n 40 temp_nginx.conf
-
-    - name: Debug all files
-      run: |
-        echo "Contents of map_directives.conf:"
-        cat map_directives.conf
-        echo "Contents of merged_waf_rules.conf:"
-        cat merged_waf_rules.conf
-        echo "Contents of temp_nginx.conf:"
-        cat temp_nginx.conf
+        echo "First 10 lines of temp_nginx.conf:"
+        head -n 10 temp_nginx.conf
+        echo "Last 10 lines of temp_nginx.conf:"
+        tail -n 10 temp_nginx.conf
 
     - name: Validate Nginx configuration using Docker
       run: |

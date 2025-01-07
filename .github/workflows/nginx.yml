@@ -48,24 +48,25 @@ jobs:
           exit 1
         fi
 
-    - name: Separate map directives from WAF rules
+    - name: Extract and format map directives
       run: |
-        # Extract map directives into a separate file
+        # Extract map directives and ensure they are properly formatted
         grep -h "map " waf_rules/waf_patterns/nginx/*.conf > map_directives.conf || true
         echo "Extracted map directives into map_directives.conf"
+        
+        # Add closing brace if missing
+        if ! grep -q "}" map_directives.conf; then
+          echo "}" >> map_directives.conf
+        fi
+
         echo "Contents of map_directives.conf:"
         cat map_directives.conf
-
-        # Remove map directives from the WAF rules
-        grep -L "map " waf_rules/waf_patterns/nginx/*.conf > waf_rules_without_map.conf || true
-        echo "WAF rules without map directives:"
-        cat waf_rules_without_map.conf
 
     - name: Merge WAF rules into a single file with a server block
       run: |
         # Create a merged_waf_rules.conf file with a server block
         echo "server {" > merged_waf_rules.conf
-        cat waf_rules_without_map.conf >> merged_waf_rules.conf
+        grep -L "map " waf_rules/waf_patterns/nginx/*.conf >> merged_waf_rules.conf || true
         echo "}" >> merged_waf_rules.conf
         echo "Merged WAF rules into merged_waf_rules.conf"
         echo "Contents of merged_waf_rules.conf:"

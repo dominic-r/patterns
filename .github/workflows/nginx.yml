@@ -1,0 +1,46 @@
+name: Test Nginx Configuration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-nginx-config:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run OWASP scraper
+      run: python owasp.py
+
+    - name: Convert OWASP rules to Nginx config
+      run: python owasp2nginx.py
+
+    - name: Install Nginx
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nginx
+
+    - name: Import Nginx config
+      run: python import2nginx.py
+
+    - name: Validate Nginx configuration
+      run: |
+        nginx -t -c /etc/nginx/nginx.conf

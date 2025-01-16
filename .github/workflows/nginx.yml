@@ -48,6 +48,28 @@ jobs:
           exit 1
         fi
 
+    - name: Validate individual WAF rule files
+      run: |
+        for file in waf_rules/waf_patterns/nginx/*.conf; do
+          echo "Validating $file..."
+          # Create a temporary nginx.conf file for validation
+          echo "events {" > temp_nginx.conf
+          echo "    worker_connections 1024;" >> temp_nginx.conf
+          echo "}" >> temp_nginx.conf
+          echo "http {" >> temp_nginx.conf
+          echo "    include /etc/nginx/$(basename $file);" >> temp_nginx.conf
+          echo "}" >> temp_nginx.conf
+
+          # Validate the file using Docker
+          docker run --rm -v $(pwd)/$file:/etc/nginx/$(basename $file):ro \
+                         -v $(pwd)/temp_nginx.conf:/etc/nginx/nginx.conf:ro \
+                         nginx nginx -t
+          if [ $? -ne 0 ]; then
+            echo "Error: Validation failed for $file"
+            exit 1
+          fi
+        done
+
     - name: Extract and format map directives
       run: |
         # Extract map directives and ensure they are properly formatted
@@ -68,7 +90,9 @@ jobs:
         echo "server {" > merged_waf_rules.conf
         for file in $(grep -L "map " waf_rules/waf_patterns/nginx/*.conf); do
           echo "Merging $file..."
+          # Ensure each file ends with a newline before appending
           cat "$file" >> merged_waf_rules.conf
+          echo "" >> merged_waf_rules.conf
         done
         echo "}" >> merged_waf_rules.conf
 

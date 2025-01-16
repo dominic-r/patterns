@@ -12,9 +12,22 @@ jobs:
   validate-waf-patterns:
     runs-on: ubuntu-latest
 
+    env:
+      NGINX_PORT: 8080
+      APACHE_PORT: 8081
+      HAPROXY_PORT: 8082
+      TRAEFIK_PORT: 8083
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Cache Docker setup
+      id: cache-docker
+      uses: actions/cache@v3
+      with:
+        path: /var/lib/docker
+        key: docker-setup-${{ runner.os }}
 
     - name: Set up Docker
       run: |
@@ -62,10 +75,10 @@ jobs:
         echo "Starting Nginx container..."
         sudo docker run -d \
           --name nginx-waf \
-          -p 8080:80 \
+          -p ${{ env.NGINX_PORT }}:80 \
           -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d \
           nginx:latest
-        echo "Nginx is running on port 8080."
+        echo "Nginx is running on port ${{ env.NGINX_PORT }}."
 
     - name: Check Nginx container logs
       run: |
@@ -89,10 +102,10 @@ jobs:
         echo "Starting Apache container..."
         sudo docker run -d \
           --name apache-waf \
-          -p 8081:80 \
+          -p ${{ env.APACHE_PORT }}:80 \
           -v $(pwd)/waf_patterns/apache:/usr/local/apache2/conf/extra \
           httpd:latest
-        echo "Apache is running on port 8081."
+        echo "Apache is running on port ${{ env.APACHE_PORT }}."
 
     - name: Check Apache container logs
       run: |
@@ -113,11 +126,11 @@ jobs:
           echo "    timeout client 30s" >> temp_haproxy.cfg
           echo "    timeout server 30s" >> temp_haproxy.cfg
           echo "frontend test" >> temp_haproxy.cfg
-          echo "    bind *:8082" >> temp_haproxy.cfg
+          echo "    bind *:${{ env.HAPROXY_PORT }}" >> temp_haproxy.cfg
           echo "    default_backend test_backend" >> temp_haproxy.cfg
           echo "    $(cat "$file")" >> temp_haproxy.cfg
           echo "backend test_backend" >> temp_haproxy.cfg
-          echo "    server s1 127.0.0.1:8080" >> temp_haproxy.cfg
+          echo "    server s1 127.0.0.1:${{ env.NGINX_PORT }}" >> temp_haproxy.cfg
 
           # Validate the file using haproxy -c
           sudo docker run --rm -v $(pwd)/temp_haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro haproxy haproxy -c -f /usr/local/etc/haproxy/haproxy.cfg
@@ -132,10 +145,10 @@ jobs:
         echo "Starting HAProxy container..."
         sudo docker run -d \
           --name haproxy-waf \
-          -p 8082:80 \
+          -p ${{ env.HAPROXY_PORT }}:80 \
           -v $(pwd)/waf_patterns/haproxy:/usr/local/etc/haproxy \
           haproxy:latest
-        echo "HAProxy is running on port 8082."
+        echo "HAProxy is running on port ${{ env.HAPROXY_PORT }}."
 
     - name: Check HAProxy container logs
       run: |
@@ -159,10 +172,10 @@ jobs:
         echo "Starting Traefik container..."
         sudo docker run -d \
           --name traefik-waf \
-          -p 8083:80 \
+          -p ${{ env.TRAEFIK_PORT }}:80 \
           -v $(pwd)/waf_patterns/traefik:/etc/traefik \
           traefik:latest
-        echo "Traefik is running on port 8083."
+        echo "Traefik is running on port ${{ env.TRAEFIK_PORT }}."
 
     - name: Check Traefik container logs
       run: |
@@ -173,59 +186,64 @@ jobs:
       run: |
         echo "Validating services are running..."
         # Check if Nginx is running
-        if ! curl -s http://localhost:8080 > /dev/null; then
+        if ! curl -s http://localhost:${{ env.NGINX_PORT }} > /dev/null; then
           echo "Error: Nginx is not running!"
+          sudo docker logs nginx-waf
           exit 1
         fi
         echo "Nginx is running successfully."
 
         # Check if Apache is running
-        if ! curl -s http://localhost:8081 > /dev/null; then
+        if ! curl -s http://localhost:${{ env.APACHE_PORT }} > /dev/null; then
           echo "Error: Apache is not running!"
+          sudo docker logs apache-waf
           exit 1
         fi
         echo "Apache is running successfully."
 
         # Check if HAProxy is running
-        if ! curl -s http://localhost:8082 > /dev/null; then
+        if ! curl -s http://localhost:${{ env.HAPROXY_PORT }} > /dev/null; then
           echo "Error: HAProxy is not running!"
+          sudo docker logs haproxy-waf
           exit 1
         fi
         echo "HAProxy is running successfully."
 
         # Check if Traefik is running
-        if ! curl -s http://localhost:8083 > /dev/null; then
+        if ! curl -s http://localhost:${{ env.TRAEFIK_PORT }} > /dev/null; then
           echo "Error: Traefik is not running!"
+          sudo docker logs traefik-waf
           exit 1
         fi
         echo "Traefik is running successfully."
 
-    - name: Test individual WAF rules
+    - name: Test WAF rules
       run: |
-        echo "Testing individual WAF rules..."
-        # Test Nginx rules
+        echo "Testing WAF rules..."
+        # Test Nginx WAF rules
         echo "Testing Nginx rules..."
-        curl -s http://localhost:8080/attack
-        curl -s http://localhost:8080/bots
+        curl -s http://localhost:${{ env.NGINX_PORT }}/attack
+        curl -s http://localhost:${{ env.NGINX_PORT }}/bots
 
-        # Test Apache rules
+        # Test Apache WAF rules
         echo "Testing Apache rules..."
-        curl -s http://localhost:8081/attack
-        curl -s http://localhost:8081/bots
+        curl -s http://localhost:${{ env.APACHE_PORT }}/attack
+        curl -s http://localhost:${{ env.APACHE_PORT }}/bots
 
-        # Test HAProxy rules
+        # Test HAProxy WAF rules
         echo "Testing HAProxy rules..."
-        curl -s http://localhost:8082/attack
-        curl -s http://localhost:8082/bots
+        curl -s http://localhost:${{ env.HAPROXY_PORT }}/attack
+        curl -s http://localhost:${{ env.HAPROXY_PORT }}/bots
 
-        # Test Traefik rules
+        # Test Traefik WAF rules
         echo "Testing Traefik rules..."
-        curl -s http://localhost:8083/attack
-        curl -s http://localhost:8083/bots
+        curl -s http://localhost:${{ env.TRAEFIK_PORT }}/attack
+        curl -s http://localhost:${{ env.TRAEFIK_PORT }}/bots
 
-    - name: Stop and remove containers
+    - name: Clean up containers
+      if: always()
       run: |
         echo "Stopping and removing containers..."
-        sudo docker stop nginx-waf apache-waf haproxy-waf traefik-waf
-        sudo docker rm nginx-waf apache-waf haproxy-waf traefik-waf
+        sudo docker stop nginx-waf apache-waf haproxy-waf traefik-waf || true
+        sudo docker rm nginx-waf apache-waf haproxy-waf traefik-waf || true
         echo "Containers stopped and removed."

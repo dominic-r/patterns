@@ -1,0 +1,133 @@
+name: Validate WAF Patterns and Configurations with Docker
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull request to main branch
+
+jobs:
+  validate-waf-patterns:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io
+        sudo systemctl start docker
+        sudo docker --version
+
+    - name: Pull Docker images
+      run: |
+        echo "Pulling Docker images..."
+        sudo docker pull nginx:latest
+        sudo docker pull httpd:latest
+        sudo docker pull haproxy:latest
+        sudo docker pull traefik:latest
+
+    - name: Start Nginx container with WAF rules
+      run: |
+        echo "Starting Nginx container..."
+        sudo docker run -d \
+          --name nginx-waf \
+          -p 8080:80 \
+          -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d \
+          nginx:latest
+        echo "Nginx is running on port 8080."
+
+    - name: Start Apache container with WAF rules
+      run: |
+        echo "Starting Apache container..."
+        sudo docker run -d \
+          --name apache-waf \
+          -p 8081:80 \
+          -v $(pwd)/waf_patterns/apache:/usr/local/apache2/conf/extra \
+          httpd:latest
+        echo "Apache is running on port 8081."
+
+    - name: Start HAProxy container with WAF rules
+      run: |
+        echo "Starting HAProxy container..."
+        sudo docker run -d \
+          --name haproxy-waf \
+          -p 8082:80 \
+          -v $(pwd)/waf_patterns/haproxy:/usr/local/etc/haproxy \
+          haproxy:latest
+        echo "HAProxy is running on port 8082."
+
+    - name: Start Traefik container with WAF rules
+      run: |
+        echo "Starting Traefik container..."
+        sudo docker run -d \
+          --name traefik-waf \
+          -p 8083:80 \
+          -v $(pwd)/waf_patterns/traefik:/etc/traefik \
+          traefik:latest
+        echo "Traefik is running on port 8083."
+
+    - name: Validate services are running
+      run: |
+        echo "Validating services are running..."
+        # Check if Nginx is running
+        if ! curl -s http://localhost:8080 > /dev/null; then
+          echo "Error: Nginx is not running!"
+          exit 1
+        fi
+        echo "Nginx is running successfully."
+
+        # Check if Apache is running
+        if ! curl -s http://localhost:8081 > /dev/null; then
+          echo "Error: Apache is not running!"
+          exit 1
+        fi
+        echo "Apache is running successfully."
+
+        # Check if HAProxy is running
+        if ! curl -s http://localhost:8082 > /dev/null; then
+          echo "Error: HAProxy is not running!"
+          exit 1
+        fi
+        echo "HAProxy is running successfully."
+
+        # Check if Traefik is running
+        if ! curl -s http://localhost:8083 > /dev/null; then
+          echo "Error: Traefik is not running!"
+          exit 1
+        fi
+        echo "Traefik is running successfully."
+
+    - name: Test individual WAF rules
+      run: |
+        echo "Testing individual WAF rules..."
+        # Test Nginx rules
+        echo "Testing Nginx rules..."
+        curl -s http://localhost:8080/attack
+        curl -s http://localhost:8080/bots
+
+        # Test Apache rules
+        echo "Testing Apache rules..."
+        curl -s http://localhost:8081/attack
+        curl -s http://localhost:8081/bots
+
+        # Test HAProxy rules
+        echo "Testing HAProxy rules..."
+        curl -s http://localhost:8082/attack
+        curl -s http://localhost:8082/bots
+
+        # Test Traefik rules
+        echo "Testing Traefik rules..."
+        curl -s http://localhost:8083/attack
+        curl -s http://localhost:8083/bots
+
+    - name: Stop and remove containers
+      run: |
+        echo "Stopping and removing containers..."
+        sudo docker stop nginx-waf apache-waf haproxy-waf traefik-waf
+        sudo docker rm nginx-waf apache-waf haproxy-waf traefik-waf
+        echo "Containers stopped and removed."

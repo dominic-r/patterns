@@ -11,9 +11,9 @@ logging.basicConfig(
 )
 
 # Constants (configurable via environment variables)
-WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/haproxy"))  # Source directory for WAF files
-HAPROXY_WAF_DIR = Path(os.getenv("HAPROXY_WAF_DIR", "/etc/haproxy/waf/"))  # Target directory
-HAPROXY_CONF = Path(os.getenv("HAPROXY_CONF", "/etc/haproxy/haproxy.cfg"))  # HAProxy config file
+WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/haproxy")).resolve()  # Source directory for WAF files
+HAPROXY_WAF_DIR = Path(os.getenv("HAPROXY_WAF_DIR", "/etc/haproxy/waf/")).resolve()  # Target directory
+HAPROXY_CONF = Path(os.getenv("HAPROXY_CONF", "/etc/haproxy/haproxy.cfg")).resolve()  # HAProxy config file
 
 # HAProxy WAF configuration snippet
 WAF_CONFIG_SNIPPET = """
@@ -31,6 +31,9 @@ frontend http-in
 def copy_waf_files():
     """
     Copy HAProxy WAF ACL files to the target directory.
+
+    Raises:
+        Exception: If there is an error copying files.
     """
     logging.info("Copying HAProxy WAF patterns...")
 
@@ -62,6 +65,9 @@ def copy_waf_files():
 def update_haproxy_conf():
     """
     Ensure the WAF configuration snippet is included in haproxy.cfg.
+
+    Raises:
+        Exception: If there is an error updating the HAProxy configuration.
     """
     logging.info("Ensuring WAF patterns are included in haproxy.cfg...")
 
@@ -86,6 +92,9 @@ def update_haproxy_conf():
 def reload_haproxy():
     """
     Reload HAProxy to apply the new WAF rules.
+
+    Raises:
+        Exception: If there is an error reloading HAProxy.
     """
     logging.info("Testing HAProxy configuration...")
 

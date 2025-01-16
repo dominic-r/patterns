@@ -2,6 +2,7 @@ import os
 import subprocess
 import logging
 from pathlib import Path
+import shutil
 
 # Configure logging
 logging.basicConfig(
@@ -11,15 +12,18 @@ logging.basicConfig(
 )
 
 # Constants (configurable via environment variables)
-WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/apache"))  # Source directory for WAF files
-APACHE_WAF_DIR = Path(os.getenv("APACHE_WAF_DIR", "/etc/modsecurity.d/"))  # Target directory
-APACHE_CONF = Path(os.getenv("APACHE_CONF", "/etc/apache2/apache2.conf"))  # Apache config file
+WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/apache")).resolve()  # Source directory for WAF files
+APACHE_WAF_DIR = Path(os.getenv("APACHE_WAF_DIR", "/etc/modsecurity.d/")).resolve()  # Target directory
+APACHE_CONF = Path(os.getenv("APACHE_CONF", "/etc/apache2/apache2.conf")).resolve()  # Apache config file
 INCLUDE_STATEMENT = "IncludeOptional /etc/modsecurity.d/*.conf"  # Include directive
 
 
 def copy_waf_files():
     """
     Copy Apache WAF configuration files to the target directory.
+
+    Raises:
+        Exception: If there is an error copying files.
     """
     logging.info("Copying Apache WAF patterns...")
 
@@ -50,6 +54,9 @@ def copy_waf_files():
 def update_apache_conf():
     """
     Ensure the WAF include statement is present in the Apache configuration file.
+
+    Raises:
+        Exception: If there is an error updating the Apache configuration.
     """
     logging.info("Ensuring WAF patterns are included in apache2.conf...")
 
@@ -74,6 +81,9 @@ def update_apache_conf():
 def reload_apache():
     """
     Reload Apache to apply the new WAF rules.
+
+    Raises:
+        Exception: If there is an error reloading Apache.
     """
     logging.info("Reloading Apache to apply new WAF rules...")
 

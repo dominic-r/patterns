@@ -3,6 +3,7 @@ import json
 import re
 import logging
 from pathlib import Path
+from typing import List, Dict, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -17,9 +18,20 @@ INPUT_FILE = Path(os.getenv("INPUT_FILE", "owasp_rules.json"))  # Input JSON fil
 
 UNSUPPORTED_PATTERNS = ["@pmFromFile", "!@eq", "!@within", "@lt", "@ge", "@gt", "@eq"]
 
-def load_owasp_rules(file_path):
+def load_owasp_rules(file_path: Path) -> List[Dict]:
     """
     Load OWASP rules from a JSON file.
+    
+    Args:
+        file_path (Path): Path to the JSON file containing OWASP rules.
+    
+    Returns:
+        List[Dict]: List of OWASP rules.
+    
+    Raises:
+        FileNotFoundError: If the input file is not found.
+        json.JSONDecodeError: If the JSON file is invalid.
+        Exception: For any other errors during file loading.
     """
     try:
         with open(file_path, "r") as f:
@@ -34,10 +46,15 @@ def load_owasp_rules(file_path):
         logging.error(f"[!] Error loading OWASP rules: {e}")
         raise
 
-
-def validate_regex(pattern):
+def validate_regex(pattern: str) -> bool:
     """
     Validate regex pattern for HAProxy.
+    
+    Args:
+        pattern (str): Regex pattern to validate.
+    
+    Returns:
+        bool: True if the regex is valid, False otherwise.
     """
     try:
         re.compile(pattern)
@@ -46,10 +63,15 @@ def validate_regex(pattern):
         logging.warning(f"[!] Invalid regex: {pattern} - {e}")
         return False
 
-
-def sanitize_pattern(pattern):
+def sanitize_pattern(pattern: str) -> Optional[str]:
     """
     Sanitize unsupported patterns and directives for HAProxy ACLs.
+    
+    Args:
+        pattern (str): The pattern to sanitize.
+    
+    Returns:
+        Optional[str]: The sanitized pattern, or None if the pattern is unsupported.
     """
     # Skip unsupported patterns
     if any(directive in pattern for directive in UNSUPPORTED_PATTERNS):
@@ -78,11 +100,15 @@ def sanitize_pattern(pattern):
 
     return pattern
 
-
-
-def generate_haproxy_conf(rules):
+def generate_haproxy_conf(rules: List[Dict]) -> None:
     """
     Generate HAProxy ACL rules from OWASP rules.
+    
+    Args:
+        rules (List[Dict]): List of OWASP rules.
+    
+    Raises:
+        Exception: If there is an error generating the HAProxy configuration.
     """
     try:
         # Ensure the output directory exists
@@ -118,8 +144,7 @@ def generate_haproxy_conf(rules):
         logging.error(f"[!] Error generating HAProxy configuration: {e}")
         raise
 
-
-def main():
+def main() -> None:
     """
     Main function to execute the script.
     """
@@ -134,7 +159,6 @@ def main():
     except Exception as e:
         logging.critical(f"[!] Script failed: {e}")
         exit(1)
-
 
 if __name__ == "__main__":
     main()

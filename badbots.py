@@ -24,10 +24,7 @@ OUTPUT_DIRS = {
 BOT_LIST_SOURCES = [
     "https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/_generator_lists/bad-user-agents.list",
     "https://raw.githubusercontent.com/JayBizzle/Crawler-Detect/master/raw/Crawlers.txt",
-    "https://raw.githubusercontent.com/piwik/referrer-spam-blacklist/master/spammers.txt",
-    "https://raw.githubusercontent.com/Stevie-Ray/referrer-spam-blocker/master/src/hosts.txt",
-    "https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/bad-user-agents.txt"
-]
+    "https://raw.githubusercontent.com/piwik/referrer-spam-blacklist/master/spammers.txt"]
 
 RATE_LIMIT_DELAY = 600
 RETRY_DELAY = 5

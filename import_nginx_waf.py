@@ -11,15 +11,18 @@ logging.basicConfig(
 )
 
 # Constants (configurable via environment variables)
-WAF_DIR = Path(os.getenv("WAF_DIR", "/tmp/waf_patterns/nginx"))  # Source directory for WAF files
-NGINX_WAF_DIR = Path(os.getenv("NGINX_WAF_DIR", "/etc/nginx/waf/"))  # Target directory
-NGINX_CONF = Path(os.getenv("NGINX_CONF", "/etc/nginx/nginx.conf"))  # Nginx config file
+WAF_DIR = Path(os.getenv("WAF_DIR", "/tmp/waf_patterns/nginx")).resolve()  # Source directory for WAF files
+NGINX_WAF_DIR = Path(os.getenv("NGINX_WAF_DIR", "/etc/nginx/waf/")).resolve()  # Target directory
+NGINX_CONF = Path(os.getenv("NGINX_CONF", "/etc/nginx/nginx.conf")).resolve()  # Nginx config file
 INCLUDE_STATEMENT = "include /etc/nginx/waf/*.conf;"  # Include directive
 
 
 def copy_waf_files():
     """
     Copy Nginx WAF configuration files to the target directory.
+
+    Raises:
+        Exception: If there is an error copying files.
     """
     logging.info("Copying Nginx WAF patterns...")
 
@@ -50,6 +53,9 @@ def copy_waf_files():
 def update_nginx_conf():
     """
     Ensure the WAF include statement is present in the Nginx configuration file.
+
+    Raises:
+        Exception: If there is an error updating the Nginx configuration.
     """
     logging.info("Ensuring WAF patterns are included in nginx.conf...")
 
@@ -74,6 +80,9 @@ def update_nginx_conf():
 def reload_nginx():
     """
     Reload Nginx to apply the new WAF rules.
+
+    Raises:
+        Exception: If there is an error reloading Nginx.
     """
     logging.info("Reloading Nginx to apply new WAF rules...")
 

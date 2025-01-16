@@ -1,8 +1,8 @@
 import os
 import subprocess
 import logging
-from pathlib import Path  # Better path handling
-import shutil  # Safer file operations
+from pathlib import Path
+import shutil
 
 # Configure logging
 logging.basicConfig(
@@ -12,15 +12,10 @@ logging.basicConfig(
 )
 
 # Constants (configurable via environment variables or command-line arguments)
-WAF_DIR = os.getenv("WAF_DIR", "waf_patterns/traefik")  # Source directory for WAF files
-TRAEFIK_WAF_DIR = os.getenv("TRAEFIK_WAF_DIR", "/etc/traefik/waf/")  # Target directory
-TRAEFIK_DYNAMIC_CONF = os.getenv("TRAEFIK_DYNAMIC_CONF", "/etc/traefik/dynamic_conf.toml")  # Dynamic config file
-INCLUDE_STATEMENT = '[[http.routers]]\n  rule = "PathPrefix(`/`)'  # Configuration to check/append
-
-# Ensure paths are absolute and normalized
-WAF_DIR = Path(WAF_DIR).resolve()
-TRAEFIK_WAF_DIR = Path(TRAEFIK_WAF_DIR).resolve()
-TRAEFIK_DYNAMIC_CONF = Path(TRAEFIK_DYNAMIC_CONF).resolve()
+WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/traefik")).resolve()  # Source directory for WAF files
+TRAEFIK_WAF_DIR = Path(os.getenv("TRAEFIK_WAF_DIR", "/etc/traefik/waf/")).resolve()  # Target directory
+TRAEFIK_DYNAMIC_CONF = Path(os.getenv("TRAEFIK_DYNAMIC_CONF", "/etc/traefik/dynamic_conf.toml")).resolve()  # Dynamic config file
+INCLUDE_STATEMENT = 'middlewares = ["bad_bot_block"]'  # Configuration to check/append
 
 
 def copy_waf_files():
@@ -72,10 +67,10 @@ def update_traefik_conf():
             logging.info("Adding WAF middleware to dynamic_conf.toml...")
             with TRAEFIK_DYNAMIC_CONF.open("a") as f:
                 f.write(
-                    f'\n[[http.routers]]\n'
+                    f'\n[http.routers.my_router]\n'
                     f'  rule = "PathPrefix(`/`)"\n'
-                    f'  service = "traefik"\n'
-                    f'  middlewares = ["bad_bot_block"]\n'
+                    f'  service = "my_service"\n'
+                    f'  {INCLUDE_STATEMENT}\n'
                 )
             logging.info("[+] WAF middleware added to dynamic_conf.toml.")
         else:

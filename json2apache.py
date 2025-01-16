@@ -4,6 +4,7 @@ import re
 from collections import defaultdict
 import logging
 from pathlib import Path
+from typing import List, Dict, Set, Tuple, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -24,12 +25,24 @@ MODSEC_RULE_TEMPLATE = (
     'SecRule REQUEST_URI "{pattern}" "id:{rule_id},phase:1,deny,status:403,log,msg:\'{category} attack detected\'"\n'
 )
 
+# Unsupported patterns for ModSecurity
 UNSUPPORTED_PATTERNS = ["@pmFromFile", "!@eq", "!@within", "@lt"]
 
 
-def load_owasp_rules(file_path):
+def load_owasp_rules(file_path: Path) -> List[Dict]:
     """
     Load OWASP rules from a JSON file.
+
+    Args:
+        file_path (Path): Path to the JSON file containing OWASP rules.
+
+    Returns:
+        List[Dict]: List of OWASP rules.
+
+    Raises:
+        FileNotFoundError: If the input file is not found.
+        json.JSONDecodeError: If the JSON file is invalid.
+        Exception: For any other errors during file loading.
     """
     try:
         with open(file_path, "r") as f:
@@ -45,9 +58,15 @@ def load_owasp_rules(file_path):
         raise
 
 
-def validate_regex(pattern):
+def validate_regex(pattern: str) -> bool:
     """
     Validate regex pattern to ensure it is compatible with ModSecurity.
+
+    Args:
+        pattern (str): Regex pattern to validate.
+
+    Returns:
+        bool: True if the regex is valid, False otherwise.
     """
     try:
         re.compile(pattern)
@@ -57,10 +76,17 @@ def validate_regex(pattern):
         return False
 
 
-def sanitize_pattern(pattern):
+def sanitize_pattern(pattern: str) -> Optional[str]:
     """
     Sanitize unsupported patterns and directives for ModSecurity.
+
+    Args:
+        pattern (str): The pattern to sanitize.
+
+    Returns:
+        Optional[str]: The sanitized pattern, or None if the pattern is unsupported.
     """
+    # Skip unsupported patterns
     if any(directive in pattern for directive in UNSUPPORTED_PATTERNS):
         logging.warning(f"[!] Skipping unsupported pattern: {pattern}")
         return None
@@ -72,11 +98,17 @@ def sanitize_pattern(pattern):
     return pattern
 
 
-def generate_apache_waf(rules):
+def generate_apache_waf(rules: List[Dict]) -> None:
     """
     Generate Apache ModSecurity configuration files from OWASP rules.
+
+    Args:
+        rules (List[Dict]): List of OWASP rules.
+
+    Raises:
+        IOError: If there is an error writing to the output files.
     """
-    categorized_rules = defaultdict(set)
+    categorized_rules: Dict[str, Set[Tuple[str, int]]] = defaultdict(set)
     rule_id_counter = 1000  # Starting rule ID
 
     # Group rules by category and ensure deduplication
@@ -117,7 +149,7 @@ def generate_apache_waf(rules):
             raise
 
 
-def main():
+def main() -> None:
     """
     Main function to execute the script.
     """

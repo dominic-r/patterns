@@ -44,32 +44,21 @@ jobs:
     - name: Patch .conf files to fix directives
       run: |
         for file in waf_rules/waf_patterns/nginx/*.conf; do
-          echo "Patching $file to ensure proper context for 'map' and 'if' directives..."
+          echo "Patching $file to ensure proper context for directives..."
           # Create a temporary file for the patched content
           temp_file=$(mktemp)
 
-          # Add http block if not present
-          if ! grep -q "http {" "$file"; then
-            echo "Adding http block to $file..."
-            echo "http {" >> "$temp_file"
+          # Remove any existing http or server blocks
+          grep -v "http {" "$file" | grep -v "server {" > "$temp_file"
+
+          # Add server block if 'if' directive is present
+          if grep -q "if " "$temp_file"; then
+            echo "Adding server block to $file for 'if' directives..."
+            echo "server {" >> "$temp_file"
             cat "$file" >> "$temp_file"
             echo "}" >> "$temp_file"
           else
             cat "$file" >> "$temp_file"
-          fi
-
-          # Add server block if not present
-          if ! grep -q "server {" "$temp_file"; then
-            echo "Adding server block to $file..."
-            sed -i '/http {/a \    server {' "$temp_file"
-            sed -i '/^}/i \    }' "$temp_file"
-          fi
-
-          # Add location block for 'if' directives if not present
-          if grep -q "if " "$temp_file" && ! grep -q "location / {" "$temp_file"; then
-            echo "Adding location block to $file for 'if' directives..."
-            sed -i '/server {/a \        location / {' "$temp_file"
-            sed -i '/^}/i \        }' "$temp_file"
           fi
 
           # Replace the original file with the patched content
@@ -111,11 +100,38 @@ jobs:
           fi
         done
 
-    - name: Validate Nginx configuration using Docker
+    - name: Merge all WAF rules into a single file
       run: |
-        # Copy the map directives, merged WAF rules, and nginx.conf to a Docker volume
-        docker run --rm -v $(pwd)/map_directives.conf:/etc/nginx/map_directives.conf:ro \
-                       -v $(pwd)/merged_waf_rules.conf:/etc/nginx/merged_waf_rules.conf:ro \
-                       -v $(pwd)/tests/nginx.conf:/etc/nginx/tests/nginx.conf:ro \
+        echo "Merging all WAF rules into a single file..."
+        echo "http {" > merged_waf_rules.conf
+        for file in waf_rules/waf_patterns/nginx/*.conf; do
+          echo "Merging $file..."
+          cat "$file" >> merged_waf_rules.conf
+          echo "" >> merged_waf_rules.conf
+        done
+        echo "}" >> merged_waf_rules.conf
+
+        echo "Contents of merged_waf_rules.conf:"
+        cat merged_waf_rules.conf
+
+    - name: Validate merged WAF rules
+      run: |
+        echo "Validating merged WAF rules..."
+        # Create a temporary nginx.conf file for validation
+        echo "events {" > temp_nginx.conf
+        echo "    worker_connections 1024;" >> temp_nginx.conf
+        echo "}" >> temp_nginx.conf
+        cat merged_waf_rules.conf >> temp_nginx.conf
+
+        # Debug: Print the temporary nginx.conf
+        echo "Temporary nginx.conf for validation:"
+        cat temp_nginx.conf
+
+        # Validate the merged file using Docker
+        docker run --rm -v $(pwd)/merged_waf_rules.conf:/etc/nginx/merged_waf_rules.conf:ro \
                        -v $(pwd)/temp_nginx.conf:/etc/nginx/nginx.conf:ro \
                        nginx nginx -t
+        if [ $? -ne 0 ]; then
+          echo "Error: Validation failed for merged WAF rules"
+          exit 1
+        fi

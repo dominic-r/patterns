@@ -41,21 +41,6 @@ jobs:
           exit 1
         fi
 
-    - name: Patch .conf files to fix if directives
-      run: |
-        for file in waf_rules/waf_patterns/nginx/*.conf; do
-          echo "Patching $file to ensure 'if' directives are inside a server block..."
-          if grep -q "if " "$file" && ! grep -q "server {" "$file"; then
-            echo "Adding server block to $file..."
-            echo "server {" > temp.conf
-            cat "$file" >> temp.conf
-            echo "}" >> temp.conf
-            mv temp.conf "$file"
-          fi
-        done
-        echo "Patched files:"
-        ls -l waf_rules/waf_patterns/nginx/*.conf
-
     - name: Verify nginx.conf exists
       run: |
         if [ ! -f "tests/nginx.conf" ]; then
@@ -74,6 +59,10 @@ jobs:
           echo "http {" >> temp_nginx.conf
           echo "    include /etc/nginx/$(basename $file);" >> temp_nginx.conf
           echo "}" >> temp_nginx.conf
+
+          # Debug: Print the temporary nginx.conf
+          echo "Temporary nginx.conf for validation:"
+          cat temp_nginx.conf
 
           # Validate the file using Docker
           docker run --rm -v $(pwd)/$file:/etc/nginx/$(basename $file):ro \

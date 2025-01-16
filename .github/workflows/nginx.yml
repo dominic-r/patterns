@@ -1,4 +1,4 @@
-name: Validate Nginx Configuration
+name: Validate Nginx Configuration with WAF Rules
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main  # Trigger on pull request to main branch
 
 jobs:
-  validate-nginx:
+  validate-nginx-configuration:
     runs-on: ubuntu-latest
 
     steps:

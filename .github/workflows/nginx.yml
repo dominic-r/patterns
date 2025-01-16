@@ -41,63 +41,27 @@ jobs:
           exit 1
         fi
 
-    - name: Patch .conf files to fix directives
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install crossplane
       run: |
-        for file in waf_rules/waf_patterns/nginx/*.conf; do
-          echo "Patching $file to ensure proper context for directives..."
-          # Create a temporary file for the patched content
-          temp_file=$(mktemp)
-
-          # Remove any existing http or server blocks
-          grep -v "http {" "$file" | grep -v "server {" > "$temp_file"
-
-          # Add server block if 'if' directive is present
-          if grep -q "if " "$temp_file"; then
-            echo "Adding server block to $file for 'if' directives..."
-            echo "server {" >> "$temp_file"
-            cat "$file" >> "$temp_file"
-            echo "}" >> "$temp_file"
-          else
-            cat "$file" >> "$temp_file"
-          fi
-
-          # Replace the original file with the patched content
-          mv "$temp_file" "$file"
-          echo "Patched $file:"
-          cat "$file"
-        done
-
-    - name: Verify nginx.conf exists
-      run: |
-        if [ ! -f "tests/nginx.conf" ]; then
-          echo "Error: tests/nginx.conf not found in the repository!"
-          exit 1
-        fi
+        python -m pip install --upgrade pip
+        pip install crossplane
 
     - name: Validate individual WAF rule files
       run: |
         for file in waf_rules/waf_patterns/nginx/*.conf; do
           echo "Validating $file..."
-          # Create a temporary nginx.conf file for validation
-          echo "events {" > temp_nginx.conf
-          echo "    worker_connections 1024;" >> temp_nginx.conf
-          echo "}" >> temp_nginx.conf
-          echo "http {" >> temp_nginx.conf
-          echo "    include /etc/nginx/$(basename $file);" >> temp_nginx.conf
-          echo "}" >> temp_nginx.conf
-
-          # Debug: Print the temporary nginx.conf
-          echo "Temporary nginx.conf for validation:"
-          cat temp_nginx.conf
-
-          # Validate the file using Docker
-          docker run --rm -v $(pwd)/$file:/etc/nginx/$(basename $file):ro \
-                         -v $(pwd)/temp_nginx.conf:/etc/nginx/nginx.conf:ro \
-                         nginx nginx -t
-          if [ $? -ne 0 ]; then
+          # Use crossplane to parse and validate the file
+          if ! crossplane parse "$file" > /dev/null; then
             echo "Error: Validation failed for $file"
+            crossplane parse "$file"  # Print detailed error
             exit 1
           fi
+          echo "Validation successful for $file"
         done
 
     - name: Merge all WAF rules into a single file
@@ -117,21 +81,10 @@ jobs:
     - name: Validate merged WAF rules
       run: |
         echo "Validating merged WAF rules..."
-        # Create a temporary nginx.conf file for validation
-        echo "events {" > temp_nginx.conf
-        echo "    worker_connections 1024;" >> temp_nginx.conf
-        echo "}" >> temp_nginx.conf
-        cat merged_waf_rules.conf >> temp_nginx.conf
-
-        # Debug: Print the temporary nginx.conf
-        echo "Temporary nginx.conf for validation:"
-        cat temp_nginx.conf
-
-        # Validate the merged file using Docker
-        docker run --rm -v $(pwd)/merged_waf_rules.conf:/etc/nginx/merged_waf_rules.conf:ro \
-                       -v $(pwd)/temp_nginx.conf:/etc/nginx/nginx.conf:ro \
-                       nginx nginx -t
-        if [ $? -ne 0 ]; then
-          echo "Error: Validation failed for merged WAF rules"
+        # Use crossplane to parse and validate the merged file
+        if ! crossplane parse merged_waf_rules.conf > /dev/null; then
+          echo "Error: Validation failed for merged_waf_rules.conf"
+          crossplane parse merged_waf_rules.conf  # Print detailed error
           exit 1
         fi
+        echo "Validation successful for merged_waf_rules.conf"

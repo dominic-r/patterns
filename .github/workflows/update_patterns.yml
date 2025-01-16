@@ -38,27 +38,27 @@ jobs:
 
     - name: 🕷️ Run OWASP Scraper
       run: |
-        python owasp.py
+        python owasp2json.py
       continue-on-error: false
 
     - name: 🔄 Convert OWASP to Nginx WAF
       run: |
-        python owasp2nginx.py
+        python json2nginx.py
       continue-on-error: false
 
     - name: 🔄 Convert OWASP to Apache WAF
       run: |
-        python owasp2apache.py
+        python json2apache.py
       continue-on-error: false
 
     - name: 🔄 Convert OWASP to Traefik WAF
       run: |
-        python owasp2traefik.py
+        python json2traefik.py
       continue-on-error: false
 
     - name: 🔄 Convert OWASP to HAProxy WAF
       run: |
-        python owasp2haproxy.py
+        python json2haproxy.py
       continue-on-error: false
       
     - name: 🔄 Generate Bad Bot Blockers

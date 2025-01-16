@@ -52,7 +52,7 @@ def sanitize_pattern(pattern):
 def generate_nginx_waf(rules):
     categorized_rules = defaultdict(set)
 
-    # Group rules by category without filtering any categories
+    # Group rules by category
     for rule in rules:
         category = rule.get("category", "generic").lower()
         pattern = rule.get("pattern")
@@ -63,29 +63,42 @@ def generate_nginx_waf(rules):
         else:
             logging.warning(f"Invalid or unsupported pattern skipped: {pattern}")
 
-    # Write Nginx configuration per category
+    # Write Nginx rule snippets per category
     for category, patterns in categorized_rules.items():
         output_file = OUTPUT_DIR / f"{category}.conf"
         try:
             with open(output_file, "w") as f:
                 f.write(f"# Nginx WAF rules for {category.upper()}\n")
-                f.write("location / {\n")
-                f.write("    set $attack_detected 0;\n\n")
+                f.write("# Include this file in your server or location block.\n\n")
                 
                 for pattern in patterns:
                     escaped_pattern = pattern.replace('"', '\\"')
-                    f.write(f'    if ($request_uri ~* "{escaped_pattern}") {{\n')
-                    f.write("        set $attack_detected 1;\n")
-                    f.write("    }\n\n")
-
-                f.write("    if ($attack_detected = 1) {\n")
-                f.write("        return 403;\n")
-                f.write("    }\n")
-                f.write("}\n")
+                    f.write(f'if ($request_uri ~* "{escaped_pattern}") {{\n')
+                    f.write("    return 403;\n")
+                    f.write("}\n\n")
 
             logging.info(f"Generated {output_file} ({len(patterns)} patterns)")
         except IOError as e:
             logging.error(f"Failed to write {output_file}: {e}")
+
+    # Generate a README file with usage instructions
+    readme_file = OUTPUT_DIR / "README.md"
+    with open(readme_file, "w") as f:
+        f.write("# Nginx WAF Rule Snippets\n\n")
+        f.write("This directory contains Nginx WAF rule snippets generated from OWASP rules.\n")
+        f.write("You can include these snippets in your existing Nginx configuration to enhance security.\n\n")
+        f.write("## Usage\n")
+        f.write("1. Include the rule snippets in your `server` or `location` block:\n")
+        f.write("   ```nginx\n")
+        f.write("   server {\n")
+        f.write("       # Your existing configuration\n")
+        f.write("       include /path/to/waf_patterns/nginx/*.conf;\n")
+        f.write("   }\n")
+        f.write("   ```\n")
+        f.write("2. Reload Nginx to apply the changes:\n")
+        f.write("   ```bash\n")
+        f.write("   sudo nginx -t && sudo systemctl reload nginx\n")
+        f.write("   ```\n")
 
 
 def main():

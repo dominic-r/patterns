@@ -45,6 +45,18 @@ jobs:
         sudo docker pull haproxy:latest
         sudo docker pull traefik:latest
 
+    - name: Validate Nginx configuration
+      run: |
+        echo "Validating Nginx configuration..."
+        for file in waf_patterns/nginx/*.conf; do
+          echo "Validating $file..."
+          sudo docker run --rm -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d:ro nginx nginx -t
+          if [ $? -ne 0 ]; then
+            echo "Error: Validation failed for $file"
+            exit 1
+          fi
+        done
+
     - name: Start Nginx container with WAF rules
       run: |
         echo "Starting Nginx container..."
@@ -54,6 +66,23 @@ jobs:
           -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d \
           nginx:latest
         echo "Nginx is running on port 8080."
+
+    - name: Check Nginx container logs
+      run: |
+        echo "Checking Nginx container logs..."
+        sudo docker logs nginx-waf
+
+    - name: Validate Apache configuration
+      run: |
+        echo "Validating Apache configuration..."
+        for file in waf_patterns/apache/*.conf; do
+          echo "Validating $file..."
+          sudo docker run --rm -v $(pwd)/waf_patterns/apache:/usr/local/apache2/conf/extra:ro httpd httpd -t
+          if [ $? -ne 0 ]; then
+            echo "Error: Validation failed for $file"
+            exit 1
+          fi
+        done
 
     - name: Start Apache container with WAF rules
       run: |
@@ -65,6 +94,39 @@ jobs:
           httpd:latest
         echo "Apache is running on port 8081."
 
+    - name: Check Apache container logs
+      run: |
+        echo "Checking Apache container logs..."
+        sudo docker logs apache-waf
+
+    - name: Validate HAProxy configuration
+      run: |
+        echo "Validating HAProxy configuration..."
+        for file in waf_patterns/haproxy/*.acl; do
+          echo "Validating $file..."
+          # Create a temporary haproxy.cfg file to include the ACL
+          echo "global" > temp_haproxy.cfg
+          echo "    log stdout format raw local0" >> temp_haproxy.cfg
+          echo "defaults" >> temp_haproxy.cfg
+          echo "    log global" >> temp_haproxy.cfg
+          echo "    timeout connect 10s" >> temp_haproxy.cfg
+          echo "    timeout client 30s" >> temp_haproxy.cfg
+          echo "    timeout server 30s" >> temp_haproxy.cfg
+          echo "frontend test" >> temp_haproxy.cfg
+          echo "    bind *:8082" >> temp_haproxy.cfg
+          echo "    default_backend test_backend" >> temp_haproxy.cfg
+          echo "    $(cat "$file")" >> temp_haproxy.cfg
+          echo "backend test_backend" >> temp_haproxy.cfg
+          echo "    server s1 127.0.0.1:8080" >> temp_haproxy.cfg
+
+          # Validate the file using haproxy -c
+          sudo docker run --rm -v $(pwd)/temp_haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro haproxy haproxy -c -f /usr/local/etc/haproxy/haproxy.cfg
+          if [ $? -ne 0 ]; then
+            echo "Error: Validation failed for $file"
+            exit 1
+          fi
+        done
+
     - name: Start HAProxy container with WAF rules
       run: |
         echo "Starting HAProxy container..."
@@ -75,6 +137,23 @@ jobs:
           haproxy:latest
         echo "HAProxy is running on port 8082."
 
+    - name: Check HAProxy container logs
+      run: |
+        echo "Checking HAProxy container logs..."
+        sudo docker logs haproxy-waf
+
+    - name: Validate Traefik configuration
+      run: |
+        echo "Validating Traefik configuration..."
+        for file in waf_patterns/traefik/*.toml; do
+          echo "Validating $file..."
+          sudo docker run --rm -v $(pwd)/waf_patterns/traefik:/etc/traefik:ro traefik traefik validate --configFile=/etc/traefik/$(basename "$file")
+          if [ $? -ne 0 ]; then
+            echo "Error: Validation failed for $file"
+            exit 1
+          fi
+        done
+
     - name: Start Traefik container with WAF rules
       run: |
         echo "Starting Traefik container..."
@@ -84,6 +163,11 @@ jobs:
           -v $(pwd)/waf_patterns/traefik:/etc/traefik \
           traefik:latest
         echo "Traefik is running on port 8083."
+
+    - name: Check Traefik container logs
+      run: |
+        echo "Checking Traefik container logs..."
+        sudo docker logs traefik-waf
 
     - name: Validate services are running
       run: |

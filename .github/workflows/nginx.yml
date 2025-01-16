@@ -41,6 +41,43 @@ jobs:
           exit 1
         fi
 
+    - name: Patch .conf files to fix directives
+      run: |
+        for file in waf_rules/waf_patterns/nginx/*.conf; do
+          echo "Patching $file to ensure proper context for 'map' and 'if' directives..."
+          # Create a temporary file for the patched content
+          temp_file=$(mktemp)
+
+          # Add http block if not present
+          if ! grep -q "http {" "$file"; then
+            echo "Adding http block to $file..."
+            echo "http {" >> "$temp_file"
+            cat "$file" >> "$temp_file"
+            echo "}" >> "$temp_file"
+          else
+            cat "$file" >> "$temp_file"
+          fi
+
+          # Add server block if not present
+          if ! grep -q "server {" "$temp_file"; then
+            echo "Adding server block to $file..."
+            sed -i '/http {/a \    server {' "$temp_file"
+            sed -i '/^}/i \    }' "$temp_file"
+          fi
+
+          # Add location block for 'if' directives if not present
+          if grep -q "if " "$temp_file" && ! grep -q "location / {" "$temp_file"; then
+            echo "Adding location block to $file for 'if' directives..."
+            sed -i '/server {/a \        location / {' "$temp_file"
+            sed -i '/^}/i \        }' "$temp_file"
+          fi
+
+          # Replace the original file with the patched content
+          mv "$temp_file" "$file"
+          echo "Patched $file:"
+          cat "$file"
+        done
+
     - name: Verify nginx.conf exists
       run: |
         if [ ! -f "tests/nginx.conf" ]; then

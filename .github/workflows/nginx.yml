@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - main  # Trigger on pull request to main branch
-  workflow_dispatch:
 
 jobs:
   validate-nginx-configuration:
@@ -42,6 +41,21 @@ jobs:
           exit 1
         fi
 
+    - name: Patch .conf files to fix if directives
+      run: |
+        for file in waf_rules/waf_patterns/nginx/*.conf; do
+          echo "Patching $file to ensure 'if' directives are inside a server block..."
+          if grep -q "if " "$file" && ! grep -q "server {" "$file"; then
+            echo "Adding server block to $file..."
+            echo "server {" > temp.conf
+            cat "$file" >> temp.conf
+            echo "}" >> temp.conf
+            mv temp.conf "$file"
+          fi
+        done
+        echo "Patched files:"
+        ls -l waf_rules/waf_patterns/nginx/*.conf
+
     - name: Verify nginx.conf exists
       run: |
         if [ ! -f "tests/nginx.conf" ]; then
@@ -70,63 +84,6 @@ jobs:
             exit 1
           fi
         done
-
-    - name: Extract and format map directives
-      run: |
-        # Extract map directives and ensure they are properly formatted
-        grep -h "map " waf_rules/waf_patterns/nginx/*.conf > map_directives.conf || true
-        echo "Extracted map directives into map_directives.conf"
-        
-        # Add closing brace if missing
-        if ! grep -q "}" map_directives.conf; then
-          echo "}" >> map_directives.conf
-        fi
-
-        echo "Contents of map_directives.conf:"
-        cat map_directives.conf
-
-    - name: Merge WAF rules into a single file with a server block
-      run: |
-        # Create a merged_waf_rules.conf file with a server block
-        echo "server {" > merged_waf_rules.conf
-        for file in $(grep -L "map " waf_rules/waf_patterns/nginx/*.conf); do
-          echo "Merging $file..."
-          # Ensure each file ends with a newline before appending
-          cat "$file" >> merged_waf_rules.conf
-          echo "" >> merged_waf_rules.conf
-        done
-        echo "}" >> merged_waf_rules.conf
-
-        echo "Contents of merged_waf_rules.conf:"
-        cat merged_waf_rules.conf
-
-        # Debug: Print the problematic line (line 1162)
-        echo "Debugging line 1162 of merged_waf_rules.conf:"
-        sed -n '1162p' merged_waf_rules.conf
-
-    - name: Combine Nginx configuration
-      run: |
-        # Create a temporary nginx.conf file that includes the map directives and merged WAF rules
-        echo "events {" > temp_nginx.conf
-        echo "    worker_connections 1024;" >> temp_nginx.conf
-        echo "}" >> temp_nginx.conf
-        echo "http {" >> temp_nginx.conf
-        echo "    include /etc/nginx/map_directives.conf;" >> temp_nginx.conf
-        echo "    include /etc/nginx/merged_waf_rules.conf;" >> temp_nginx.conf
-        echo "    include /etc/nginx/tests/nginx.conf;" >> temp_nginx.conf
-        echo "}" >> temp_nginx.conf
-
-        echo "Contents of temp_nginx.conf:"
-        cat temp_nginx.conf
-
-    - name: Debug included files
-      run: |
-        echo "Contents of map_directives.conf:"
-        cat map_directives.conf
-        echo "Contents of merged_waf_rules.conf:"
-        cat merged_waf_rules.conf
-        echo "Contents of tests/nginx.conf:"
-        cat tests/nginx.conf
 
     - name: Validate Nginx configuration using Docker
       run: |

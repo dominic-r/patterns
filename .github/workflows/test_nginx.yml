@@ -1,4 +1,4 @@
-name: Validate Nginx Configuration with WAF Rules
+name: Nginx patterns validation
 
 on:
   push:

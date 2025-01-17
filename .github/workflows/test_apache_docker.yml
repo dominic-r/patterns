@@ -1,4 +1,4 @@
-name: Validate WAF Patterns for Apache with Docker
+name: Apache with Docker patterns validation
 
 on:
   push:

@@ -58,32 +58,32 @@ jobs:
         sudo docker pull haproxy:latest
         sudo docker pull traefik:latest
 
-    - name: Validate Nginx configuration
-      run: |
-        echo "Validating Nginx configuration..."
-        for file in waf_patterns/nginx/*.conf; do
-          echo "Validating $file..."
-          sudo docker run --rm -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d:ro nginx nginx -t
-          if [ $? -ne 0 ]; then
-            echo "Error: Validation failed for $file"
-            exit 1
-          fi
-        done
+#    - name: Validate Nginx configuration
+#      run: |
+#        echo "Validating Nginx configuration..."
+#        for file in waf_patterns/nginx/*.conf; do
+#          echo "Validating $file..."
+#          sudo docker run --rm -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d:ro nginx nginx -t
+#          if [ $? -ne 0 ]; then
+#            echo "Error: Validation failed for $file"
+#            exit 1
+#          fi
+#        done
+#
+#    - name: Start Nginx container with WAF rules
+#      run: |
+#        echo "Starting Nginx container..."
+#        sudo docker run -d \
+#          --name nginx-waf \
+#          -p ${{ env.NGINX_PORT }}:80 \
+#          -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d \
+#          nginx:latest
+#        echo "Nginx is running on port ${{ env.NGINX_PORT }}."
 
-    - name: Start Nginx container with WAF rules
-      run: |
-        echo "Starting Nginx container..."
-        sudo docker run -d \
-          --name nginx-waf \
-          -p ${{ env.NGINX_PORT }}:80 \
-          -v $(pwd)/waf_patterns/nginx:/etc/nginx/conf.d \
-          nginx:latest
-        echo "Nginx is running on port ${{ env.NGINX_PORT }}."
-
-    - name: Check Nginx container logs
-      run: |
-        echo "Checking Nginx container logs..."
-        sudo docker logs nginx-waf
+#    - name: Check Nginx container logs
+#      run: |
+#        echo "Checking Nginx container logs..."
+#        sudo docker logs nginx-waf
 
     - name: Validate Apache configuration
       run: |

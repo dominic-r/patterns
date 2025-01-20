@@ -962,6 +962,11 @@ acl bad_bot hdr_sub(User-Agent) -i SemanticJuice
 acl bad_bot hdr_sub(User-Agent) -i Semiocast HTTP client
 acl bad_bot hdr_sub(User-Agent) -i Semrush
 acl bad_bot hdr_sub(User-Agent) -i SemrushBot
+acl bad_bot hdr_sub(User-Agent) -i SemrushBot-BA
+acl bad_bot hdr_sub(User-Agent) -i SemrushBot-FT
+acl bad_bot hdr_sub(User-Agent) -i SemrushBot-OCOB
+acl bad_bot hdr_sub(User-Agent) -i SemrushBot-SI
+acl bad_bot hdr_sub(User-Agent) -i SemrushBot-SWA
 acl bad_bot hdr_sub(User-Agent) -i Sendsay\.Ru
 acl bad_bot hdr_sub(User-Agent) -i SentiBot
 acl bad_bot hdr_sub(User-Agent) -i SenutoBot
@@ -986,6 +991,7 @@ acl bad_bot hdr_sub(User-Agent) -i Siphon
 acl bad_bot hdr_sub(User-Agent) -i Site Sucker
 acl bad_bot hdr_sub(User-Agent) -i Site-Shot\/
 acl bad_bot hdr_sub(User-Agent) -i Site24x7
+acl bad_bot hdr_sub(User-Agent) -i SiteAuditBot
 acl bad_bot hdr_sub(User-Agent) -i SiteBar
 acl bad_bot hdr_sub(User-Agent) -i SiteCheckerBotCrawler
 acl bad_bot hdr_sub(User-Agent) -i SiteCondor
@@ -1035,6 +1041,7 @@ acl bad_bot hdr_sub(User-Agent) -i SpeedKit
 acl bad_bot hdr_sub(User-Agent) -i Spider_Bot
 acl bad_bot hdr_sub(User-Agent) -i Spider_Bot/3.0
 acl bad_bot hdr_sub(User-Agent) -i Spinn3r
+acl bad_bot hdr_sub(User-Agent) -i SplitSignalBot
 acl bad_bot hdr_sub(User-Agent) -i Sprinklr 
 acl bad_bot hdr_sub(User-Agent) -i SputnikBot
 acl bad_bot hdr_sub(User-Agent) -i Sqlmap

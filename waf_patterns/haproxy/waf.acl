@@ -1,43 +1,265 @@
 # HAProxy WAF ACL rules
 
-acl block_sql hdr_sub(User-Agent) -i (?i:JET Database Engine|Access Database Engine|[Microsoft][ODBC Microsoft Access Driver])
-http-request deny if block_sql
+acl block_initialization hdr_sub(User-Agent) -i ^\.*$
+http-request deny if block_initialization
 
-acl block_sql hdr_sub(User-Agent) -i (?i:ORA-[0-9][0-9][0-9][0-9]|java.sql.SQLException|Oracle error|Oracle\.*Driver|Warning\.*oci_\.*|Warning\.*ora_\.*)
-http-request deny if block_sql
+acl block_initialization hdr_sub(User-Agent) -i !(URLENCODED|MULTIPART|XML|JSON)
+http-request deny if block_initialization
 
-acl block_sql hdr_sub(User-Agent) -i (?i:[DM_QUERY_E_SYNTAX]|has occurred in the vicinity of:)
-http-request deny if block_sql
+acl block_initialization hdr_sub(User-Agent) -i ^[a-f]*([0-9])[a-f]*([0-9])
+http-request deny if block_initialization
 
-acl block_sql hdr_sub(User-Agent) -i Dynamic SQL Error
-http-request deny if block_sql
+acl block_exceptions hdr_sub(User-Agent) -i @streq GET /
+http-request deny if block_exceptions
 
-acl block_sql hdr_sub(User-Agent) -i Exception (condition )?d+\. Transaction rollback\.
-http-request deny if block_sql
+acl block_exceptions hdr_sub(User-Agent) -i @ipMatch 127.0.0.1,::1
+http-request deny if block_exceptions
 
-acl block_sql hdr_sub(User-Agent) -i org.hsqldb.jdbc
-http-request deny if block_sql
+acl block_exceptions hdr_sub(User-Agent) -i @endsWith (internal dummy connection)
+http-request deny if block_exceptions
 
-acl block_sql hdr_sub(User-Agent) -i (?i:An illegal character has been found in the statement|com.informix.jdbc|Exception\.*Informix)
-http-request deny if block_sql
+acl block_exceptions hdr_sub(User-Agent) -i ^(GET /|OPTIONS *) HTTP/[12]\.[01]$
+http-request deny if block_exceptions
 
-acl block_sql hdr_sub(User-Agent) -i (?i:Warning\.*ingres_|Ingres SQLSTATE|IngresW\.*Driver)
-http-request deny if block_sql
+acl block_rfi hdr_sub(User-Agent) -i ^(?i:file|ftps?|https?)://(d{1,3}.d{1,3}.d{1,3}.d{1,3})
+http-request deny if block_rfi
 
-acl block_sql hdr_sub(User-Agent) -i (?i:<b>Warning</b>: ibase_|Unexpected end of command in statement)
-http-request deny if block_sql
+acl block_rfi hdr_sub(User-Agent) -i !@endsWith \.%{request_headers.host}
+http-request deny if block_rfi
 
-acl block_sql hdr_sub(User-Agent) -i (?i:SQL error\.*POS[0-9]+\.*|Warning\.*maxdb\.*)
-http-request deny if block_sql
+acl block_attack hdr_sub(User-Agent) -i ^content-types*:s*(\.*)$
+http-request deny if block_attack
 
-acl block_sql hdr_sub(User-Agent) -i (System.Data.OleDb.OleDbException|[Microsoft][ODBC SQL Server Driver]|[Macromedia][SQLServer JDBC Driver]|[SqlException|System.Data.SqlClient.SqlException|Unclosed quotation mark after the character string|'80040e14'|mssql_query()|Microsoft OLE DB Provider for ODBC Drivers|Microsoft OLE DB Provider for SQL Server|Incorrect syntax near|Sintaxis incorrecta cerca de|Syntax error in string in query expression|Procedure or function \.* expects parameter|Unclosed quotation mark before the character string|Syntax error \.* in query expression|Data type mismatch in criteria expression\.|ADODB.Field (0x800A0BCD)|the used select statements have different number of columns|OLE DB\.*SQL Server|Warning\.*mssql_\.*|Driver\.*SQL[ _-]*Server|SQL Server\.*Driver|SQL Server\.*[0-9a-fA-F]{8}|Exception\.*WSystem.Data.SqlClient\.|Conversion failed when converting the varchar value \.*? to data type int\.)
-http-request deny if block_sql
+acl block_attack hdr_sub(User-Agent) -i content-transfer-encoding:(\.*)
+http-request deny if block_attack
 
-acl block_sql hdr_sub(User-Agent) -i (Warning\.*sqlite_\.*|Warning\.*SQLite3::|SQLite/JDBCDriver|SQLite.Exception|System.Data.SQLite.SQLiteException)
-http-request deny if block_sql
+acl block_attack hdr_sub(User-Agent) -i (get|post|head|options|connect|put|delete|trace|track|patch|propfind|propatch|mkcol|copy|move|lock|unlock)s+[^s]+s+http/d
+http-request deny if block_attack
 
-acl block_sql hdr_sub(User-Agent) -i (Sybase message:|Warning\.{2,20}sybase|Sybase\.*Server message\.*)
-http-request deny if block_sql
+acl block_attack hdr_sub(User-Agent) -i [rn]W*?(content-(type|length)|set-cookie|location):s*w
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i (bhttp/d|<(html|meta)b)
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i [nr]
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i [nr]+(s|location|refresh|(set-)?cookie|(x-)?(forwarded-(for|host|server)|host|via|remote-ip|remote-addr|originating-IP))s*:
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?(application/(\.++)?json|(application/(soap+)?|text/)xml)
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i unix:[^|]*|
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?b(((tex|multipar)t|application)|((audi|vide)o|image|cs[sv]|(vn|relate)d|p(df|lain)|json|(soa|cs)p|x(ml|-www-form-urlencoded)|form-data|x-amf|(octe|repor)t|stream)|([+/]))b
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i \.
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i TX:paramcounter_(\.*)
+http-request deny if block_attack
+
+acl block_php hdr_sub(User-Agent) -i (<?([^x]|x[^m]|xm[^l]|xml[^s]|xml$|$)|<?php|[(/|x5c)?php])
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i \.*.ph(pd*|tml|ar|ps|t|pt)\.*$
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i @pm =
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i php://(std(in|out|err)|(in|out)put|fd|memory|temp|filter)
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i (bzip2|expect|glob|ogg|(ph|r)ar|ssh2(\.(s(hell|(ft|c)p)|exec|tunnel))?|z(ip|lib))://
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i [oOcC]:d+:"\.+?":d+:{\.*}
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i AUTH_TYPE|HTTP_(ACCEPT(_(CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(HOS|USER_AGEN)T|KEEP_ALIVE|(REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i \.*\.(phpd*|phtml)\.\.*$
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i @pm ?>
+http-request deny if block_php
+
+acl block_fixation hdr_sub(User-Agent) -i (?i:.cookieb\.*?;W*?(expires|domain)W*?=|bhttp-equivW+set-cookieb)
+http-request deny if block_fixation
+
+acl block_fixation hdr_sub(User-Agent) -i ^(jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$
+http-request deny if block_fixation
+
+acl block_fixation hdr_sub(User-Agent) -i ^(ht|f)tps?://(\.*?)/
+http-request deny if block_fixation
+
+acl block_fixation hdr_sub(User-Agent) -i !@endsWith %{request_headers.host}
+http-request deny if block_fixation
+
+acl block_leakages hdr_sub(User-Agent) -i (<(TITLE>Index of\.*?<H|title>Index of\.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)
+http-request deny if block_leakages
+
+acl block_leakages hdr_sub(User-Agent) -i ^#!s?/
+http-request deny if block_leakages
+
+acl block_leakages hdr_sub(User-Agent) -i ^5d{2}$
+http-request deny if block_leakages
+
+acl block_generic hdr_sub(User-Agent) -i while[sv]*([sv(]*(!+(false|null|undefined|NaN|[+-]?0|"{2}|'{2}|`{2})|(!!)*((t(rue|his)|[+-]?(Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(Boolea|Functio)n|Object|Array)b|{\.*}|[\.*]|"[^"]+"|'[^']+'|`[^`]+`))\.*)
+http-request deny if block_generic
+
+acl block_generic hdr_sub(User-Agent) -i [s*constructors*]
+http-request deny if block_generic
+
+acl block_generic hdr_sub(User-Agent) -i @{\.*}
+http-request deny if block_generic
+
+acl block_enforcement hdr_sub(User-Agent) -i !^(&(([acegiln-or-suz]acut|[aeiou]grav|[ain-o]tild)e|[c-elnr-tz]caron|([cgk-lnr-t]cedi|[aeiouy]um)l|[aceg-josuwy]circ|[au]ring|a(mp|pos)|nbsp|oslash);|[^"';=])*$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^d+$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^(GET|HEAD)$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^0?$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @streq POST
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i (d+)-(d+)
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i b(keep-alive|close),s?(keep-alive|close)b
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i x25
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateUrlEncoding
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^application/x-www-form-urlencoded
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateUtf8Encoding
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i %u[fF]{2}[0-9a-fA-F]{2}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 1-255
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^OPTIONS$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !@pm AppleWebKit Android Business Enterprise Entreprise
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^0$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i (^([d\.]+|[[da-f:]+]|[da-f:]+)(:[d]+)?$)
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^multipart/form-data
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^[w/\.+*-]+(s?;s?(action|boundary|charset|component|start(-info)?|type|version)s?=s?['"w\.()+,/:=?<>@#*-]+)*$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^[^;s]+
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i charsets*=s*["']?([^;"'s]+)
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i charset\.*?charset
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i \.([^\.]+)$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @within %{tx.restricted_extensions}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i \.[^\.~]+~(/\.*|)$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^\.*$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @within %{tx.restricted_headers_basic}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !@streq JSON
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i x5cu[0-9a-f]{4}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @contains #
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^bytes=((d+)?-(d+)?s*,?s*){6}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !@endsWith .pdf
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @endsWith .pdf
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^bytes=((d+)?-(d+)?s*,?s*){63}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i %[0-9a-fA-F]{2}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 9,10,13,32-126,128-255
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ['";=]
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @within %{tx.restricted_headers_extended}
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 32-36,38-126
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^(OPTIONS|CONNECT)$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !@pm AppleWebKit Android
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i ^up
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i !^((max-age=[0-9]+|min-fresh=[0-9]+|no-cache|no-store|no-transform|only-if-cached|max-stale(=[0-9]+)?)(s*,s*|$)){1,7}$
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 38,44-46,48-58,61,65-90,95,97-122
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 32,34,38,42-59,61,65-90,95,97-122
+http-request deny if block_enforcement
+
+acl block_enforcement hdr_sub(User-Agent) -i (^|[^x5c])x5c[cdeghijklmpqwxyz123456789]
+http-request deny if block_enforcement
 
 acl block_xss hdr_sub(User-Agent) -i !@validateByteRange 20, 45-47, 48-57, 65-90, 95, 97-122
 http-request deny if block_xss
@@ -222,318 +444,6 @@ http-request deny if block_sqli
 acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){2})
 http-request deny if block_sqli
 
-acl block_fixation hdr_sub(User-Agent) -i (?i:.cookieb\.*?;W*?(expires|domain)W*?=|bhttp-equivW+set-cookieb)
-http-request deny if block_fixation
-
-acl block_fixation hdr_sub(User-Agent) -i ^(jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$
-http-request deny if block_fixation
-
-acl block_fixation hdr_sub(User-Agent) -i ^(ht|f)tps?://(\.*?)/
-http-request deny if block_fixation
-
-acl block_fixation hdr_sub(User-Agent) -i !@endsWith %{request_headers.host}
-http-request deny if block_fixation
-
-acl block_attack hdr_sub(User-Agent) -i (get|post|head|options|connect|put|delete|trace|track|patch|propfind|propatch|mkcol|copy|move|lock|unlock)s+[^s]+s+http/d
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i [rn]W*?(content-(type|length)|set-cookie|location):s*w
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i (bhttp/d|<(html|meta)b)
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i [nr]
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i [nr]+(s|location|refresh|(set-)?cookie|(x-)?(forwarded-(for|host|server)|host|via|remote-ip|remote-addr|originating-IP))s*:
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?(application/(\.++)?json|(application/(soap+)?|text/)xml)
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i unix:[^|]*|
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?b(((tex|multipar)t|application)|((audi|vide)o|image|cs[sv]|(vn|relate)d|p(df|lain)|json|(soa|cs)p|x(ml|-www-form-urlencoded)|form-data|x-amf|(octe|repor)t|stream)|([+/]))b
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i \.
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i TX:paramcounter_(\.*)
-http-request deny if block_attack
-
-acl block_rfi hdr_sub(User-Agent) -i ^(?i:file|ftps?|https?)://(d{1,3}.d{1,3}.d{1,3}.d{1,3})
-http-request deny if block_rfi
-
-acl block_rfi hdr_sub(User-Agent) -i !@endsWith \.%{request_headers.host}
-http-request deny if block_rfi
-
-acl block_java hdr_sub(User-Agent) -i java.lang\.(runtime|processbuilder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (runtime|processbuilder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (unmarshaller|base64data|java\.)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i \.*\.(jsp|jspx)\.*$
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]{0,15}($|\$?)({|&l(brace|cub);?)|jndi|ctx)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]*($|\$?)({|&l(brace|cub);?)|jndi|ctx)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i xacxedx00x05
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (rO0ABQ|KztAAU|Cs7QAF)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i javab\.+(runtime|processbuilder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (class.module.classLoader.resources.context.parent.pipeline|springframework.context.support.FileSystemXmlApplicationContext)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)
-http-request deny if block_java
-
-acl block_enforcement hdr_sub(User-Agent) -i !^(&(([acegiln-or-suz]acut|[aeiou]grav|[ain-o]tild)e|[c-elnr-tz]caron|([cgk-lnr-t]cedi|[aeiouy]um)l|[aceg-josuwy]circ|[au]ring|a(mp|pos)|nbsp|oslash);|[^"';=])*$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^d+$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^(GET|HEAD)$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^0?$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @streq POST
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i (d+)-(d+)
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i b(keep-alive|close),s?(keep-alive|close)b
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i x25
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateUrlEncoding
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^application/x-www-form-urlencoded
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateUtf8Encoding
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i %u[fF]{2}[0-9a-fA-F]{2}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 1-255
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^OPTIONS$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !@pm AppleWebKit Android Business Enterprise Entreprise
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^0$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i (^([d\.]+|[[da-f:]+]|[da-f:]+)(:[d]+)?$)
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^multipart/form-data
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^[w/\.+*-]+(s?;s?(action|boundary|charset|component|start(-info)?|type|version)s?=s?['"w\.()+,/:=?<>@#*-]+)*$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^[^;s]+
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i charsets*=s*["']?([^;"'s]+)
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i charset\.*?charset
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i \.([^\.]+)$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @within %{tx.restricted_extensions}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i \.[^\.~]+~(/\.*|)$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^\.*$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @within %{tx.restricted_headers_basic}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !@streq JSON
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i x5cu[0-9a-f]{4}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @contains #
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^bytes=((d+)?-(d+)?s*,?s*){6}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !@endsWith .pdf
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @endsWith .pdf
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^bytes=((d+)?-(d+)?s*,?s*){63}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i %[0-9a-fA-F]{2}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 9,10,13,32-126,128-255
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ['";=]
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @within %{tx.restricted_headers_extended}
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 32-36,38-126
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^(OPTIONS|CONNECT)$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !@pm AppleWebKit Android
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i ^up
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i !^((max-age=[0-9]+|min-fresh=[0-9]+|no-cache|no-store|no-transform|only-if-cached|max-stale(=[0-9]+)?)(s*,s*|$)){1,7}$
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 38,44-46,48-58,61,65-90,95,97-122
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i @validateByteRange 32,34,38,42-59,61,65-90,95,97-122
-http-request deny if block_enforcement
-
-acl block_enforcement hdr_sub(User-Agent) -i (^|[^x5c])x5c[cdeghijklmpqwxyz123456789]
-http-request deny if block_enforcement
-
-acl block_php hdr_sub(User-Agent) -i (b(f(tp_(nb_)?f?(ge|pu)t|get(s?s|c)|scanf|write|open|read)|gz((encod|writ)e|compress|open|read)|s(ession_start|candir)|read((gz)?file|dir)|move_uploaded_file|(proc_|bz)open|call_user_func)|$_((pos|ge)t|session))b
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i <?(=|php)?s+
-http-request deny if block_php
-
-acl block_exceptions hdr_sub(User-Agent) -i @streq GET /
-http-request deny if block_exceptions
-
-acl block_exceptions hdr_sub(User-Agent) -i @ipMatch 127.0.0.1,::1
-http-request deny if block_exceptions
-
-acl block_exceptions hdr_sub(User-Agent) -i @endsWith (internal dummy connection)
-http-request deny if block_exceptions
-
-acl block_exceptions hdr_sub(User-Agent) -i ^(GET /|OPTIONS *) HTTP/[12]\.[01]$
-http-request deny if block_exceptions
-
-acl block_iis hdr_sub(User-Agent) -i [a-z]:x5cinetpubb
-http-request deny if block_iis
-
-acl block_iis hdr_sub(User-Agent) -i (Microsoft OLE DB Provider for SQL Server(</font>\.{1,20}?error '800(04005|40e31)'\.{1,40}?Timeout expired| (0x80040e31)<br>Timeout expired<br>)|<h1>internal server error</h1>\.*?<h2>part of the server has crashed or it has a configuration error\.</h2>|cannot connect to the server: timed out)
-http-request deny if block_iis
-
-acl block_iis hdr_sub(User-Agent) -i !^404$
-http-request deny if block_iis
-
-acl block_iis hdr_sub(User-Agent) -i bServer Error in\.{0,50}?bApplicationb
-http-request deny if block_iis
-
-acl block_initialization hdr_sub(User-Agent) -i ^\.*$
-http-request deny if block_initialization
-
-acl block_initialization hdr_sub(User-Agent) -i !(URLENCODED|MULTIPART|XML|JSON)
-http-request deny if block_initialization
-
-acl block_initialization hdr_sub(User-Agent) -i ^[a-f]*([0-9])[a-f]*([0-9])
-http-request deny if block_initialization
-
-acl block_php hdr_sub(User-Agent) -i (<?([^x]|x[^m]|xm[^l]|xml[^s]|xml$|$)|<?php|[(/|x5c)?php])
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i \.*.ph(pd*|tml|ar|ps|t|pt)\.*$
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i @pm =
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i php://(std(in|out|err)|(in|out)put|fd|memory|temp|filter)
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i (bzip2|expect|glob|ogg|(ph|r)ar|ssh2(\.(s(hell|(ft|c)p)|exec|tunnel))?|z(ip|lib))://
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i [oOcC]:d+:"\.+?":d+:{\.*}
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i AUTH_TYPE|HTTP_(ACCEPT(_(CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(HOS|USER_AGEN)T|KEEP_ALIVE|(REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i \.*\.(phpd*|phtml)\.\.*$
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i @pm ?>
-http-request deny if block_php
-
-acl block_generic hdr_sub(User-Agent) -i while[sv]*([sv(]*(!+(false|null|undefined|NaN|[+-]?0|"{2}|'{2}|`{2})|(!!)*((t(rue|his)|[+-]?(Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(Boolea|Functio)n|Object|Array)b|{\.*}|[\.*]|"[^"]+"|'[^']+'|`[^`]+`))\.*)
-http-request deny if block_generic
-
-acl block_generic hdr_sub(User-Agent) -i [s*constructors*]
-http-request deny if block_generic
-
-acl block_generic hdr_sub(User-Agent) -i @{\.*}
-http-request deny if block_generic
-
-acl block_leakages hdr_sub(User-Agent) -i (<(TITLE>Index of\.*?<H|title>Index of\.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)
-http-request deny if block_leakages
-
-acl block_leakages hdr_sub(User-Agent) -i ^#!s?/
-http-request deny if block_leakages
-
-acl block_leakages hdr_sub(User-Agent) -i ^5d{2}$
-http-request deny if block_leakages
-
 acl block_shells hdr_sub(User-Agent) -i (<title>r57 Shell Version [0-9\.]+</title>|<title>r57 shell</title>)
 http-request deny if block_shells
 
@@ -609,6 +519,102 @@ http-request deny if block_shells
 acl block_shells hdr_sub(User-Agent) -i @contains <h1 style="margin-bottom: 0">webadmin.php</h1>
 http-request deny if block_shells
 
+acl block_iis hdr_sub(User-Agent) -i [a-z]:x5cinetpubb
+http-request deny if block_iis
+
+acl block_iis hdr_sub(User-Agent) -i (Microsoft OLE DB Provider for SQL Server(</font>\.{1,20}?error '800(04005|40e31)'\.{1,40}?Timeout expired| (0x80040e31)<br>Timeout expired<br>)|<h1>internal server error</h1>\.*?<h2>part of the server has crashed or it has a configuration error\.</h2>|cannot connect to the server: timed out)
+http-request deny if block_iis
+
+acl block_iis hdr_sub(User-Agent) -i !^404$
+http-request deny if block_iis
+
+acl block_iis hdr_sub(User-Agent) -i bServer Error in\.{0,50}?bApplicationb
+http-request deny if block_iis
+
+acl block_java hdr_sub(User-Agent) -i java.lang\.(runtime|processbuilder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (runtime|processbuilder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (unmarshaller|base64data|java\.)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i \.*\.(jsp|jspx)\.*$
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]{0,15}($|\$?)({|&l(brace|cub);?)|jndi|ctx)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]*($|\$?)({|&l(brace|cub);?)|jndi|ctx)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i xacxedx00x05
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (rO0ABQ|KztAAU|Cs7QAF)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i javab\.+(runtime|processbuilder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (class.module.classLoader.resources.context.parent.pipeline|springframework.context.support.FileSystemXmlApplicationContext)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)
+http-request deny if block_java
+
+acl block_php hdr_sub(User-Agent) -i (b(f(tp_(nb_)?f?(ge|pu)t|get(s?s|c)|scanf|write|open|read)|gz((encod|writ)e|compress|open|read)|s(ession_start|candir)|read((gz)?file|dir)|move_uploaded_file|(proc_|bz)open|call_user_func)|$_((pos|ge)t|session))b
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i <?(=|php)?s+
+http-request deny if block_php
+
+acl block_sql hdr_sub(User-Agent) -i (?i:JET Database Engine|Access Database Engine|[Microsoft][ODBC Microsoft Access Driver])
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (?i:ORA-[0-9][0-9][0-9][0-9]|java.sql.SQLException|Oracle error|Oracle\.*Driver|Warning\.*oci_\.*|Warning\.*ora_\.*)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (?i:[DM_QUERY_E_SYNTAX]|has occurred in the vicinity of:)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i Dynamic SQL Error
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i Exception (condition )?d+\. Transaction rollback\.
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i org.hsqldb.jdbc
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (?i:An illegal character has been found in the statement|com.informix.jdbc|Exception\.*Informix)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (?i:Warning\.*ingres_|Ingres SQLSTATE|IngresW\.*Driver)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (?i:<b>Warning</b>: ibase_|Unexpected end of command in statement)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (?i:SQL error\.*POS[0-9]+\.*|Warning\.*maxdb\.*)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (System.Data.OleDb.OleDbException|[Microsoft][ODBC SQL Server Driver]|[Macromedia][SQLServer JDBC Driver]|[SqlException|System.Data.SqlClient.SqlException|Unclosed quotation mark after the character string|'80040e14'|mssql_query()|Microsoft OLE DB Provider for ODBC Drivers|Microsoft OLE DB Provider for SQL Server|Incorrect syntax near|Sintaxis incorrecta cerca de|Syntax error in string in query expression|Procedure or function \.* expects parameter|Unclosed quotation mark before the character string|Syntax error \.* in query expression|Data type mismatch in criteria expression\.|ADODB.Field (0x800A0BCD)|the used select statements have different number of columns|OLE DB\.*SQL Server|Warning\.*mssql_\.*|Driver\.*SQL[ _-]*Server|SQL Server\.*Driver|SQL Server\.*[0-9a-fA-F]{8}|Exception\.*WSystem.Data.SqlClient\.|Conversion failed when converting the varchar value \.*? to data type int\.)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (Warning\.*sqlite_\.*|Warning\.*SQLite3::|SQLite/JDBCDriver|SQLite.Exception|System.Data.SQLite.SQLiteException)
+http-request deny if block_sql
+
+acl block_sql hdr_sub(User-Agent) -i (Sybase message:|Warning\.{2,20}sybase|Sybase\.*Server message\.*)
+http-request deny if block_sql
+
 acl block_rce hdr_sub(User-Agent) -i $(((\.*|(\.*)))|{\.*})|[<>](\.*)|/[0-9A-Z_a-z]*[!?\.+]
 http-request deny if block_rce
 
@@ -668,10 +674,4 @@ http-request deny if block_rce
 
 acl block_rce hdr_sub(User-Agent) -i !(d|!)
 http-request deny if block_rce
-
-acl block_attack hdr_sub(User-Agent) -i ^content-types*:s*(\.*)$
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i content-transfer-encoding:(\.*)
-http-request deny if block_attack
 

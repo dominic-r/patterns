@@ -1,113 +1,5 @@
 [
     {
-        "category": "EXCEPTIONS",
-        "pattern": "@streq GET /"
-    },
-    {
-        "category": "EXCEPTIONS",
-        "pattern": "@ipMatch 127.0.0.1,::1"
-    },
-    {
-        "category": "EXCEPTIONS",
-        "pattern": "@ipMatch 127.0.0.1,::1"
-    },
-    {
-        "category": "EXCEPTIONS",
-        "pattern": "@endsWith (internal dummy connection)"
-    },
-    {
-        "category": "EXCEPTIONS",
-        "pattern": "@rx ^(?:GET /|OPTIONS *) HTTP/[12].[01]$"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@pmFromFile scanners-user-agents.data"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "DETECTION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@rx (?i)(?:[/x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[5-6]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))(?:.(?:%0[0-1]|?)?|?.?|%(?:2(?:(?:5(?:2|c0%25a))?e|%45)|c0(?:.|%[25-6ae-f]e)|u(?:(?:ff0|002)e|2024)|%32(?:%(?:%6|4)5|E)|(?:e|f(?:(?:8|c%80)%8)?0%8)0%80%ae)|0x2e){2,3}(?:[/x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[5-6]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@rx (?:(?:^|[x5c/;]).{2,3}[x5c/;]|[x5c/;].{2,3}(?:[x5c/;]|$))"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@pmFromFile lfi-os-files.data"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@pmFromFile restricted-files.data"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@pmFromFile lfi-os-files.data"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "LFI",
-        "pattern": "@lt 4"
-    },
-    {
         "category": "INITIALIZATION",
         "pattern": "@eq 0"
     },
@@ -228,6 +120,42 @@
         "pattern": "@lt %{tx.blocking_paranoia_level}"
     },
     {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "!@within %{tx.allowed_methods}"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "ENFORCEMENT",
+        "pattern": "@lt 4"
+    },
+    {
         "category": "ATTACK",
         "pattern": "@lt 1"
     },
@@ -332,118 +260,6 @@
         "pattern": "@rx ["
     },
     {
-        "category": "FIXATION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@rx (?i:.cookieb.*?;W*?(?:expires|domain)W*?=|bhttp-equivW+set-cookieb)"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@rx ^(?:ht|f)tps?://(.*?)/"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "!@endsWith %{request_headers.host}"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@eq 0"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "FIXATION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "ATTACK",
-        "pattern": "!@eq 0"
-    },
-    {
-        "category": "ATTACK",
-        "pattern": "!@within |%{tx.allowed_request_content_type_charset}|"
-    },
-    {
-        "category": "ATTACK",
-        "pattern": "@rx ^content-types*:s*(.*)$"
-    },
-    {
-        "category": "ATTACK",
-        "pattern": "!@rx ^(?:(?:*|[^!-\"(-),/:-?[-]{}]+)/(?:*|[^!-\"(-),/:-?[-]{}]+)|*)(?:[sv]*;[sv]*(?:charset[sv]*=[sv]*\"?(?:iso-8859-15?|utf-8|windows-1252)b\"?|(?:[^sv -\"(-),/:-?[-]c{}]|c(?:[^!-\"(-),/:-?[-]h{}]|h(?:[^!-\"(-),/:-?[-]a{}]|a(?:[^!-\"(-),/:-?[-]r{}]|r(?:[^!-\"(-),/:-?[-]s{}]|s(?:[^!-\"(-),/:-?[-]e{}]|e[^!-\"(-),/:-?[-]t{}]))))))[^!-\"(-),/:-?[-]{}]*[sv]*=[sv]*[^!(-),/:-?[-]{}]+);?)*(?:[sv]*,[sv]*(?:(?:*|[^!-\"(-),/:-?[-]{}]+)/(?:*|[^!-\"(-),/:-?[-]{}]+)|*)(?:[sv]*;[sv]*(?:charset[sv]*=[sv]*\"?(?:iso-8859-15?|utf-8|windows-1252)b\"?|(?:[^sv -\"(-),/:-?[-]c{}]|c(?:[^!-\"(-),/:-?[-]h{}]|h(?:[^!-\"(-),/:-?[-]a{}]|a(?:[^!-\"(-),/:-?[-]r{}]|r(?:[^!-\"(-),/:-?[-]s{}]|s(?:[^!-\"(-),/:-?[-]e{}]|e[^!-\"(-),/:-?[-]t{}]))))))[^!-\"(-),/:-?[-]{}]*[sv]*=[sv]*[^!(-),/:-?[-]{}]+);?)*)*$"
-    },
-    {
-        "category": "ATTACK",
-        "pattern": "@rx content-transfer-encoding:(.*)"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "!@within %{tx.allowed_methods}"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "ENFORCEMENT",
-        "pattern": "@lt 4"
-    },
-    {
         "category": "GENERIC",
         "pattern": "@lt 1"
     },
@@ -516,207 +332,215 @@
         "pattern": "@lt 4"
     },
     {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 1"
     },
     {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 1"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx java.lang.(?:runtime|processbuilder)"
+        "category": "LEAKAGES",
+        "pattern": "@rx (?:<(?:TITLE>Index of.*?<H|title>Index of.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx (?:runtime|processbuilder)"
+        "category": "LEAKAGES",
+        "pattern": "@rx ^#!s?/"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx (?:unmarshaller|base64data|java.)"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx (?:runtime|processbuilder)"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@pmFromFile java-classes.data"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx .*.(?:jsp|jspx).*$"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx (?i)(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)(?:[^}]{0,15}(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)|jndi|ctx)"
-    },
-    {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 2"
     },
     {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 2"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx (?i)(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)(?:[^}]*(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)|jndi|ctx)"
+        "category": "LEAKAGES",
+        "pattern": "@rx ^5d{2}$"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx xacxedx00x05"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx (?:rO0ABQ|KztAAU|Cs7QAF)"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx javab.+(?:runtime|processbuilder)"
-    },
-    {
-        "category": "JAVA",
-        "pattern": "@rx (?:class.module.classLoader.resources.context.parent.pipeline|springframework.context.support.FileSystemXmlApplicationContext)"
-    },
-    {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 3"
     },
     {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 3"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx (?:cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)"
-    },
-    {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 4"
     },
     {
-        "category": "JAVA",
+        "category": "LEAKAGES",
         "pattern": "@lt 4"
     },
     {
-        "category": "JAVA",
-        "pattern": "@rx (?i)(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)"
-    },
-    {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 1"
     },
     {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 1"
     },
     {
-        "category": "PHP",
-        "pattern": "@rx (?:<?(?:[^x]|x[^m]|xm[^l]|xml[^s]|xml$|$)|<?php|[(?:/|x5c)?php])"
+        "category": "FIXATION",
+        "pattern": "@rx (?i:.cookieb.*?;W*?(?:expires|domain)W*?=|bhttp-equivW+set-cookieb)"
     },
     {
-        "category": "PHP",
-        "pattern": "@rx .*.ph(?:pd*|tml|ar|ps|t|pt).*$"
+        "category": "FIXATION",
+        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$"
     },
     {
-        "category": "PHP",
-        "pattern": "@pmFromFile php-config-directives.data"
+        "category": "FIXATION",
+        "pattern": "@rx ^(?:ht|f)tps?://(.*?)/"
     },
     {
-        "category": "PHP",
-        "pattern": "@pm ="
+        "category": "FIXATION",
+        "pattern": "!@endsWith %{request_headers.host}"
     },
     {
-        "category": "PHP",
-        "pattern": "@pmFromFile php-variables.data"
+        "category": "FIXATION",
+        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$"
     },
     {
-        "category": "PHP",
-        "pattern": "@rx (?i)php://(?:std(?:in|out|err)|(?:in|out)put|fd|memory|temp|filter)"
+        "category": "FIXATION",
+        "pattern": "@eq 0"
     },
     {
-        "category": "PHP",
-        "pattern": "@rx (?:bzip2|expect|glob|ogg|(?:ph|r)ar|ssh2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?|z(?:ip|lib))://"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@pmFromFile php-function-names-933150.data"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx (?i)b(?[\"']*(?:assert(?:_options)?|c(?:hr|reate_function)|e(?:val|x(?:ec|p))|file(?:group)?|glob|i(?:mage(?:gif|(?:jpe|pn)g|wbmp|xbm)|s_a)|md5|o(?:pendir|rd)|p(?:assthru|open|rev)|(?:read|tmp)file|un(?:pac|lin)k|s(?:tat|ubstr|ystem))(?:/(?:*.**/|/.*)|#.*[sv]|\")*[\"']*)?[sv]*(.*)"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx [oOcC]:d+:\".+?\":d+:{.*}"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx $+(?:[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*|s*{.+})(?:s|[.+]|{.+}|/*.**/|//.*|#.*)*(.*)"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx (?:((?:.+)(?:[\"'][-0-9A-Z_a-z]+[\"'])?(.+|[^)]*string[^)]*)[sv\"'--.0-9A-[]_a-{}]+([^)]*)|(?:[[0-9]+]|{[0-9]+}|$[^(-),.-/;x5c]+|[\"'][-0-9A-Zx5c_a-z]+[\"'])(.+));"
-    },
-    {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 2"
     },
     {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 2"
     },
     {
-        "category": "PHP",
-        "pattern": "@pmFromFile php-function-names-933151.data"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@pm ("
-    },
-    {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 3"
     },
     {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 3"
     },
     {
-        "category": "PHP",
-        "pattern": "@rx AUTH_TYPE|HTTP_(?:ACCEPT(?:_(?:CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(?:HOS|USER_AGEN)T|KEEP_ALIVE|(?:REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(?:INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx (?i)b(?:a(?:bs|s(?:in|sert(?:_options)?))|basename|c(?:h(?:eckdate|r(?:oot)?)|o(?:(?:mpac|(?:nsta|u)n)t|py|sh?)|r(?:eate_function|ypt)|urrent)|d(?:ate|e(?:coct|fined?)|ir)|e(?:nd|val|x(?:ec|p(?:lode)?|tract))|f(?:ile(?:(?:[acm]tim|inod|siz|typ)e|group|owner|perms)?|l(?:o(?:ck|or)|ush))|glob|h(?:ash|eader)|i(?:date|m(?:age(?:gif|(?:jpe|pn)g|wbmp|xbm)|plode)|s_a)|key|l(?:ink|og)|m(?:a(?:il|x)|d5|in)|n(?:ame|ext)|o(?:pendir|rd)|p(?:a(?:ck|ss(?:thru)?)|i|o(?:pen|w)|rev)|r(?:an(?:d|ge)|e(?:(?:adfil|nam)e|set)|ound)|s(?:(?:erializ|huffl)e|in|leep|(?:or|ta)t|ubstr|y(?:mlink|s(?:log|tem)))|t(?:an|(?:im|mpfil)e|ouch|rim)|u(?:cfirst|n(?:lin|pac)k)|virtual)(?:[sv]|/*.**/|(?:#|//).*)*(.*)"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx .*.(?:phpd*|phtml)..*$"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@pm ?>"
-    },
-    {
-        "category": "PHP",
-        "pattern": "@rx (?:((?:.+)(?:[\"'][-0-9A-Z_a-z]+[\"'])?(.+|[^)]*string[^)]*)[sv\"'--.0-9A-[]_a-{}]+([^)]*)|(?:[[0-9]+]|{[0-9]+}|$[^(-),.-/;x5c]+|[\"'][-0-9A-Zx5c_a-z]+[\"'])(.+))(?:;|$)?"
-    },
-    {
-        "category": "PHP",
+        "category": "FIXATION",
         "pattern": "@lt 4"
     },
     {
-        "category": "PHP",
+        "category": "FIXATION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@rx ^(?i:file|ftps?|https?)://(?:d{1,3}.d{1,3}.d{1,3}.d{1,3})"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@rx (?i)(?:bincludes*([^)]*|mosConfig_absolute_path|_CONF[path]|_SERVER[DOCUMENT_ROOT]|GALLERY_BASEDIR|path[docroot]|appserv_root|config[root_dir])=(?:file|ftps?|https?)://"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@rx ^(?i:file|ftps?|https?).*??+$"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)"
+    },
+    {
+        "category": "RFI",
+        "pattern": "!@endsWith .%{request_headers.host}"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)"
+    },
+    {
+        "category": "RFI",
+        "pattern": "!@endsWith .%{request_headers.host}"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "RFI",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@rx (?i)(?:[/x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[5-6]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))(?:.(?:%0[0-1]|?)?|?.?|%(?:2(?:(?:5(?:2|c0%25a))?e|%45)|c0(?:.|%[25-6ae-f]e)|u(?:(?:ff0|002)e|2024)|%32(?:%(?:%6|4)5|E)|(?:e|f(?:(?:8|c%80)%8)?0%8)0%80%ae)|0x2e){2,3}(?:[/x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[5-6]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@rx (?:(?:^|[x5c/;]).{2,3}[x5c/;]|[x5c/;].{2,3}(?:[x5c/;]|$))"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@pmFromFile lfi-os-files.data"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@pmFromFile restricted-files.data"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@pmFromFile lfi-os-files.data"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "LFI",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "LFI",
         "pattern": "@lt 4"
     },
     {
@@ -757,6 +581,54 @@
     },
     {
         "category": "JAVA",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pmFromFile php-errors.data"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?:b(?:f(?:tp_(?:nb_)?f?(?:ge|pu)t|get(?:s?s|c)|scanf|write|open|read)|gz(?:(?:encod|writ)e|compress|open|read)|s(?:ession_start|candir)|read(?:(?:gz)?file|dir)|move_uploaded_file|(?:proc_|bz)open|call_user_func)|$_(?:(?:pos|ge)t|session))b"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?i)<?(?:=|php)?s+"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pmFromFile php-errors-pl2.data"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "PHP",
         "pattern": "@lt 4"
     },
     {
@@ -858,6 +730,230 @@
     {
         "category": "SQL",
         "pattern": "@lt 4"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx java.lang.(?:runtime|processbuilder)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:runtime|processbuilder)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:unmarshaller|base64data|java.)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:runtime|processbuilder)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@pmFromFile java-classes.data"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx .*.(?:jsp|jspx).*$"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?i)(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)(?:[^}]{0,15}(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)|jndi|ctx)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?i)(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)(?:[^}]*(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)|jndi|ctx)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx xacxedx00x05"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:rO0ABQ|KztAAU|Cs7QAF)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx javab.+(?:runtime|processbuilder)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:class.module.classLoader.resources.context.parent.pipeline|springframework.context.support.FileSystemXmlApplicationContext)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?:cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "JAVA",
+        "pattern": "@rx (?i)(?:$|&dollar;?)(?:{|&l(?:brace|cub);?)"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@eq 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "EXCEPTIONS",
+        "pattern": "@streq GET /"
+    },
+    {
+        "category": "EXCEPTIONS",
+        "pattern": "@ipMatch 127.0.0.1,::1"
+    },
+    {
+        "category": "EXCEPTIONS",
+        "pattern": "@ipMatch 127.0.0.1,::1"
+    },
+    {
+        "category": "EXCEPTIONS",
+        "pattern": "@endsWith (internal dummy connection)"
+    },
+    {
+        "category": "EXCEPTIONS",
+        "pattern": "@rx ^(?:GET /|OPTIONS *) HTTP/[12].[01]$"
     },
     {
         "category": "ENFORCEMENT",
@@ -1272,158 +1368,6 @@
         "pattern": "@rx (?:^|[^x5c])x5c[cdeghijklmpqwxyz123456789]"
     },
     {
-        "category": "LEAKAGES",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@rx (?:<(?:TITLE>Index of.*?<H|title>Index of.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@rx ^#!s?/"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@rx ^5d{2}$"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "LEAKAGES",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@eq 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 4"
-    },
-    {
         "category": "PHP",
         "pattern": "@lt 1"
     },
@@ -1433,15 +1377,51 @@
     },
     {
         "category": "PHP",
-        "pattern": "@pmFromFile php-errors.data"
+        "pattern": "@rx (?:<?(?:[^x]|x[^m]|xm[^l]|xml[^s]|xml$|$)|<?php|[(?:/|x5c)?php])"
     },
     {
         "category": "PHP",
-        "pattern": "@rx (?:b(?:f(?:tp_(?:nb_)?f?(?:ge|pu)t|get(?:s?s|c)|scanf|write|open|read)|gz(?:(?:encod|writ)e|compress|open|read)|s(?:ession_start|candir)|read(?:(?:gz)?file|dir)|move_uploaded_file|(?:proc_|bz)open|call_user_func)|$_(?:(?:pos|ge)t|session))b"
+        "pattern": "@rx .*.ph(?:pd*|tml|ar|ps|t|pt).*$"
     },
     {
         "category": "PHP",
-        "pattern": "@rx (?i)<?(?:=|php)?s+"
+        "pattern": "@pmFromFile php-config-directives.data"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pm ="
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pmFromFile php-variables.data"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?i)php://(?:std(?:in|out|err)|(?:in|out)put|fd|memory|temp|filter)"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?:bzip2|expect|glob|ogg|(?:ph|r)ar|ssh2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?|z(?:ip|lib))://"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pmFromFile php-function-names-933150.data"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?i)b(?[\"']*(?:assert(?:_options)?|c(?:hr|reate_function)|e(?:val|x(?:ec|p))|file(?:group)?|glob|i(?:mage(?:gif|(?:jpe|pn)g|wbmp|xbm)|s_a)|md5|o(?:pendir|rd)|p(?:assthru|open|rev)|(?:read|tmp)file|un(?:pac|lin)k|s(?:tat|ubstr|ystem))(?:/(?:*.**/|/.*)|#.*[sv]|\")*[\"']*)?[sv]*(.*)"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx [oOcC]:d+:\".+?\":d+:{.*}"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx $+(?:[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*|s*{.+})(?:s|[.+]|{.+}|/*.**/|//.*|#.*)*(.*)"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?:((?:.+)(?:[\"'][-0-9A-Z_a-z]+[\"'])?(.+|[^)]*string[^)]*)[sv\"'--.0-9A-[]_a-{}]+([^)]*)|(?:[[0-9]+]|{[0-9]+}|$[^(-),.-/;x5c]+|[\"'][-0-9A-Zx5c_a-z]+[\"'])(.+));"
     },
     {
         "category": "PHP",
@@ -1453,7 +1433,11 @@
     },
     {
         "category": "PHP",
-        "pattern": "@pmFromFile php-errors-pl2.data"
+        "pattern": "@pmFromFile php-function-names-933151.data"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pm ("
     },
     {
         "category": "PHP",
@@ -1462,6 +1446,26 @@
     {
         "category": "PHP",
         "pattern": "@lt 3"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx AUTH_TYPE|HTTP_(?:ACCEPT(?:_(?:CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(?:HOS|USER_AGEN)T|KEEP_ALIVE|(?:REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(?:INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?i)b(?:a(?:bs|s(?:in|sert(?:_options)?))|basename|c(?:h(?:eckdate|r(?:oot)?)|o(?:(?:mpac|(?:nsta|u)n)t|py|sh?)|r(?:eate_function|ypt)|urrent)|d(?:ate|e(?:coct|fined?)|ir)|e(?:nd|val|x(?:ec|p(?:lode)?|tract))|f(?:ile(?:(?:[acm]tim|inod|siz|typ)e|group|owner|perms)?|l(?:o(?:ck|or)|ush))|glob|h(?:ash|eader)|i(?:date|m(?:age(?:gif|(?:jpe|pn)g|wbmp|xbm)|plode)|s_a)|key|l(?:ink|og)|m(?:a(?:il|x)|d5|in)|n(?:ame|ext)|o(?:pendir|rd)|p(?:a(?:ck|ss(?:thru)?)|i|o(?:pen|w)|rev)|r(?:an(?:d|ge)|e(?:(?:adfil|nam)e|set)|ound)|s(?:(?:erializ|huffl)e|in|leep|(?:or|ta)t|ubstr|y(?:mlink|s(?:log|tem)))|t(?:an|(?:im|mpfil)e|ouch|rim)|u(?:cfirst|n(?:lin|pac)k)|virtual)(?:[sv]|/*.**/|(?:#|//).*)*(.*)"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx .*.(?:phpd*|phtml)..*$"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@pm ?>"
+    },
+    {
+        "category": "PHP",
+        "pattern": "@rx (?:((?:.+)(?:[\"'][-0-9A-Z_a-z]+[\"'])?(.+|[^)]*string[^)]*)[sv\"'--.0-9A-[]_a-{}]+([^)]*)|(?:[[0-9]+]|{[0-9]+}|$[^(-),.-/;x5c]+|[\"'][-0-9A-Zx5c_a-z]+[\"'])(.+))(?:;|$)?"
     },
     {
         "category": "PHP",
@@ -1469,222 +1473,6 @@
     },
     {
         "category": "PHP",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[arx])?|(?:(?:b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|x)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|[ckz][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?v|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)|f[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dg]|g[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[&,<>|]|(?:[--.0-9A-Z_a-z][\"'[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#*-0-9?-@_a-{]*)?x5c?)+[sv&,<>|]).*|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?g)|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:s|z[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:4|[sv&),<>|].*))|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z)|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*)?|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|(?:e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|(?:s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?h)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n)|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?3[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m)b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:(?:HEAD|POST|y(?:arn|elp))[sv&)<>|]|a(?:dd(?:group|user)|getty|l(?:ias|pine)[sv&)<>|]|nsible-playbook|pt(?:-get|itude[sv&)<>|])|r(?:ch[sv&)<>|]|ia2c)|s(?:cii(?:-xfr|85)|pell)|tobm|xel)|b(?:a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu)|z(?:c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more))|c(?:a(?:ncel|psh)[sv&)<>|]|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|p(?:an|io|ulimit)|r(?:ash[sv&)<>|]|on(?:tab)?)|s(?:plit|vtool)|u(?:psfilter|rl[sv&)<>|]))|d(?:(?:a(?:sh|te)|i(?:alog|ff))[sv&)<>|]|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:2fsck|(?:asy_instal|va)l|cho[sv&)<>|]|fax|grep|macs|n(?:d(?:if|sw)|v-update)|sac|x(?:ec[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r)))|f(?:acter|(?:etch|lock|unction)[sv&)<>|]|grep|i(?:le(?:[sv&)<>|]|test)|(?:n(?:d|ger)|sh)[sv&)<>|])|o(?:ld[sv&)<>|]|reach)|ping|tp(?:stats|who))|g(?:awk[sv&)<>|]|core|e(?:ni(?:e[sv&)<>|]|soimage)|tfacl[sv&)<>|])|hci|i(?:mp[sv&)<>|]|nsh)|r(?:ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:conv|f(?:config|top)|nstall[sv&)<>|]|onice|p(?:6?tables|config)|spell)|j(?:ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:ill(?:[sv&)<>|]|all)|nife[sv&)<>|]|sshell)|l(?:a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|dconfig|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|(?:inks|ynx)[sv&)<>|]|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)|trace|ua(?:la)?tex|wp-(?:d(?:ownload|ump)|mirror|request)|z(?:4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore)))|m(?:a(?:il(?:[sv&)<>q|]|x[sv&)<>|])|ke[sv&)<>|]|ster.passwd|wk)|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|utt[sv&)<>|]|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:a(?:no[sv&)<>|]|sm|wk)|c(?:.(?:openbsd|traditional)|at)|e(?:ofetch|t(?:(?:c|st)at|kit-ftp|plan))|(?:ice|ull)[sv&)<>|]|map|o(?:de[sv&)<>|]|hup)|ping|roff|s(?:enter|lookup|tat))|o(?:ctave[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:cman|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:f(?:la)?tex|ksh)|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|(?:ft|gre)p|hp(?:-cgi|[57])|i(?:(?:co|ng)[sv&)<>|]|dstat|gz)|k(?:exec|g_?info|ill)|opd|rint(?:env|f[sv&)<>|])|s(?:ed|ftp|ql)|tar(?:diff|grep)?|u(?:ppet[sv&)<>|]|shd)|wd.db|ython[^sv])|r(?:ak(?:e[sv&)<>|]|u)|bash|e(?:a(?:delf|lpath)|(?:dcarpet|name|p(?:eat|lace))[sv&)<>|]|stic)|l(?:ogin|wrap)|m(?:dir[sv&)<>|]|user)|nano|oute[sv&)<>|]|pm(?:db|(?:quer|verif)y)|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:(?:ash|nap)[sv&)<>|]|c(?:hed|r(?:een|ipt)[sv&)<>|])|diff|e(?:(?:lf|rvice)[sv&)<>|]|ndmail|t(?:arch|env|facl[sv&)<>|]|sid))|ftp|h(?:.distrib|(?:adow|ells)[sv&)<>|]|u(?:f|tdown[sv&)<>|]))|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|sh(?:-key(?:ge|sca)n|pass)|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|udo|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|c(?:l?sh|p(?:dump|ing|traceroute))|elnet|ftp|ime(?:(?:out)?[sv&)<>|]|datectl)|mux|ouch[sv&)<>|]|r(?:aceroute6?|off)|shark)|u(?:limit[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|p(?:2date[sv&)<>|]|date-alternatives)|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:algrind|i(?:ew[sv&)<>|]|gr|mdiff|pw|rsh)|olatility[sv&)<>|])|w(?:a(?:ll|tch)[sv&)<>|]|get|h(?:iptail[sv&)<>|]|o(?:ami|is))|i(?:reshark|sh[sv&)<>|]))|x(?:args|e(?:la)?tex|mo(?:dmap|re)|pad|term|z(?:c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more))|z(?:athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|ip(?:c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|less|more|run|s(?:oelim|td(?:(?:ca|m)t|grep|less)?)|ypper))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@pmFromFile windows-powershell-commands.data"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:[nr;`{]|||?|&&?)[sv]*[sv\"'-(,@]*(?:[\"'.-9A-Z_a-z]+/|(?:[\"'x5c^]*[0-9A-Z_a-z][\"'x5c^]*:.*|[ \"'.-9A-Zx5c^-_a-z]*)x5c)?[\"^]*(?:(?:a[\"^]*(?:c|s[\"^]*n[\"^]*p)|e[\"^]*(?:b[\"^]*p|p[\"^]*(?:a[\"^]*l|c[\"^]*s[\"^]*v|s[\"^]*n)|[tx][\"^]*s[\"^]*n)|f[\"^]*(?:[cltw]|o[\"^]*r[\"^]*e[\"^]*a[\"^]*c[\"^]*h)|i[\"^]*(?:[cr][\"^]*m|e[\"^]*x|h[\"^]*y|i|p[\"^]*(?:a[\"^]*l|c[\"^]*s[\"^]*v|m[\"^]*o|s[\"^]*n)|s[\"^]*e|w[\"^]*(?:m[\"^]*i|r))|m[\"^]*(?:a[\"^]*n|[dipv]|o[\"^]*u[\"^]*n[\"^]*t)|o[\"^]*g[\"^]*v|p[\"^]*(?:o[\"^]*p|u[\"^]*s[\"^]*h)[\"^]*d|t[\"^]*r[\"^]*c[\"^]*m|w[\"^]*j[\"^]*b)[\"^]*[sv,.-/;-<>].*|c[\"^]*(?:(?:(?:d|h[\"^]*d[\"^]*i[\"^]*r|v[\"^]*p[\"^]*a)[\"^]*|p[\"^]*(?:[ip][\"^]*)?)[sv,.-/;-<>].*|l[\"^]*(?:(?:[cipv]|h[\"^]*y)[\"^]*[sv,.-/;-<>].*|s)|n[\"^]*s[\"^]*n)|d[\"^]*(?:(?:b[\"^]*p|e[\"^]*l|i[\"^]*(?:f[\"^]*f|r))[\"^]*[sv,.-/;-<>].*|n[\"^]*s[\"^]*n)|g[\"^]*(?:(?:(?:(?:a[\"^]*)?l|b[\"^]*p|d[\"^]*r|h[\"^]*y|(?:w[\"^]*m[\"^]*)?i|j[\"^]*b|[u-v])[\"^]*|c[\"^]*(?:[ims][\"^]*)?|m[\"^]*(?:o[\"^]*)?|s[\"^]*(?:n[\"^]*(?:p[\"^]*)?|v[\"^]*))[sv,.-/;-<>].*|e[\"^]*r[\"^]*r|p[\"^]*(?:(?:s[\"^]*)?[sv,.-/;-<>].*|v))|l[\"^]*s|n[\"^]*(?:(?:a[\"^]*l|d[\"^]*r|[iv]|m[\"^]*o|s[\"^]*n)[\"^]*[sv,.-/;-<>].*|p[\"^]*s[\"^]*s[\"^]*c)|r[\"^]*(?:(?:(?:(?:b[\"^]*)?p|e[\"^]*n|(?:w[\"^]*m[\"^]*)?i|j[\"^]*b|n[\"^]*[ip])[\"^]*|d[\"^]*(?:r[\"^]*)?|m[\"^]*(?:(?:d[\"^]*i[\"^]*r|o)[\"^]*)?|s[\"^]*n[\"^]*(?:p[\"^]*)?|v[\"^]*(?:p[\"^]*a[\"^]*)?)[sv,.-/;-<>].*|c[\"^]*(?:j[\"^]*b[\"^]*[sv,.-/;-<>].*|s[\"^]*n)|u[\"^]*j[\"^]*b)|s[\"^]*(?:(?:(?:a[\"^]*(?:j[\"^]*b|l|p[\"^]*s|s[\"^]*v)|b[\"^]*p|[civ]|w[\"^]*m[\"^]*i)[\"^]*|l[\"^]*(?:s[\"^]*)?|p[\"^]*(?:(?:j[\"^]*b|p[\"^]*s|s[\"^]*v)[\"^]*)?)[sv,.-/;-<>].*|h[\"^]*c[\"^]*m|u[\"^]*j[\"^]*b))(?:.[\"^]*[0-9A-Z_a-z]+)?b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx $(?:((?:.*|(.*)))|{.*})|[<>](.*)|/[0-9A-Z_a-z]*[!?.+]"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx b(?:for(?:/[dflr].*)? %+[^ ]+ in(.*)[sv]?do|if(?:/i)?(?: not)?(?: (?:e(?:xist|rrorlevel)|defined|cmdextversion)b|[ (].*(?:b(?:g(?:eq|tr)|equ|neq|l(?:eq|ss))b|==)))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[arx])?|(?:b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|x)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|[ckz][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?v|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)|f[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dg]|g[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?g)|(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:s|z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?4)?)|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z)|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)?|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|(?:s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?h|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n)|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?3[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m)[sv&)<>|]"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:a(?:ddgroup|xel)|b(?:ase(?:32|64|nc)|lkid|sd(?:cat|iff|tar)|u(?:iltin|nzip2|sybox)|yobu|z(?:c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more))|c(?:h(?:g(?:passwd|rp)|pass|sh)|lang++|oproc|ron)|d(?:iff[sv&)<>|]|mesg|oas)|e(?:2fsck|grep)|f(?:grep|iletest|tp(?:stats|who))|g(?:r(?:ep[sv&)<>|]|oupmod)|unzip|z(?:cat|exe|ip))|htop|l(?:ast(?:comm|log(?:in)?)|ess(?:echo|(?:fil|pip)e)|ftp(?:get)?|osetup|s(?:-F|b_release|cpu|mod|of|pci|usb)|wp-download|z(?:4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore)))|m(?:a(?:ilq|ster.passwd)|k(?:fifo|nod|temp)|locate|ysql(?:admin|dump(?:slow)?|hotcopy|show))|n(?:c(?:.(?:openbsd|traditional)|at)|et(?:(?:c|st)at|kit-ftp|plan)|ohup|ping|stat)|onintr|p(?:dksh|erl5?|(?:ft|gre)p|hp(?:-cgi|[57])|igz|k(?:exec|ill)|(?:op|se)d|rint(?:env|f[sv&)<>|])|tar(?:diff|grep)?|wd.db|ython[2-3])|r(?:(?:bas|ealpat)h|m(?:dir[sv&)<>|]|user)|nano|sync)|s(?:diff|e(?:ndmail|t(?:env|sid))|ftp|(?:h.distri|pwd.d)b|ocat|td(?:err|in|out)|udo|ysctl)|t(?:ailf|c(?:p(?:ing|traceroute)|sh)|elnet|imeout[sv&)<>|]|raceroute6?)|u(?:n(?:ame|lz(?:4|ma)|(?:pig|x)z|rar|zstd)|ser(?:(?:ad|mo)d|del))|vi(?:gr|pw)|w(?:get|hoami)|x(?:args|z(?:c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more))|z(?:c(?:at|mp)|diff|[e-f]?grep|ip(?:c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|less|more|run|std(?:(?:ca|m)t|grep|less)?))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "!@rx [0-9]s*'s*[0-9]"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx !-d"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@pmFromFile unix-shell.data"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ^(s*)s+{"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ^(s*)s+{"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ba[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?sb[sv]+[!-\"%',0-9@-Z_a-z]+=[^sv]"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@pmFromFile restricted-upload.data"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:t[\"^]*i[\"^]*m[\"^]*e|[nr;`{]|||?|&&?)[sv]*[sv\"'-(,@]*(?:[\"'.-9A-Z_a-z]+/|(?:[\"'x5c^]*[0-9A-Z_a-z][\"'x5c^]*:.*|[ \"'.-9A-Zx5c^-_a-z]*)x5c)?[\"^]*(?:a[\"^]*(?:c[\"^]*c[\"^]*c[\"^]*h[\"^]*e[\"^]*c[\"^]*k[\"^]*c[\"^]*o[\"^]*n[\"^]*s[\"^]*o[\"^]*l[\"^]*e|d[\"^]*(?:p[\"^]*l[\"^]*u[\"^]*s|v[\"^]*p[\"^]*a[\"^]*c[\"^]*k)|(?:g[\"^]*e[\"^]*n[\"^]*t[\"^]*e[\"^]*x[\"^]*e[\"^]*c[\"^]*u[\"^]*t[\"^]*o|s[\"^]*p[\"^]*n[\"^]*e[\"^]*t[\"^]*_[\"^]*c[\"^]*o[\"^]*m[\"^]*p[\"^]*i[\"^]*l[\"^]*e)[\"^]*r|p[\"^]*p[\"^]*(?:i[\"^]*n[\"^]*s[\"^]*t[\"^]*a[\"^]*l[\"^]*l[\"^]*e[\"^]*r|v[\"^]*l[\"^]*p)|t[\"^]*(?:[sv,.-/;-<>].*|b[\"^]*r[\"^]*o[\"^]*k[\"^]*e[\"^]*r))|b[\"^]*(?:a[\"^]*s[\"^]*h|g[\"^]*i[\"^]*n[\"^]*f[\"^]*o|i[\"^]*t[\"^]*s[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|c[\"^]*(?:d[\"^]*b|e[\"^]*r[\"^]*t[\"^]*(?:o[\"^]*c|r[\"^]*e[\"^]*q|u[\"^]*t[\"^]*i[\"^]*l)|l[\"^]*_[\"^]*(?:i[\"^]*n[\"^]*v[\"^]*o[\"^]*c[\"^]*a[\"^]*t[\"^]*i[\"^]*o[\"^]*n|l[\"^]*o[\"^]*a[\"^]*d[\"^]*a[\"^]*s[\"^]*s[\"^]*e[\"^]*m[\"^]*b[\"^]*l[\"^]*y|m[\"^]*u[\"^]*t[\"^]*e[\"^]*x[\"^]*v[\"^]*e[\"^]*r[\"^]*i[\"^]*f[\"^]*i[\"^]*e[\"^]*r[\"^]*s)|m[\"^]*(?:d(?:[\"^]*(?:k[\"^]*e[\"^]*y|l[\"^]*3[\"^]*2))?|s[\"^]*t[\"^]*p)|o[\"^]*(?:m[\"^]*s[\"^]*v[\"^]*c[\"^]*s|n[\"^]*(?:f[\"^]*i[\"^]*g[\"^]*s[\"^]*e[\"^]*c[\"^]*u[\"^]*r[\"^]*i[\"^]*t[\"^]*y[\"^]*p[\"^]*o[\"^]*l[\"^]*i[\"^]*c[\"^]*y|h[\"^]*o[\"^]*s[\"^]*t|t[\"^]*r[\"^]*o[\"^]*l)|r[\"^]*e[\"^]*g[\"^]*e[\"^]*n)|r[\"^]*e[\"^]*a[\"^]*t[\"^]*e[\"^]*d[\"^]*u[\"^]*m[\"^]*p|s[\"^]*(?:c(?:[\"^]*r[\"^]*i[\"^]*p[\"^]*t)?|i)|u[\"^]*s[\"^]*t[\"^]*o[\"^]*m[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l[\"^]*h[\"^]*o[\"^]*s[\"^]*t)|d[\"^]*(?:a[\"^]*t[\"^]*a[\"^]*s[\"^]*v[\"^]*c[\"^]*u[\"^]*t[\"^]*i[\"^]*l|e[\"^]*(?:f[\"^]*a[\"^]*u[\"^]*l[\"^]*t[\"^]*p[\"^]*a[\"^]*c[\"^]*k|s[\"^]*k(?:[\"^]*t[\"^]*o[\"^]*p[\"^]*i[\"^]*m[\"^]*g[\"^]*d[\"^]*o[\"^]*w[\"^]*n[\"^]*l[\"^]*d[\"^]*r)?|v[\"^]*(?:i[\"^]*c[\"^]*e[\"^]*c[\"^]*r[\"^]*e[\"^]*d[\"^]*e[\"^]*n[\"^]*t[\"^]*i[\"^]*a[\"^]*l[\"^]*d[\"^]*e[\"^]*p[\"^]*l[\"^]*o[\"^]*y[\"^]*m[\"^]*e[\"^]*n[\"^]*t|t[\"^]*o[\"^]*o[\"^]*l[\"^]*s[\"^]*l[\"^]*a[\"^]*u[\"^]*n[\"^]*c[\"^]*h[\"^]*e[\"^]*r))|f[\"^]*s[\"^]*(?:h[\"^]*i[\"^]*m|v[\"^]*c)|i[\"^]*(?:a[\"^]*n[\"^]*t[\"^]*z|s[\"^]*k[\"^]*s[\"^]*h[\"^]*a[\"^]*d[\"^]*o[\"^]*w)|n[\"^]*(?:s[\"^]*c[\"^]*m[\"^]*d|x)|o[\"^]*t[\"^]*n[\"^]*e[\"^]*t|u[\"^]*m[\"^]*p[\"^]*6[\"^]*4|x[\"^]*c[\"^]*a[\"^]*p)|e[\"^]*(?:s[\"^]*e[\"^]*n[\"^]*t[\"^]*u[\"^]*t[\"^]*l|v[\"^]*e[\"^]*n[\"^]*t[\"^]*v[\"^]*w[\"^]*r|x[\"^]*(?:c[\"^]*e[\"^]*l|p[\"^]*(?:a[\"^]*n[\"^]*d|l[\"^]*o[\"^]*r[\"^]*e[\"^]*r)|t[\"^]*(?:e[\"^]*x[\"^]*p[\"^]*o[\"^]*r[\"^]*t|r[\"^]*a[\"^]*c[\"^]*3[\"^]*2)))|f[\"^]*(?:i[\"^]*n[\"^]*(?:d[\"^]*s[\"^]*t|g[\"^]*e)[\"^]*r|l[\"^]*t[\"^]*m[\"^]*c|o[\"^]*r[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*s|s[\"^]*(?:i(?:[\"^]*a[\"^]*n[\"^]*y[\"^]*c[\"^]*p[\"^]*u)?|u[\"^]*t[\"^]*i[\"^]*l)|t[\"^]*p)|g[\"^]*(?:f[\"^]*x[\"^]*d[\"^]*o[\"^]*w[\"^]*n[\"^]*l[\"^]*o[\"^]*a[\"^]*d[\"^]*w[\"^]*r[\"^]*a[\"^]*p[\"^]*p[\"^]*e[\"^]*r|p[\"^]*s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)|h[\"^]*h|i[\"^]*(?:e[\"^]*(?:4[\"^]*u[\"^]*i[\"^]*n[\"^]*i[\"^]*t|a[\"^]*d[\"^]*v[\"^]*p[\"^]*a[\"^]*c[\"^]*k|e[\"^]*x[\"^]*e[\"^]*c|f[\"^]*r[\"^]*a[\"^]*m[\"^]*e)|l[\"^]*a[\"^]*s[\"^]*m|m[\"^]*e[\"^]*w[\"^]*d[\"^]*b[\"^]*l[\"^]*d|n[\"^]*(?:f[\"^]*d[\"^]*e[\"^]*f[\"^]*a[\"^]*u[\"^]*l[\"^]*t[\"^]*i[\"^]*n[\"^]*s[\"^]*t[\"^]*a[\"^]*l|s[\"^]*t[\"^]*a[\"^]*l[\"^]*l[\"^]*u[\"^]*t[\"^]*i)[\"^]*l)|j[\"^]*s[\"^]*c|l[\"^]*(?:a[\"^]*u[\"^]*n[\"^]*c[\"^]*h[\"^]*-[\"^]*v[\"^]*s[\"^]*d[\"^]*e[\"^]*v[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l|d[\"^]*i[\"^]*f[\"^]*d[\"^]*e)|m[\"^]*(?:a[\"^]*(?:k[\"^]*e[\"^]*c[\"^]*a[\"^]*b|n[\"^]*a[\"^]*g[\"^]*e[\"^]*-[\"^]*b[\"^]*d[\"^]*e|v[\"^]*i[\"^]*n[\"^]*j[\"^]*e[\"^]*c[\"^]*t)|f[\"^]*t[\"^]*r[\"^]*a[\"^]*c[\"^]*e|i[\"^]*c[\"^]*r[\"^]*o[\"^]*s[\"^]*o[\"^]*f[\"^]*t|m[\"^]*c|p[\"^]*c[\"^]*m[\"^]*d[\"^]*r[\"^]*u[\"^]*n|s[\"^]*(?:(?:b[\"^]*u[\"^]*i[\"^]*l|o[\"^]*h[\"^]*t[\"^]*m[\"^]*e)[\"^]*d|c[\"^]*o[\"^]*n[\"^]*f[\"^]*i[\"^]*g|d[\"^]*(?:e[\"^]*p[\"^]*l[\"^]*o[\"^]*y|t)|h[\"^]*t[\"^]*(?:a|m[\"^]*l)|i[\"^]*e[\"^]*x[\"^]*e[\"^]*c|p[\"^]*u[\"^]*b|x[\"^]*s[\"^]*l))|n[\"^]*(?:e[\"^]*t[\"^]*s[\"^]*h|t[\"^]*d[\"^]*s[\"^]*u[\"^]*t[\"^]*i[\"^]*l)|o[\"^]*(?:d[\"^]*b[\"^]*c[\"^]*c[\"^]*o[\"^]*n[\"^]*f|f[\"^]*f[\"^]*l[\"^]*i[\"^]*n[\"^]*e[\"^]*s[\"^]*c[\"^]*a[\"^]*n[\"^]*n[\"^]*e[\"^]*r[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l|n[\"^]*e[\"^]*d[\"^]*r[\"^]*i[\"^]*v[\"^]*e[\"^]*s[\"^]*t[\"^]*a[\"^]*n[\"^]*d[\"^]*a[\"^]*l[\"^]*o[\"^]*n[\"^]*e[\"^]*u[\"^]*p[\"^]*d[\"^]*a[\"^]*t[\"^]*e[\"^]*r|p[\"^]*e[\"^]*n[\"^]*c[\"^]*o[\"^]*n[\"^]*s[\"^]*o[\"^]*l[\"^]*e)|p[\"^]*(?:c[\"^]*(?:a[\"^]*l[\"^]*u[\"^]*a|w[\"^]*(?:r[\"^]*u[\"^]*n|u[\"^]*t[\"^]*l))|(?:e[\"^]*s[\"^]*t[\"^]*e|s)[\"^]*r|(?:k[\"^]*t[\"^]*m[\"^]*o|u[\"^]*b[\"^]*p[\"^]*r)[\"^]*n|n[\"^]*p[\"^]*u[\"^]*t[\"^]*i[\"^]*l|o[\"^]*w[\"^]*e[\"^]*r[\"^]*p[\"^]*n[\"^]*t|r[\"^]*(?:e[\"^]*s[\"^]*e[\"^]*n[\"^]*t[\"^]*a[\"^]*t[\"^]*i[\"^]*o[\"^]*n[\"^]*h[\"^]*o[\"^]*s[\"^]*t|i[\"^]*n[\"^]*t(?:[\"^]*b[\"^]*r[\"^]*m)?|o[\"^]*(?:c[\"^]*d[\"^]*u[\"^]*m[\"^]*p|t[\"^]*o[\"^]*c[\"^]*o[\"^]*l[\"^]*h[\"^]*a[\"^]*n[\"^]*d[\"^]*l[\"^]*e[\"^]*r)))|r[\"^]*(?:a[\"^]*s[\"^]*a[\"^]*u[\"^]*t[\"^]*o[\"^]*u|c[\"^]*s[\"^]*i|(?:d[\"^]*r[\"^]*l[\"^]*e[\"^]*a[\"^]*k[\"^]*d[\"^]*i[\"^]*a|p[\"^]*c[\"^]*p[\"^]*i[\"^]*n)[\"^]*g|e[\"^]*(?:g(?:[\"^]*(?:a[\"^]*s[\"^]*m|e[\"^]*d[\"^]*i[\"^]*t|i[\"^]*(?:n[\"^]*i|s[\"^]*t[\"^]*e[\"^]*r[\"^]*-[\"^]*c[\"^]*i[\"^]*m[\"^]*p[\"^]*r[\"^]*o[\"^]*v[\"^]*i[\"^]*d[\"^]*e[\"^]*r)|s[\"^]*v[\"^]*(?:c[\"^]*s|r[\"^]*3[\"^]*2)))?|(?:m[\"^]*o[\"^]*t|p[\"^]*l[\"^]*a[\"^]*c)[\"^]*e)|u[\"^]*n[\"^]*(?:d[\"^]*l[\"^]*l[\"^]*3[\"^]*2|(?:e[\"^]*x[\"^]*e|s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)[\"^]*h[\"^]*e[\"^]*l[\"^]*p[\"^]*e[\"^]*r|o[\"^]*n[\"^]*c[\"^]*e))|s[\"^]*(?:c[\"^]*(?:[sv,.-/;-<>].*|h[\"^]*t[\"^]*a[\"^]*s[\"^]*k[\"^]*s|r[\"^]*i[\"^]*p[\"^]*t[\"^]*r[\"^]*u[\"^]*n[\"^]*n[\"^]*e[\"^]*r)|e[\"^]*t[\"^]*(?:r[\"^]*e[\"^]*s|t[\"^]*i[\"^]*n[\"^]*g[\"^]*s[\"^]*y[\"^]*n[\"^]*c[\"^]*h[\"^]*o[\"^]*s[\"^]*t|u[\"^]*p[\"^]*a[\"^]*p[\"^]*i)|h[\"^]*(?:d[\"^]*o[\"^]*c[\"^]*v[\"^]*w|e[\"^]*l[\"^]*l[\"^]*3[\"^]*2)|q[\"^]*(?:l[\"^]*(?:d[\"^]*u[\"^]*m[\"^]*p[\"^]*e[\"^]*r|(?:t[\"^]*o[\"^]*o[\"^]*l[\"^]*s[\"^]*)?p[\"^]*s)|u[\"^]*i[\"^]*r[\"^]*r[\"^]*e[\"^]*l)|s[\"^]*h|t[\"^]*o[\"^]*r[\"^]*d[\"^]*i[\"^]*a[\"^]*g|y[\"^]*(?:n[\"^]*c[\"^]*a[\"^]*p[\"^]*p[\"^]*v[\"^]*p[\"^]*u[\"^]*b[\"^]*l[\"^]*i[\"^]*s[\"^]*h[\"^]*i[\"^]*n[\"^]*g[\"^]*s[\"^]*e[\"^]*r[\"^]*v[\"^]*e[\"^]*r|s[\"^]*s[\"^]*e[\"^]*t[\"^]*u[\"^]*p))|t[\"^]*(?:e[\"^]*[sv,.-/;-<>].*|r[\"^]*a[\"^]*c[\"^]*k[\"^]*e[\"^]*r|t[\"^]*(?:d[\"^]*i[\"^]*n[\"^]*j[\"^]*e[\"^]*c[\"^]*t|t[\"^]*r[\"^]*a[\"^]*c[\"^]*e[\"^]*r))|u[\"^]*(?:n[\"^]*r[\"^]*e[\"^]*g[\"^]*m[\"^]*p[\"^]*2|p[\"^]*d[\"^]*a[\"^]*t[\"^]*e|r[\"^]*l|t[\"^]*i[\"^]*l[\"^]*i[\"^]*t[\"^]*y[\"^]*f[\"^]*u[\"^]*n[\"^]*c[\"^]*t[\"^]*i[\"^]*o[\"^]*n[\"^]*s)|v[\"^]*(?:b[\"^]*c|e[\"^]*r[\"^]*c[\"^]*l[\"^]*s[\"^]*i[\"^]*d|i[\"^]*s[\"^]*u[\"^]*a[\"^]*l[\"^]*u[\"^]*i[\"^]*a[\"^]*v[\"^]*e[\"^]*r[\"^]*i[\"^]*f[\"^]*y[\"^]*n[\"^]*a[\"^]*t[\"^]*i[\"^]*v[\"^]*e|s[\"^]*(?:i[\"^]*i[\"^]*s[\"^]*e[\"^]*x[\"^]*e[\"^]*l[\"^]*a[\"^]*u[\"^]*n[\"^]*c[\"^]*h|j[\"^]*i[\"^]*t[\"^]*d[\"^]*e[\"^]*b[\"^]*u[\"^]*g[\"^]*g)[\"^]*e[\"^]*r)|w[\"^]*(?:a[\"^]*b|(?:f|m[\"^]*i)[\"^]*c|i[\"^]*n[\"^]*(?:g[\"^]*e[\"^]*t|r[\"^]*m|w[\"^]*o[\"^]*r[\"^]*d)|l[\"^]*r[\"^]*m[\"^]*d[\"^]*r|o[\"^]*r[\"^]*k[\"^]*f[\"^]*o[\"^]*l[\"^]*d[\"^]*e[\"^]*r[\"^]*s|s[\"^]*(?:(?:c[\"^]*r[\"^]*i[\"^]*p|r[\"^]*e[\"^]*s[\"^]*e)[\"^]*t|l)|t[\"^]*[sv,.-/;-<>].*|u[\"^]*a[\"^]*u[\"^]*c[\"^]*l[\"^]*t)|x[\"^]*w[\"^]*i[\"^]*z[\"^]*a[\"^]*r[\"^]*d|z[\"^]*i[\"^]*p[\"^]*f[\"^]*l[\"^]*d[\"^]*r)(?:.[\"^]*[0-9A-Z_a-z]+)?b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:t[\"^]*i[\"^]*m[\"^]*e|[nr;`{]|||?|&&?)[sv]*[sv\"'-(,@]*(?:[\"'.-9A-Z_a-z]+/|(?:[\"'x5c^]*[0-9A-Z_a-z][\"'x5c^]*:.*|[ \"'.-9A-Zx5c^-_a-z]*)x5c)?[\"^]*(?:a[\"^]*(?:s[\"^]*s[\"^]*o[\"^]*c|t[\"^]*(?:m[\"^]*a[\"^]*d[\"^]*m|t[\"^]*r[\"^]*i[\"^]*b)|u[\"^]*(?:d[\"^]*i[\"^]*t[\"^]*p[\"^]*o[\"^]*l|t[\"^]*o[\"^]*(?:c[\"^]*(?:h[\"^]*k|o[\"^]*n[\"^]*v)|(?:f[\"^]*m|m[\"^]*o[\"^]*u[\"^]*n)[\"^]*t)))|b[\"^]*(?:c[\"^]*d[\"^]*(?:b[\"^]*o[\"^]*o|e[\"^]*d[\"^]*i)[\"^]*t|(?:d[\"^]*e[\"^]*h[\"^]*d|o[\"^]*o[\"^]*t)[\"^]*c[\"^]*f[\"^]*g|i[\"^]*t[\"^]*s[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|c[\"^]*(?:a[\"^]*c[\"^]*l[\"^]*s|e[\"^]*r[\"^]*t[\"^]*(?:r[\"^]*e[\"^]*q|u[\"^]*t[\"^]*i[\"^]*l)|h[\"^]*(?:c[\"^]*p|d[\"^]*i[\"^]*r|g[\"^]*(?:l[\"^]*o[\"^]*g[\"^]*o[\"^]*n|p[\"^]*o[\"^]*r[\"^]*t|u[\"^]*s[\"^]*r)|k[\"^]*(?:d[\"^]*s[\"^]*k|n[\"^]*t[\"^]*f[\"^]*s))|l[\"^]*e[\"^]*a[\"^]*n[\"^]*m[\"^]*g[\"^]*r|m[\"^]*(?:d(?:[\"^]*k[\"^]*e[\"^]*y)?|s[\"^]*t[\"^]*p)|s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)|d[\"^]*(?:c[\"^]*(?:d[\"^]*i[\"^]*a[\"^]*g|g[\"^]*p[\"^]*o[\"^]*f[\"^]*i[\"^]*x)|e[\"^]*(?:f[\"^]*r[\"^]*a[\"^]*g|l)|f[\"^]*s[\"^]*(?:d[\"^]*i[\"^]*a|r[\"^]*m[\"^]*i)[\"^]*g|i[\"^]*(?:a[\"^]*n[\"^]*t[\"^]*z|r|s[\"^]*(?:k[\"^]*(?:c[\"^]*o[\"^]*(?:m[\"^]*p|p[\"^]*y)|p[\"^]*(?:a[\"^]*r[\"^]*t|e[\"^]*r[\"^]*f)|r[\"^]*a[\"^]*i[\"^]*d|s[\"^]*h[\"^]*a[\"^]*d[\"^]*o[\"^]*w)|p[\"^]*d[\"^]*i[\"^]*a[\"^]*g))|n[\"^]*s[\"^]*c[\"^]*m[\"^]*d|(?:o[\"^]*s[\"^]*k[\"^]*e|r[\"^]*i[\"^]*v[\"^]*e[\"^]*r[\"^]*q[\"^]*u[\"^]*e[\"^]*r)[\"^]*y)|e[\"^]*(?:n[\"^]*d[\"^]*l[\"^]*o[\"^]*c[\"^]*a[\"^]*l|v[\"^]*e[\"^]*n[\"^]*t[\"^]*c[\"^]*r[\"^]*e[\"^]*a[\"^]*t[\"^]*e)|E[\"^]*v[\"^]*n[\"^]*t[\"^]*c[\"^]*m[\"^]*d|f[\"^]*(?:c|i[\"^]*(?:l[\"^]*e[\"^]*s[\"^]*y[\"^]*s[\"^]*t[\"^]*e[\"^]*m[\"^]*s|n[\"^]*d[\"^]*s[\"^]*t[\"^]*r)|l[\"^]*a[\"^]*t[\"^]*t[\"^]*e[\"^]*m[\"^]*p|o[\"^]*r(?:[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*s)?|r[\"^]*e[\"^]*e[\"^]*d[\"^]*i[\"^]*s[\"^]*k|s[\"^]*u[\"^]*t[\"^]*i[\"^]*l|(?:t[\"^]*y[\"^]*p|v[\"^]*e[\"^]*u[\"^]*p[\"^]*d[\"^]*a[\"^]*t)[\"^]*e)|g[\"^]*(?:e[\"^]*t[\"^]*(?:m[\"^]*a[\"^]*c|t[\"^]*y[\"^]*p[\"^]*e)|o[\"^]*t[\"^]*o|p[\"^]*(?:f[\"^]*i[\"^]*x[\"^]*u[\"^]*p|(?:r[\"^]*e[\"^]*s[\"^]*u[\"^]*l[\"^]*)?t|u[\"^]*p[\"^]*d[\"^]*a[\"^]*t[\"^]*e)|r[\"^]*a[\"^]*f[\"^]*t[\"^]*a[\"^]*b[\"^]*l)|h[\"^]*(?:e[\"^]*l[\"^]*p[\"^]*c[\"^]*t[\"^]*r|o[\"^]*s[\"^]*t[\"^]*n[\"^]*a[\"^]*m[\"^]*e)|i[\"^]*(?:c[\"^]*a[\"^]*c[\"^]*l[\"^]*s|f|p[\"^]*(?:c[\"^]*o[\"^]*n[\"^]*f[\"^]*i[\"^]*g|x[\"^]*r[\"^]*o[\"^]*u[\"^]*t[\"^]*e)|r[\"^]*f[\"^]*t[\"^]*p)|j[\"^]*e[\"^]*t[\"^]*p[\"^]*a[\"^]*c[\"^]*k|k[\"^]*(?:l[\"^]*i[\"^]*s[\"^]*t|s[\"^]*e[\"^]*t[\"^]*u[\"^]*p|t[\"^]*(?:m[\"^]*u[\"^]*t[\"^]*i[\"^]*l|p[\"^]*a[\"^]*s[\"^]*s))|l[\"^]*(?:o[\"^]*(?:d[\"^]*c[\"^]*t[\"^]*r|g[\"^]*(?:m[\"^]*a[\"^]*n|o[\"^]*f[\"^]*f))|p[\"^]*[q-r])|m[\"^]*(?:a[\"^]*(?:c[\"^]*f[\"^]*i[\"^]*l[\"^]*e|k[\"^]*e[\"^]*c[\"^]*a[\"^]*b|p[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|k[\"^]*(?:d[\"^]*i[\"^]*r|l[\"^]*i[\"^]*n[\"^]*k)|m[\"^]*c|o[\"^]*u[\"^]*n[\"^]*t[\"^]*v[\"^]*o[\"^]*l|q[\"^]*(?:b[\"^]*k[\"^]*u[\"^]*p|(?:t[\"^]*g[\"^]*)?s[\"^]*v[\"^]*c)|s[\"^]*(?:d[\"^]*t|i[\"^]*(?:e[\"^]*x[\"^]*e[\"^]*c|n[\"^]*f[\"^]*o[\"^]*3[\"^]*2)|t[\"^]*s[\"^]*c))|n[\"^]*(?:b[\"^]*t[\"^]*s[\"^]*t[\"^]*a[\"^]*t|e[\"^]*t[\"^]*(?:c[\"^]*f[\"^]*g|d[\"^]*o[\"^]*m|s[\"^]*(?:h|t[\"^]*a[\"^]*t))|f[\"^]*s[\"^]*(?:a[\"^]*d[\"^]*m[\"^]*i[\"^]*n|s[\"^]*(?:h[\"^]*a[\"^]*r[\"^]*e|t[\"^]*a[\"^]*t))|l[\"^]*(?:b[\"^]*m[\"^]*g[\"^]*r|t[\"^]*e[\"^]*s[\"^]*t)|s[\"^]*l[\"^]*o[\"^]*o[\"^]*k[\"^]*u[\"^]*p|t[\"^]*(?:b[\"^]*a[\"^]*c[\"^]*k[\"^]*u[\"^]*p|c[\"^]*m[\"^]*d[\"^]*p[\"^]*r[\"^]*o[\"^]*m[\"^]*p[\"^]*t|f[\"^]*r[\"^]*s[\"^]*u[\"^]*t[\"^]*l))|o[\"^]*(?:f[\"^]*f[\"^]*l[\"^]*i[\"^]*n[\"^]*e|p[\"^]*e[\"^]*n[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*s)|p[\"^]*(?:a[\"^]*(?:g[\"^]*e[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*c[\"^]*o[\"^]*n[\"^]*f[\"^]*i|t[\"^]*h[\"^]*p[\"^]*i[\"^]*n)[\"^]*g|(?:b[\"^]*a[\"^]*d[\"^]*m[\"^]*i|k[\"^]*t[\"^]*m[\"^]*o)[\"^]*n|e[\"^]*(?:n[\"^]*t[\"^]*n[\"^]*t|r[\"^]*f[\"^]*m[\"^]*o[\"^]*n)|n[\"^]*p[\"^]*u[\"^]*(?:n[\"^]*a[\"^]*t[\"^]*t[\"^]*e[\"^]*n[\"^]*d|t[\"^]*i[\"^]*l)|o[\"^]*(?:p[\"^]*d|w[\"^]*e[\"^]*r[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l)|r[\"^]*n[\"^]*(?:c[\"^]*n[\"^]*f[\"^]*g|(?:d[\"^]*r[\"^]*v|m[\"^]*n[\"^]*g)[\"^]*r|j[\"^]*o[\"^]*b[\"^]*s|p[\"^]*o[\"^]*r[\"^]*t|q[\"^]*c[\"^]*t[\"^]*l)|u[\"^]*(?:b[\"^]*p[\"^]*r[\"^]*n|s[\"^]*h[\"^]*(?:d|p[\"^]*r[\"^]*i[\"^]*n[\"^]*t[\"^]*e[\"^]*r[\"^]*c[\"^]*o[\"^]*n[\"^]*n[\"^]*e[\"^]*c[\"^]*t[\"^]*i[\"^]*o[\"^]*n[\"^]*s))|w[\"^]*(?:l[\"^]*a[\"^]*u[\"^]*n[\"^]*c[\"^]*h[\"^]*e[\"^]*r|s[\"^]*h))|q[\"^]*(?:a[\"^]*p[\"^]*p[\"^]*s[\"^]*r[\"^]*v|p[\"^]*r[\"^]*o[\"^]*c[\"^]*e[\"^]*s[\"^]*s|u[\"^]*s[\"^]*e[\"^]*r|w[\"^]*i[\"^]*n[\"^]*s[\"^]*t[\"^]*a)|r[\"^]*(?:d(?:[\"^]*p[\"^]*s[\"^]*i[\"^]*g[\"^]*n)?|e[\"^]*(?:f[\"^]*s[\"^]*u[\"^]*t[\"^]*i[\"^]*l|g(?:[\"^]*(?:i[\"^]*n[\"^]*i|s[\"^]*v[\"^]*r[\"^]*3[\"^]*2))?|l[\"^]*o[\"^]*g|(?:(?:p[\"^]*a[\"^]*d[\"^]*m[\"^]*i|s[\"^]*c[\"^]*a)[\"^]*)?n|x[\"^]*e[\"^]*c)|i[\"^]*s[\"^]*e[\"^]*t[\"^]*u[\"^]*p|m[\"^]*d[\"^]*i[\"^]*r|o[\"^]*b[\"^]*o[\"^]*c[\"^]*o[\"^]*p[\"^]*y|p[\"^]*c[\"^]*(?:i[\"^]*n[\"^]*f[\"^]*o|p[\"^]*i[\"^]*n[\"^]*g)|s[\"^]*h|u[\"^]*n[\"^]*d[\"^]*l[\"^]*l[\"^]*3[\"^]*2|w[\"^]*i[\"^]*n[\"^]*s[\"^]*t[\"^]*a)|s[\"^]*(?:a[\"^]*n|c[\"^]*(?:h[\"^]*t[\"^]*a[\"^]*s[\"^]*k[\"^]*s|w[\"^]*c[\"^]*m[\"^]*d)|e[\"^]*(?:c[\"^]*e[\"^]*d[\"^]*i[\"^]*t|r[\"^]*v[\"^]*e[\"^]*r[\"^]*(?:(?:c[\"^]*e[\"^]*i[\"^]*p|w[\"^]*e[\"^]*r)[\"^]*o[\"^]*p[\"^]*t[\"^]*i[\"^]*n|m[\"^]*a[\"^]*n[\"^]*a[\"^]*g[\"^]*e[\"^]*r[\"^]*c[\"^]*m[\"^]*d)|t[\"^]*x)|f[\"^]*c|(?:h[\"^]*o[\"^]*w[\"^]*m[\"^]*o[\"^]*u[\"^]*n|u[\"^]*b[\"^]*s)[\"^]*t|x[\"^]*s[\"^]*t[\"^]*r[\"^]*a[\"^]*c[\"^]*e|y[\"^]*s[\"^]*(?:o[\"^]*c[\"^]*m[\"^]*g[\"^]*r|t[\"^]*e[\"^]*m[\"^]*i[\"^]*n[\"^]*f[\"^]*o))|t[\"^]*(?:a[\"^]*(?:k[\"^]*e[\"^]*o[\"^]*w[\"^]*n|p[\"^]*i[\"^]*c[\"^]*f[\"^]*g|s[\"^]*k[\"^]*(?:k[\"^]*i[\"^]*l[\"^]*l|l[\"^]*i[\"^]*s[\"^]*t))|(?:c[\"^]*m[\"^]*s[\"^]*e[\"^]*t[\"^]*u|f[\"^]*t)[\"^]*p|(?:(?:e[\"^]*l[\"^]*n[\"^]*e|i[\"^]*m[\"^]*e[\"^]*o[\"^]*u)[\"^]*|r[\"^]*a[\"^]*c[\"^]*e[\"^]*r[\"^]*(?:p[\"^]*)?)t|l[\"^]*n[\"^]*t[\"^]*a[\"^]*d[\"^]*m[\"^]*n|p[\"^]*m[\"^]*(?:t[\"^]*o[\"^]*o[\"^]*l|v[\"^]*s[\"^]*c[\"^]*m[\"^]*g[\"^]*r)|s[\"^]*(?:(?:d[\"^]*i[\"^]*s[\"^]*)?c[\"^]*o[\"^]*n|e[\"^]*c[\"^]*i[\"^]*m[\"^]*p|k[\"^]*i[\"^]*l[\"^]*l|p[\"^]*r[\"^]*o[\"^]*f)|y[\"^]*p[\"^]*e[\"^]*p[\"^]*e[\"^]*r[\"^]*f|z[\"^]*u[\"^]*t[\"^]*i[\"^]*l)|u[\"^]*n[\"^]*(?:e[\"^]*x[\"^]*p[\"^]*o[\"^]*s[\"^]*e|i[\"^]*q[\"^]*u[\"^]*e[\"^]*i[\"^]*d|l[\"^]*o[\"^]*d[\"^]*c[\"^]*t[\"^]*r)|v[\"^]*(?:o[\"^]*l|s[\"^]*s[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|w[\"^]*(?:a[\"^]*i[\"^]*t[\"^]*f[\"^]*o[\"^]*r|b[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n|(?:d[\"^]*s|e[\"^]*(?:c|v[\"^]*t))[\"^]*u[\"^]*t[\"^]*i[\"^]*l|h[\"^]*(?:e[\"^]*r[\"^]*e|o[\"^]*a[\"^]*m[\"^]*i)|i[\"^]*n[\"^]*(?:n[\"^]*t(?:[\"^]*3[\"^]*2)?|r[\"^]*s)|m[\"^]*i[\"^]*c|s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)|x[\"^]*c[\"^]*o[\"^]*p[\"^]*y)(?:.[\"^]*[0-9A-Z_a-z]+)?b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*.[sv].*b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?:$(?:((?:(.*)|.*))|{.*})|[<>](.*)|[!?.+])"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx /"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx s"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ^[^.]+.[^;?]+[;?](.*(['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx /"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx s"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ^[^.]*?(?:['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{])"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx /"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx s"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i).|(?:[sv]*|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[arx])?|G[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?E[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?T|a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:b|(?:p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?t|r(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[jp])?|s(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)?|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[ks])|b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[8-9][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?9|[au][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|c|(?:m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?p|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[dfu]|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[gr])|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[bdx]|n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?v|q[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n|s(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)?)|f[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[c-dgi]|m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)|g[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[chr][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|o|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?g)|h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:d|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[dp]|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b)|j[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:j[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s|q)|k[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h|l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:d(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d)?|[nps]|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a|z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?4)?)|m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r|v)|n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[cl]|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|(?:p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?m)|o[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[at][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?x|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|f|(?:k[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?g|h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[cp]|r(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?y)?|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z)|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r|c(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)?|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dv]|(?:p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?m)|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dt]|[g-hu]|s(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)?|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n)|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[cr]|b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?l|[co][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[ex]|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c)|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|l)|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:3[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m|c)|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|z)|y[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m)|z[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)[-0-9_a-z]+(?:[\"'[-]]+|$+[!#*-0-9?-@x5c_a-{]+|``|[$<>]())[sv]*[-0-9_a-z]+"
-    },
-    {
-        "category": "RCE",
-        "pattern": "!@rx [0-9]s*'s*[0-9]"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx ;[sv]*.[sv]*[\"']?(?:a(?:rchive|uth)|b(?:a(?:ckup|il)|inary)|c(?:d|h(?:anges|eck)|lone|onnection)|d(?:atabases|b(?:config|info)|ump)|e(?:cho|qp|x(?:cel|it|p(?:ert|lain)))|f(?:ilectrl|ullschema)|he(?:aders|lp)|i(?:mpo(?:rt|ster)|ndexes|otrace)|l(?:i(?:mi|n)t|o(?:ad|g))|(?:mod|n(?:onc|ullvalu)|unmodul)e|o(?:nce|pen|utput)|p(?:arameter|r(?:int|o(?:gress|mpt)))|quit|re(?:ad|cover|store)|s(?:ave|c(?:anstats|hema)|e(?:lftest|parator|ssion)|h(?:a3sum|ell|ow)?|tats|ystem)|t(?:ables|estc(?:ase|trl)|ime(?:out|r)|race)|vfs(?:info|list|name)|width)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx rn(?s:.)*?b(?:(?i:E)(?:HLO [--.A-Za-zx17fx212a]{1,255}|XPN .{1,64})|HELO [--.A-Za-zx17fx212a]{1,255}|MAIL FROM:<.{1,64}(?i:@).{1,255}(?i:>)|(?i:R)(?:CPT TO:(?:(?i:<).{1,64}(?i:@).{1,255}(?i:>)|(?i: ))?(?i:<).{1,64}(?i:>)|SETb)|VRFY .{1,64}(?: <.{1,64}(?i:@).{1,255}(?i:>)|(?i:@).{1,255})|AUTH [-0-9A-Z_a-zx17fx212a]{1,20}(?i: )(?:(?:[+/-9A-Z_a-zx17fx212a]{4})*(?:[+/-9A-Z_a-zx17fx212a]{2}(?i:=)|[+/-9A-Z_a-zx17fx212a]{3}))?(?i:=)|STARTTLSb|NOOPb(?:(?i: ).{1,255})?)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?is)rn[0-9A-Z_a-z]{1,50}b (?:A(?:PPEND (?:[\"-#%-&*--9A-Zx5c_a-z]+)?(?: ([ x5ca-z]+))?(?: \"?[0-9]{1,2}-[0-9A-Z_a-z]{3}-[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}\"?)? {[0-9]{1,20}+?}|UTHENTICATE [-0-9_a-z]{1,20}rn)|L(?:SUB (?:[\"-#*.-9A-Z_a-z~]+)? (?:[\"%-&*.-9A-Zx5c_a-z]+)?|ISTRIGHTS (?:[\"%-&*--9A-Zx5c_a-z]+)?)|S(?:TATUS (?:[\"%-&*--9A-Zx5c_a-z]+)? ((?:U(?:NSEEN|IDNEXT)|MESSAGES|UIDVALIDITY|RECENT| )+)|ETACL (?:[\"%-&*--9A-Zx5c_a-z]+)? [+-][ac-eik-lpr-tw-x]+?)|UID (?:COPY|FETCH|STORE) (?:[*,0-:]+)?|(?:(?:DELETE|GET)ACL|MYRIGHTS) (?:[\"%-&*--9A-Zx5c_a-z]+)?)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?is)rn.*?b(?:(?:LIST|TOP [0-9]+)(?: [0-9]+)?|U(?:SER .+?|IDL(?: [0-9]+)?)|PASS .+?|(?:RETR|DELE) [0-9]+?|A(?:POP [0-9A-Z_a-z]+ [0-9a-f]{32}|UTH [-0-9A-Z_]{1,20} (?:(?:[+/-9A-Z_a-z]{4})*(?:[+/-9A-Z_a-z]{2}=|[+/-9A-Z_a-z]{3}))?=))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*|(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*)[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7z[arx]?|(?:(?:GE|POS)T|HEAD)[sv&)<>|]|a(?:(?:b|w[ks]|l(?:ias|pine))[sv&)<>|]|pt(?:[sv&)<>|]|-get)|r(?:[sv&)<>j|]|(?:p|ch)[sv&)<>|]|ia2c)|s(?:h?[sv&)<>|]|cii(?:-xfr|85)|pell)|t(?:[sv&)<>|]|obm)|dd(?:group|user)|getty|nsible-playbook|xel)|b(?:z(?:z[sv&)<>|]|c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more)|a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu))|c(?:[8-9]9|(?:a(?:t|ncel|psh)|c)[sv&)<>|]|mp|p(?:[sv&)<>|]|an|io|ulimit)|s(?:h|plit|vtool)|u(?:(?:t|rl)[sv&)<>|]|psfilter)|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|r(?:ash[sv&)<>|]|on(?:tab)?))|d(?:(?:[du]|i(?:(?:alo)?g|r|ff)|a(?:sh|te))[sv&)<>|]|f|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:(?:[bd]|cho)[sv&)<>|]|n(?:v(?:-update)?|d(?:if|sw))|qn|s(?:[sv&)<>h|]|ac)|x(?:(?:ec)?[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r))|2fsck|(?:asy_instal|va)l|fax|grep|macs)|f(?:(?:c|etch|lock|unction)[sv&)<>|]|d|g(?:rep)?|i(?:(?:n(?:d|ger)|sh)?[sv&)<>|]|le(?:[sv&)<>|]|test))|mt|tp(?:[sv&)<>|]|stats|who)|acter|o(?:ld[sv&)<>|]|reach)|ping)|g(?:c(?:c[^sv]|ore)|db|e(?:(?:m|tfacl)[sv&)<>|]|ni(?:e[sv&)<>|]|soimage))|hci?|i(?:(?:t|mp)[sv&)<>|]|nsh)|(?:o|awk)[sv&)<>|]|pg|r(?:c|ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:d|up|ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:d|p(?:6?tables|config)?|rb|conv|f(?:config|top)|nstall[sv&)<>|]|onice|spell)|j(?:js|q|ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:s(?:h|shell)|ill(?:[sv&)<>|]|all)|nife[sv&)<>|])|l(?:d(?:d?[sv&)<>|]|config)|(?:[np]|inks|ynx)[sv&)<>|]|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)?|ua(?:[sv&)<>|]|(?:la)?tex)|z(?:[sv&)4<>|]|4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore))|a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|trace|wp-(?:d(?:ownload|ump)|mirror|request))|m(?:a(?:(?:n|ke)[sv&)<>|]|il(?:[sv&)<>q|]|x[sv&)<>|])|ster.passwd|wk)|tr|(?:v|utt)[sv&)<>|]|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:c(?:[sv&)<>|]|.(?:openbsd|traditional)|at)|e(?:t(?:[sv&)<>|]|(?:c|st)at|kit-ftp|plan)|ofetch)|(?:(?:ul)?l|ice)[sv&)<>|]|m(?:[sv&)<>|]|ap)|p(?:m[sv&)<>|]|ing)|a(?:no[sv&)<>|]|sm|wk)|o(?:de[sv&)<>|]|hup)|roff|s(?:enter|lookup|tat))|o(?:(?:d|ctave)[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:x|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:b|f(?:la)?tex|ksh)|f(?:[sv&)<>|]|tp)|g(?:rep)?|hp(?:[sv&)57<>|]|-cgi)|i(?:(?:co?|ng)[sv&)<>|]|p[^sv]|dstat|gz)|k(?:g(?:_?info)?|exec|ill)|r(?:y?[sv&)<>|]|int(?:env|f[sv&)<>|]))|t(?:x|ar(?:diff|grep)?)|wd(?:.db)?|xz|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|opd|s(?:ed|ftp|ql)|u(?:ppet[sv&)<>|]|shd)|ython[^sv])|r(?:a(?:r[sv&)<>|]|k(?:e[sv&)<>|]|u))|c(?:p[sv&)<>|])?|e(?:(?:d(?:carpet)?|v|name|p(?:eat|lace))[sv&)<>|]|a(?:delf|lpath)|stic)|m(?:(?:dir)?[sv&)<>|]|user)|pm(?:[sv&)<>|]|db|(?:quer|verif)y)|bash|l(?:ogin|wrap)|nano|oute[sv&)<>|]|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:c(?:p|hed|r(?:een|ipt)[sv&)<>|])|e(?:(?:d|lf|rvice)[sv&)<>|]|t(?:arch|env|facl[sv&)<>|]|sid)?|ndmail)|(?:g|ash|nap)[sv&)<>|]|h(?:(?:adow|ells)?[sv&)<>|]|.distrib|u(?:f|tdown[sv&)<>|]))|s(?:[sv&)<>|]|h(?:[sv&)<>|]|-key(?:ge|sca)n|pass))|u(?:[sv&)<>|]|do)|vn|diff|ftp|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:c|r[sv&)<>|]|il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|bl|c(?:p(?:[sv&)<>|]|dump|ing|traceroute)|l?sh)|e(?:[ex][sv&)<>|]|lnet)|i(?:c[sv&)<>|]|me(?:(?:out)?[sv&)<>|]|datectl))|o(?:p|uch[sv&)<>|])|ftp|mux|r(?:aceroute6?|off)|shark)|u(?:dp|l(?:imit)?[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|pdate-alternatives|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:i(?:m(?:[sv&)<>|]|diff)|ew[sv&)<>|]|gr|pw|rsh)|algrind|olatility[sv&)<>|])|w(?:3m|c|a(?:ll|tch)[sv&)<>|]|get|h(?:iptail[sv&)<>|]|o(?:ami|is))|i(?:reshark|sh[sv&)<>|]))|x(?:(?:x|pa)d|z(?:[sv&)<>|]|c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more)|args|e(?:la)?tex|mo(?:dmap|re)|term)|y(?:(?:e(?:s|lp)|arn)[sv&)<>|]|um)|z(?:ip(?:[sv&)<>|]|c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|s(?:h|oelim|td(?:(?:ca|m)t|grep|less)?)|athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|less|more|run|ypper))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*|(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*)[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7z[arx]?|(?:(?:GE|POS)T|HEAD)[sv&)<>|]|a(?:(?:b|w[ks]|l(?:ias|pine))[sv&)<>|]|pt(?:[sv&)<>|]|-get)|r(?:[sv&)<>j|]|(?:p|ch)[sv&)<>|]|ia2c)|s(?:h?[sv&)<>|]|cii(?:-xfr|85)|pell)|t(?:[sv&)<>|]|obm)|dd(?:group|user)|getty|nsible-playbook|xel)|b(?:z(?:z[sv&)<>|]|c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more)|a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu))|c(?:[8-9]9|(?:a(?:t|ncel|psh)|c)[sv&)<>|]|mp|p(?:[sv&)<>|]|io|ulimit)|s(?:h|plit|vtool)|u(?:t[sv&)<>|]|psfilter)|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|r(?:ash[sv&)<>|]|on(?:tab)?))|d(?:(?:[du]|i(?:(?:alo)?g|r|ff)|a(?:sh|te))[sv&)<>|]|f|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:(?:[bd]|cho)[sv&)<>|]|n(?:v(?:-update)?|d(?:if|sw))|qn|s(?:[sv&)<>h|]|ac)|x(?:(?:ec)?[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r))|2fsck|(?:asy_instal|va)l|fax|grep|macs)|f(?:(?:c|etch|lock|unction)[sv&)<>|]|d|g(?:rep)?|i(?:(?:n(?:d|ger)|sh)?[sv&)<>|]|le(?:[sv&)<>|]|test))|mt|tp(?:[sv&)<>|]|stats|who)|acter|o(?:ld[sv&)<>|]|reach)|ping)|g(?:c(?:c[^sv]|ore)|db|e(?:(?:m|tfacl)[sv&)<>|]|ni(?:e[sv&)<>|]|soimage))|hci?|i(?:(?:t|mp)[sv&)<>|]|nsh)|(?:o|awk)[sv&)<>|]|pg|r(?:c|ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:d|up|ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:d|p(?:6?tables|config)?|rb|conv|f(?:config|top)|nstall[sv&)<>|]|onice|spell)|j(?:js|q|ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:s(?:h|shell)|ill(?:[sv&)<>|]|all)|nife[sv&)<>|])|l(?:d(?:d?[sv&)<>|]|config)|(?:[np]|ynx)[sv&)<>|]|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)?|ua(?:[sv&)<>|]|(?:la)?tex)|z(?:[sv&)4<>|]|4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore))|a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|trace|wp-(?:d(?:ownload|ump)|mirror|request))|m(?:a(?:(?:n|ke)[sv&)<>|]|il(?:[sv&)<>q|]|x[sv&)<>|])|ster.passwd|wk)|tr|(?:v|utt)[sv&)<>|]|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:c(?:[sv&)<>|]|.(?:openbsd|traditional)|at)|e(?:t(?:[sv&)<>|]|(?:c|st)at|kit-ftp|plan)|ofetch)|(?:(?:ul)?l|ice)[sv&)<>|]|m(?:[sv&)<>|]|ap)|p(?:m[sv&)<>|]|ing)|a(?:no[sv&)<>|]|sm|wk)|o(?:de[sv&)<>|]|hup)|roff|s(?:enter|lookup|tat))|o(?:(?:d|ctave)[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:x|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:b|f(?:la)?tex|ksh)|f(?:[sv&)<>|]|tp)|g(?:rep)?|hp(?:[sv&)57<>|]|-cgi)|i(?:(?:co?|ng)[sv&)<>|]|p[^sv]|dstat|gz)|k(?:g(?:_?info)?|exec|ill)|r(?:y?[sv&)<>|]|int(?:env|f[sv&)<>|]))|t(?:x|ar(?:diff|grep)?)|wd(?:.db)?|xz|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|opd|s(?:ed|ftp|ql)|u(?:ppet[sv&)<>|]|shd)|ython[2-3])|r(?:a(?:r[sv&)<>|]|k(?:e[sv&)<>|]|u))|c(?:p[sv&)<>|])?|e(?:(?:d(?:carpet)?|v|name|p(?:eat|lace))[sv&)<>|]|a(?:delf|lpath)|stic)|m(?:(?:dir)?[sv&)<>|]|user)|pm(?:[sv&)<>|]|db|(?:quer|verif)y)|bash|l(?:ogin|wrap)|nano|oute[sv&)<>|]|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:c(?:p|hed|r(?:een|ipt)[sv&)<>|])|e(?:(?:d|lf|rvice)[sv&)<>|]|t(?:arch|env|facl[sv&)<>|]|sid)?|ndmail)|(?:g|ash)[sv&)<>|]|h(?:(?:adow|ells)?[sv&)<>|]|.distrib|u(?:f|tdown[sv&)<>|]))|s(?:[sv&)<>|]|h(?:[sv&)<>|]|-key(?:ge|sca)n|pass))|u(?:[sv&)<>|]|do)|vn|diff|ftp|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:c|r[sv&)<>|]|il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|bl|c(?:p(?:[sv&)<>|]|dump|ing|traceroute)|l?sh)|e(?:[ex][sv&)<>|]|lnet)|i(?:c[sv&)<>|]|me(?:(?:out)?[sv&)<>|]|datectl))|o(?:p|uch[sv&)<>|])|ftp|mux|r(?:aceroute6?|off)|shark)|u(?:dp|l(?:imit)?[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|pdate-alternatives|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:i(?:m(?:[sv&)<>|]|diff)|ew[sv&)<>|]|gr|pw|rsh)|algrind|olatility[sv&)<>|])|w(?:c|a(?:ll|tch)[sv&)<>|]|h(?:iptail[sv&)<>|]|o(?:ami|is))|i(?:reshark|sh[sv&)<>|]))|x(?:(?:x|pa)d|z(?:[sv&)<>|]|c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more)|args|e(?:la)?tex|mo(?:dmap|re)|term)|y(?:(?:e(?:s|lp)|arn)[sv&)<>|]|um)|z(?:ip(?:[sv&)<>|]|c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|s(?:h|oelim|td(?:(?:ca|m)t|grep|less)?)|athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|less|more|run|ypper))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@pmFromFile unix-shell.data"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:(?:(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?2[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|s)|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?o|[sv&),<>|].*))b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)b(?:7z[arx]?|(?:(?:GE|POS)T|HEAD)[sv&)<>|]|a(?:(?:b|w[ks]|l(?:ias|pine))[sv&)<>|]|pt(?:(?:itude)?[sv&)<>|]|-get)|r(?:[sv&)<>j|]|(?:p|ch)[sv&)<>|]|ia2c)|s(?:h?[sv&)<>|]|cii(?:-xfr|85)|pell)|t(?:[sv&)<>|]|obm)|dd(?:group|user)|getty|nsible-playbook|xel)|b(?:z(?:z[sv&)<>|]|c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more)|a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu))|c(?:[8-9]9|(?:a(?:t|ncel|psh)|c)[sv&)<>|]|mp|p(?:[sv&)<>|]|io|ulimit)|s(?:h|plit|vtool)|u(?:t[sv&)<>|]|psfilter)|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|r(?:ash[sv&)<>|]|on(?:tab)?))|d(?:(?:[du]|i(?:(?:alo)?g|r|ff)|a(?:sh|te))[sv&)<>|]|n?f|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:(?:[bd]|cho)[sv&)<>|]|n(?:v(?:-update)?|d(?:if|sw))|qn|s(?:[sv&)<>h|]|ac)|x(?:(?:ec)?[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r))|2fsck|(?:asy_instal|va)l|fax|grep|macs)|f(?:(?:c|etch|lock|unction)[sv&)<>|]|d|g(?:rep)?|i(?:(?:n(?:d|ger)|sh)?[sv&)<>|]|le(?:[sv&)<>|]|test))|mt|tp(?:[sv&)<>|]|stats|who)|acter|o(?:ld[sv&)<>|]|reach)|ping)|g(?:c(?:c[^sv]|ore)|db|e(?:(?:m|tfacl)[sv&)<>|]|ni(?:e[sv&)<>|]|soimage))|hci?|i(?:(?:t|mp)[sv&)<>|]|nsh)|(?:o|awk)[sv&)<>|]|pg|r(?:c|ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:d|up|ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:d|p(?:6?tables|config)?|rb|conv|f(?:config|top)|nstall[sv&)<>|]|onice|spell)|j(?:js|q|ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:s(?:h|shell)|ill(?:[sv&)<>|]|all)|nife[sv&)<>|])|l(?:d(?:d?[sv&)<>|]|config)|(?:[np]|ynx)[sv&)<>|]|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)?|ua(?:[sv&)<>|]|(?:la)?tex)|z(?:[sv&)4<>|]|4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore))|a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|trace|wp-(?:d(?:ownload|ump)|mirror|request))|m(?:a(?:(?:n|ke)[sv&)<>|]|il(?:[sv&)<>q|]|x[sv&)<>|])|ster.passwd|wk)|tr|(?:v|utt)[sv&)<>|]|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:c(?:[sv&)<>|]|.(?:openbsd|traditional)|at)|e(?:t(?:[sv&)<>|]|(?:c|st)at|kit-ftp|plan)|ofetch)|(?:(?:ul)?l|ice)[sv&)<>|]|m(?:[sv&)<>|]|ap)|p(?:m[sv&)<>|]|ing)|a(?:no[sv&)<>|]|sm|wk)|o(?:de[sv&)<>|]|hup)|roff|s(?:enter|lookup|tat))|o(?:(?:d|ctave)[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:x|cman|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:b|f(?:la)?tex|ksh)|f(?:[sv&)<>|]|tp)|g(?:rep)?|hp(?:[sv&)57<>|]|-cgi)|i(?:(?:co?|ng)[sv&)<>|]|p[^sv]|dstat|gz)|k(?:g(?:_?info)?|exec|ill)|r(?:y?[sv&)<>|]|int(?:env|f[sv&)<>|]))|s(?:[sv&)<>|]|ed|ftp|ql)?|t(?:x|ar(?:diff|grep)?)|wd(?:.db)?|xz|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|opd|u(?:ppet[sv&)<>|]|shd)|ython[2-3])|r(?:a(?:r[sv&)<>|]|k(?:e[sv&)<>|]|u))|c(?:p[sv&)<>|])?|e(?:(?:d(?:carpet)?|v|name|p(?:eat|lace))[sv&)<>|]|a(?:delf|lpath)|stic)|m(?:(?:dir)?[sv&)<>|]|user)|pm(?:[sv&)<>|]|db|(?:quer|verif)y)|bash|l(?:ogin|wrap)|nano|oute[sv&)<>|]|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:c(?:p|hed|r(?:een|ipt)[sv&)<>|])|e(?:(?:d|lf|rvice)[sv&)<>|]|t(?:arch|env|facl[sv&)<>|]|sid)?|ndmail)|(?:g|ash)[sv&)<>|]|h(?:(?:adow|ells)?[sv&)<>|]|.distrib|u(?:f|tdown[sv&)<>|]))|s(?:[sv&)<>|]|h(?:[sv&)<>|]|-key(?:ge|sca)n|pass))|u(?:[sv&)<>|]|do)|vn|diff|ftp|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:c|r[sv&)<>|]|il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|bl|c(?:p(?:[sv&)<>|]|dump|ing|traceroute)|l?sh)|e(?:[ex][sv&)<>|]|lnet)|i(?:c[sv&)<>|]|me(?:(?:out)?[sv&)<>|]|datectl))|o(?:p|uch[sv&)<>|])|ftp|mux|r(?:aceroute6?|off)|shark)|u(?:dp|l(?:imit)?[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|p(?:2date[sv&)<>|]|date-alternatives)|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:i(?:(?:ew)?[sv&)<>|]|m(?:[sv&)<>|]|diff)|gr|pw|rsh)|algrind|olatility[sv&)<>|])|w(?:[sv&)<>c|]|h(?:o(?:[sv&)<>|]|ami|is)?|iptail[sv&)<>|])|a(?:ll|tch)[sv&)<>|]|i(?:reshark|sh[sv&)<>|]))|x(?:(?:x|pa)d|z(?:[sv&)<>|]|c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more)|args|e(?:la)?tex|mo(?:dmap|re)|term)|y(?:(?:e(?:s|lp)|arn)[sv&)<>|]|um)|z(?:ip(?:[sv&)<>|]|c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|s(?:h|oelim|td(?:(?:ca|m)t|grep|less)?)|athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|less|more|run|ypper))b"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?i)(?:(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*|(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*)[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:(?:(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?2[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|s)|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?o|[sv&),<>|].*))"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx /(?:[?*]+[a-z/]+|[a-z/]+[?*]+)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx rn(?s:.)*?b(?:DATA|QUIT|HELP(?: .{1,255})?)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx (?is)rn[0-9A-Z_a-z]{1,50}b (?:C(?:(?:REATE|OPY [*,0-:]+) [\"-#%-&*--9A-Zx5c_a-z]+|APABILITY|HECK|LOSE)|DELETE [\"-#%-&*--.0-9A-Zx5c_a-z]+|EX(?:AMINE [\"-#%-&*--.0-9A-Zx5c_a-z]+|PUNGE)|FETCH [*,0-:]+|L(?:IST [\"-#*--9A-Zx5c_a-z~]+? [\"-#%-&*--9A-Zx5c_a-z]+|OG(?:IN [--.0-9@_a-z]{1,40} .*?|OUT))|RENAME [\"-#%-&*--9A-Zx5c_a-z]+? [\"-#%-&*--9A-Zx5c_a-z]+|S(?:E(?:LECT [\"-#%-&*--9A-Zx5c_a-z]+|ARCH(?: CHARSET [--.0-9A-Z_a-z]{1,40})? (?:(KEYWORD x5c)?(?:A(?:LL|NSWERED)|BCC|D(?:ELETED|RAFT)|(?:FLAGGE|OL)D|RECENT|SEEN|UN(?:(?:ANSWER|FLAGG)ED|D(?:ELETED|RAFT)|SEEN)|NEW)|(?:BODY|CC|FROM|HEADER .{1,100}|NOT|OR .{1,255}|T(?:EXT|O)) .{1,255}|LARGER [0-9]{1,20}|[*,0-:]+|(?:BEFORE|ON|S(?:ENT(?:(?:BEFOR|SINC)E|ON)|INCE)) \"?[0-9]{1,2}-[0-9A-Z_a-z]{3}-[0-9]{4}\"?|S(?:MALLER [0-9]{1,20}|UBJECT .{1,255})|U(?:ID [*,0-:]+?|NKEYWORD x5c(Seen|(?:Answer|Flagg)ed|D(?:eleted|raft)|Recent))))|T(?:ORE [*,0-:]+? [+-]?FLAGS(?:.SILENT)? (?:(x5c[a-z]{1,20}))?|ARTTLS)|UBSCRIBE [\"-#%-&*--9A-Zx5c_a-z]+)|UN(?:SUBSCRIBE [\"-#%-&*--9A-Zx5c_a-z]+|AUTHENTICATE)|NOOP)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx rn(?s:.)*?b(?:(?:QUI|STA|RSE)(?i:T)|NOOP|CAPA)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@rx !(?:d|!)"
-    },
-    {
-        "category": "RCE",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "RCE",
         "pattern": "@lt 4"
     },
     {
@@ -1858,6 +1646,62 @@
     {
         "category": "XSS",
         "pattern": "@lt 4"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@pmFromFile scanners-user-agents.data"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "DETECTION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "ATTACK",
+        "pattern": "!@eq 0"
+    },
+    {
+        "category": "ATTACK",
+        "pattern": "!@within |%{tx.allowed_request_content_type_charset}|"
+    },
+    {
+        "category": "ATTACK",
+        "pattern": "@rx ^content-types*:s*(.*)$"
+    },
+    {
+        "category": "ATTACK",
+        "pattern": "!@rx ^(?:(?:*|[^!-\"(-),/:-?[-]{}]+)/(?:*|[^!-\"(-),/:-?[-]{}]+)|*)(?:[sv]*;[sv]*(?:charset[sv]*=[sv]*\"?(?:iso-8859-15?|utf-8|windows-1252)b\"?|(?:[^sv -\"(-),/:-?[-]c{}]|c(?:[^!-\"(-),/:-?[-]h{}]|h(?:[^!-\"(-),/:-?[-]a{}]|a(?:[^!-\"(-),/:-?[-]r{}]|r(?:[^!-\"(-),/:-?[-]s{}]|s(?:[^!-\"(-),/:-?[-]e{}]|e[^!-\"(-),/:-?[-]t{}]))))))[^!-\"(-),/:-?[-]{}]*[sv]*=[sv]*[^!(-),/:-?[-]{}]+);?)*(?:[sv]*,[sv]*(?:(?:*|[^!-\"(-),/:-?[-]{}]+)/(?:*|[^!-\"(-),/:-?[-]{}]+)|*)(?:[sv]*;[sv]*(?:charset[sv]*=[sv]*\"?(?:iso-8859-15?|utf-8|windows-1252)b\"?|(?:[^sv -\"(-),/:-?[-]c{}]|c(?:[^!-\"(-),/:-?[-]h{}]|h(?:[^!-\"(-),/:-?[-]a{}]|a(?:[^!-\"(-),/:-?[-]r{}]|r(?:[^!-\"(-),/:-?[-]s{}]|s(?:[^!-\"(-),/:-?[-]e{}]|e[^!-\"(-),/:-?[-]t{}]))))))[^!-\"(-),/:-?[-]{}]*[sv]*=[sv]*[^!(-),/:-?[-]{}]+);?)*)*$"
+    },
+    {
+        "category": "ATTACK",
+        "pattern": "@rx content-transfer-encoding:(.*)"
     },
     {
         "category": "SQLI",
@@ -2152,6 +1996,382 @@
         "pattern": "@rx ((?:[~!@#$%^&*()-+={}[]|:;\"'\u00b4\u2019\u2018`<>][^~!@#$%^&*()-+={}[]|:;\"'\u00b4\u2019\u2018`<>]*?){2})"
     },
     {
+        "category": "RCE",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[arx])?|(?:(?:b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|x)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|[ckz][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?v|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)|f[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dg]|g[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[&,<>|]|(?:[--.0-9A-Z_a-z][\"'[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#*-0-9?-@_a-{]*)?x5c?)+[sv&,<>|]).*|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?g)|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:s|z[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:4|[sv&),<>|].*))|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z)|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*)?|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|(?:e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|(?:s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?h)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n)|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?3[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m)b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:(?:HEAD|POST|y(?:arn|elp))[sv&)<>|]|a(?:dd(?:group|user)|getty|l(?:ias|pine)[sv&)<>|]|nsible-playbook|pt(?:-get|itude[sv&)<>|])|r(?:ch[sv&)<>|]|ia2c)|s(?:cii(?:-xfr|85)|pell)|tobm|xel)|b(?:a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu)|z(?:c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more))|c(?:a(?:ncel|psh)[sv&)<>|]|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|p(?:an|io|ulimit)|r(?:ash[sv&)<>|]|on(?:tab)?)|s(?:plit|vtool)|u(?:psfilter|rl[sv&)<>|]))|d(?:(?:a(?:sh|te)|i(?:alog|ff))[sv&)<>|]|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:2fsck|(?:asy_instal|va)l|cho[sv&)<>|]|fax|grep|macs|n(?:d(?:if|sw)|v-update)|sac|x(?:ec[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r)))|f(?:acter|(?:etch|lock|unction)[sv&)<>|]|grep|i(?:le(?:[sv&)<>|]|test)|(?:n(?:d|ger)|sh)[sv&)<>|])|o(?:ld[sv&)<>|]|reach)|ping|tp(?:stats|who))|g(?:awk[sv&)<>|]|core|e(?:ni(?:e[sv&)<>|]|soimage)|tfacl[sv&)<>|])|hci|i(?:mp[sv&)<>|]|nsh)|r(?:ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:conv|f(?:config|top)|nstall[sv&)<>|]|onice|p(?:6?tables|config)|spell)|j(?:ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:ill(?:[sv&)<>|]|all)|nife[sv&)<>|]|sshell)|l(?:a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|dconfig|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|(?:inks|ynx)[sv&)<>|]|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)|trace|ua(?:la)?tex|wp-(?:d(?:ownload|ump)|mirror|request)|z(?:4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore)))|m(?:a(?:il(?:[sv&)<>q|]|x[sv&)<>|])|ke[sv&)<>|]|ster.passwd|wk)|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|utt[sv&)<>|]|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:a(?:no[sv&)<>|]|sm|wk)|c(?:.(?:openbsd|traditional)|at)|e(?:ofetch|t(?:(?:c|st)at|kit-ftp|plan))|(?:ice|ull)[sv&)<>|]|map|o(?:de[sv&)<>|]|hup)|ping|roff|s(?:enter|lookup|tat))|o(?:ctave[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:cman|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:f(?:la)?tex|ksh)|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|(?:ft|gre)p|hp(?:-cgi|[57])|i(?:(?:co|ng)[sv&)<>|]|dstat|gz)|k(?:exec|g_?info|ill)|opd|rint(?:env|f[sv&)<>|])|s(?:ed|ftp|ql)|tar(?:diff|grep)?|u(?:ppet[sv&)<>|]|shd)|wd.db|ython[^sv])|r(?:ak(?:e[sv&)<>|]|u)|bash|e(?:a(?:delf|lpath)|(?:dcarpet|name|p(?:eat|lace))[sv&)<>|]|stic)|l(?:ogin|wrap)|m(?:dir[sv&)<>|]|user)|nano|oute[sv&)<>|]|pm(?:db|(?:quer|verif)y)|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:(?:ash|nap)[sv&)<>|]|c(?:hed|r(?:een|ipt)[sv&)<>|])|diff|e(?:(?:lf|rvice)[sv&)<>|]|ndmail|t(?:arch|env|facl[sv&)<>|]|sid))|ftp|h(?:.distrib|(?:adow|ells)[sv&)<>|]|u(?:f|tdown[sv&)<>|]))|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|sh(?:-key(?:ge|sca)n|pass)|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|udo|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|c(?:l?sh|p(?:dump|ing|traceroute))|elnet|ftp|ime(?:(?:out)?[sv&)<>|]|datectl)|mux|ouch[sv&)<>|]|r(?:aceroute6?|off)|shark)|u(?:limit[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|p(?:2date[sv&)<>|]|date-alternatives)|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:algrind|i(?:ew[sv&)<>|]|gr|mdiff|pw|rsh)|olatility[sv&)<>|])|w(?:a(?:ll|tch)[sv&)<>|]|get|h(?:iptail[sv&)<>|]|o(?:ami|is))|i(?:reshark|sh[sv&)<>|]))|x(?:args|e(?:la)?tex|mo(?:dmap|re)|pad|term|z(?:c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more))|z(?:athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|ip(?:c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|less|more|run|s(?:oelim|td(?:(?:ca|m)t|grep|less)?)|ypper))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@pmFromFile windows-powershell-commands.data"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:[nr;`{]|||?|&&?)[sv]*[sv\"'-(,@]*(?:[\"'.-9A-Z_a-z]+/|(?:[\"'x5c^]*[0-9A-Z_a-z][\"'x5c^]*:.*|[ \"'.-9A-Zx5c^-_a-z]*)x5c)?[\"^]*(?:(?:a[\"^]*(?:c|s[\"^]*n[\"^]*p)|e[\"^]*(?:b[\"^]*p|p[\"^]*(?:a[\"^]*l|c[\"^]*s[\"^]*v|s[\"^]*n)|[tx][\"^]*s[\"^]*n)|f[\"^]*(?:[cltw]|o[\"^]*r[\"^]*e[\"^]*a[\"^]*c[\"^]*h)|i[\"^]*(?:[cr][\"^]*m|e[\"^]*x|h[\"^]*y|i|p[\"^]*(?:a[\"^]*l|c[\"^]*s[\"^]*v|m[\"^]*o|s[\"^]*n)|s[\"^]*e|w[\"^]*(?:m[\"^]*i|r))|m[\"^]*(?:a[\"^]*n|[dipv]|o[\"^]*u[\"^]*n[\"^]*t)|o[\"^]*g[\"^]*v|p[\"^]*(?:o[\"^]*p|u[\"^]*s[\"^]*h)[\"^]*d|t[\"^]*r[\"^]*c[\"^]*m|w[\"^]*j[\"^]*b)[\"^]*[sv,.-/;-<>].*|c[\"^]*(?:(?:(?:d|h[\"^]*d[\"^]*i[\"^]*r|v[\"^]*p[\"^]*a)[\"^]*|p[\"^]*(?:[ip][\"^]*)?)[sv,.-/;-<>].*|l[\"^]*(?:(?:[cipv]|h[\"^]*y)[\"^]*[sv,.-/;-<>].*|s)|n[\"^]*s[\"^]*n)|d[\"^]*(?:(?:b[\"^]*p|e[\"^]*l|i[\"^]*(?:f[\"^]*f|r))[\"^]*[sv,.-/;-<>].*|n[\"^]*s[\"^]*n)|g[\"^]*(?:(?:(?:(?:a[\"^]*)?l|b[\"^]*p|d[\"^]*r|h[\"^]*y|(?:w[\"^]*m[\"^]*)?i|j[\"^]*b|[u-v])[\"^]*|c[\"^]*(?:[ims][\"^]*)?|m[\"^]*(?:o[\"^]*)?|s[\"^]*(?:n[\"^]*(?:p[\"^]*)?|v[\"^]*))[sv,.-/;-<>].*|e[\"^]*r[\"^]*r|p[\"^]*(?:(?:s[\"^]*)?[sv,.-/;-<>].*|v))|l[\"^]*s|n[\"^]*(?:(?:a[\"^]*l|d[\"^]*r|[iv]|m[\"^]*o|s[\"^]*n)[\"^]*[sv,.-/;-<>].*|p[\"^]*s[\"^]*s[\"^]*c)|r[\"^]*(?:(?:(?:(?:b[\"^]*)?p|e[\"^]*n|(?:w[\"^]*m[\"^]*)?i|j[\"^]*b|n[\"^]*[ip])[\"^]*|d[\"^]*(?:r[\"^]*)?|m[\"^]*(?:(?:d[\"^]*i[\"^]*r|o)[\"^]*)?|s[\"^]*n[\"^]*(?:p[\"^]*)?|v[\"^]*(?:p[\"^]*a[\"^]*)?)[sv,.-/;-<>].*|c[\"^]*(?:j[\"^]*b[\"^]*[sv,.-/;-<>].*|s[\"^]*n)|u[\"^]*j[\"^]*b)|s[\"^]*(?:(?:(?:a[\"^]*(?:j[\"^]*b|l|p[\"^]*s|s[\"^]*v)|b[\"^]*p|[civ]|w[\"^]*m[\"^]*i)[\"^]*|l[\"^]*(?:s[\"^]*)?|p[\"^]*(?:(?:j[\"^]*b|p[\"^]*s|s[\"^]*v)[\"^]*)?)[sv,.-/;-<>].*|h[\"^]*c[\"^]*m|u[\"^]*j[\"^]*b))(?:.[\"^]*[0-9A-Z_a-z]+)?b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx $(?:((?:.*|(.*)))|{.*})|[<>](.*)|/[0-9A-Z_a-z]*[!?.+]"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx b(?:for(?:/[dflr].*)? %+[^ ]+ in(.*)[sv]?do|if(?:/i)?(?: not)?(?: (?:e(?:xist|rrorlevel)|defined|cmdextversion)b|[ (].*(?:b(?:g(?:eq|tr)|equ|neq|l(?:eq|ss))b|==)))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[arx])?|(?:b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|x)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|[ckz][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?v|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)|f[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dg]|g[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?g)|(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:s|z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?4)?)|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z)|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)?|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|(?:s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?h|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n)|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?3[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m)[sv&)<>|]"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:a(?:ddgroup|xel)|b(?:ase(?:32|64|nc)|lkid|sd(?:cat|iff|tar)|u(?:iltin|nzip2|sybox)|yobu|z(?:c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more))|c(?:h(?:g(?:passwd|rp)|pass|sh)|lang++|oproc|ron)|d(?:iff[sv&)<>|]|mesg|oas)|e(?:2fsck|grep)|f(?:grep|iletest|tp(?:stats|who))|g(?:r(?:ep[sv&)<>|]|oupmod)|unzip|z(?:cat|exe|ip))|htop|l(?:ast(?:comm|log(?:in)?)|ess(?:echo|(?:fil|pip)e)|ftp(?:get)?|osetup|s(?:-F|b_release|cpu|mod|of|pci|usb)|wp-download|z(?:4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore)))|m(?:a(?:ilq|ster.passwd)|k(?:fifo|nod|temp)|locate|ysql(?:admin|dump(?:slow)?|hotcopy|show))|n(?:c(?:.(?:openbsd|traditional)|at)|et(?:(?:c|st)at|kit-ftp|plan)|ohup|ping|stat)|onintr|p(?:dksh|erl5?|(?:ft|gre)p|hp(?:-cgi|[57])|igz|k(?:exec|ill)|(?:op|se)d|rint(?:env|f[sv&)<>|])|tar(?:diff|grep)?|wd.db|ython[2-3])|r(?:(?:bas|ealpat)h|m(?:dir[sv&)<>|]|user)|nano|sync)|s(?:diff|e(?:ndmail|t(?:env|sid))|ftp|(?:h.distri|pwd.d)b|ocat|td(?:err|in|out)|udo|ysctl)|t(?:ailf|c(?:p(?:ing|traceroute)|sh)|elnet|imeout[sv&)<>|]|raceroute6?)|u(?:n(?:ame|lz(?:4|ma)|(?:pig|x)z|rar|zstd)|ser(?:(?:ad|mo)d|del))|vi(?:gr|pw)|w(?:get|hoami)|x(?:args|z(?:c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more))|z(?:c(?:at|mp)|diff|[e-f]?grep|ip(?:c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|less|more|run|std(?:(?:ca|m)t|grep|less)?))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "!@rx [0-9]s*'s*[0-9]"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx !-d"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@pmFromFile unix-shell.data"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ^(s*)s+{"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ^(s*)s+{"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ba[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?sb[sv]+[!-\"%',0-9@-Z_a-z]+=[^sv]"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@pmFromFile restricted-upload.data"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:t[\"^]*i[\"^]*m[\"^]*e|[nr;`{]|||?|&&?)[sv]*[sv\"'-(,@]*(?:[\"'.-9A-Z_a-z]+/|(?:[\"'x5c^]*[0-9A-Z_a-z][\"'x5c^]*:.*|[ \"'.-9A-Zx5c^-_a-z]*)x5c)?[\"^]*(?:a[\"^]*(?:c[\"^]*c[\"^]*c[\"^]*h[\"^]*e[\"^]*c[\"^]*k[\"^]*c[\"^]*o[\"^]*n[\"^]*s[\"^]*o[\"^]*l[\"^]*e|d[\"^]*(?:p[\"^]*l[\"^]*u[\"^]*s|v[\"^]*p[\"^]*a[\"^]*c[\"^]*k)|(?:g[\"^]*e[\"^]*n[\"^]*t[\"^]*e[\"^]*x[\"^]*e[\"^]*c[\"^]*u[\"^]*t[\"^]*o|s[\"^]*p[\"^]*n[\"^]*e[\"^]*t[\"^]*_[\"^]*c[\"^]*o[\"^]*m[\"^]*p[\"^]*i[\"^]*l[\"^]*e)[\"^]*r|p[\"^]*p[\"^]*(?:i[\"^]*n[\"^]*s[\"^]*t[\"^]*a[\"^]*l[\"^]*l[\"^]*e[\"^]*r|v[\"^]*l[\"^]*p)|t[\"^]*(?:[sv,.-/;-<>].*|b[\"^]*r[\"^]*o[\"^]*k[\"^]*e[\"^]*r))|b[\"^]*(?:a[\"^]*s[\"^]*h|g[\"^]*i[\"^]*n[\"^]*f[\"^]*o|i[\"^]*t[\"^]*s[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|c[\"^]*(?:d[\"^]*b|e[\"^]*r[\"^]*t[\"^]*(?:o[\"^]*c|r[\"^]*e[\"^]*q|u[\"^]*t[\"^]*i[\"^]*l)|l[\"^]*_[\"^]*(?:i[\"^]*n[\"^]*v[\"^]*o[\"^]*c[\"^]*a[\"^]*t[\"^]*i[\"^]*o[\"^]*n|l[\"^]*o[\"^]*a[\"^]*d[\"^]*a[\"^]*s[\"^]*s[\"^]*e[\"^]*m[\"^]*b[\"^]*l[\"^]*y|m[\"^]*u[\"^]*t[\"^]*e[\"^]*x[\"^]*v[\"^]*e[\"^]*r[\"^]*i[\"^]*f[\"^]*i[\"^]*e[\"^]*r[\"^]*s)|m[\"^]*(?:d(?:[\"^]*(?:k[\"^]*e[\"^]*y|l[\"^]*3[\"^]*2))?|s[\"^]*t[\"^]*p)|o[\"^]*(?:m[\"^]*s[\"^]*v[\"^]*c[\"^]*s|n[\"^]*(?:f[\"^]*i[\"^]*g[\"^]*s[\"^]*e[\"^]*c[\"^]*u[\"^]*r[\"^]*i[\"^]*t[\"^]*y[\"^]*p[\"^]*o[\"^]*l[\"^]*i[\"^]*c[\"^]*y|h[\"^]*o[\"^]*s[\"^]*t|t[\"^]*r[\"^]*o[\"^]*l)|r[\"^]*e[\"^]*g[\"^]*e[\"^]*n)|r[\"^]*e[\"^]*a[\"^]*t[\"^]*e[\"^]*d[\"^]*u[\"^]*m[\"^]*p|s[\"^]*(?:c(?:[\"^]*r[\"^]*i[\"^]*p[\"^]*t)?|i)|u[\"^]*s[\"^]*t[\"^]*o[\"^]*m[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l[\"^]*h[\"^]*o[\"^]*s[\"^]*t)|d[\"^]*(?:a[\"^]*t[\"^]*a[\"^]*s[\"^]*v[\"^]*c[\"^]*u[\"^]*t[\"^]*i[\"^]*l|e[\"^]*(?:f[\"^]*a[\"^]*u[\"^]*l[\"^]*t[\"^]*p[\"^]*a[\"^]*c[\"^]*k|s[\"^]*k(?:[\"^]*t[\"^]*o[\"^]*p[\"^]*i[\"^]*m[\"^]*g[\"^]*d[\"^]*o[\"^]*w[\"^]*n[\"^]*l[\"^]*d[\"^]*r)?|v[\"^]*(?:i[\"^]*c[\"^]*e[\"^]*c[\"^]*r[\"^]*e[\"^]*d[\"^]*e[\"^]*n[\"^]*t[\"^]*i[\"^]*a[\"^]*l[\"^]*d[\"^]*e[\"^]*p[\"^]*l[\"^]*o[\"^]*y[\"^]*m[\"^]*e[\"^]*n[\"^]*t|t[\"^]*o[\"^]*o[\"^]*l[\"^]*s[\"^]*l[\"^]*a[\"^]*u[\"^]*n[\"^]*c[\"^]*h[\"^]*e[\"^]*r))|f[\"^]*s[\"^]*(?:h[\"^]*i[\"^]*m|v[\"^]*c)|i[\"^]*(?:a[\"^]*n[\"^]*t[\"^]*z|s[\"^]*k[\"^]*s[\"^]*h[\"^]*a[\"^]*d[\"^]*o[\"^]*w)|n[\"^]*(?:s[\"^]*c[\"^]*m[\"^]*d|x)|o[\"^]*t[\"^]*n[\"^]*e[\"^]*t|u[\"^]*m[\"^]*p[\"^]*6[\"^]*4|x[\"^]*c[\"^]*a[\"^]*p)|e[\"^]*(?:s[\"^]*e[\"^]*n[\"^]*t[\"^]*u[\"^]*t[\"^]*l|v[\"^]*e[\"^]*n[\"^]*t[\"^]*v[\"^]*w[\"^]*r|x[\"^]*(?:c[\"^]*e[\"^]*l|p[\"^]*(?:a[\"^]*n[\"^]*d|l[\"^]*o[\"^]*r[\"^]*e[\"^]*r)|t[\"^]*(?:e[\"^]*x[\"^]*p[\"^]*o[\"^]*r[\"^]*t|r[\"^]*a[\"^]*c[\"^]*3[\"^]*2)))|f[\"^]*(?:i[\"^]*n[\"^]*(?:d[\"^]*s[\"^]*t|g[\"^]*e)[\"^]*r|l[\"^]*t[\"^]*m[\"^]*c|o[\"^]*r[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*s|s[\"^]*(?:i(?:[\"^]*a[\"^]*n[\"^]*y[\"^]*c[\"^]*p[\"^]*u)?|u[\"^]*t[\"^]*i[\"^]*l)|t[\"^]*p)|g[\"^]*(?:f[\"^]*x[\"^]*d[\"^]*o[\"^]*w[\"^]*n[\"^]*l[\"^]*o[\"^]*a[\"^]*d[\"^]*w[\"^]*r[\"^]*a[\"^]*p[\"^]*p[\"^]*e[\"^]*r|p[\"^]*s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)|h[\"^]*h|i[\"^]*(?:e[\"^]*(?:4[\"^]*u[\"^]*i[\"^]*n[\"^]*i[\"^]*t|a[\"^]*d[\"^]*v[\"^]*p[\"^]*a[\"^]*c[\"^]*k|e[\"^]*x[\"^]*e[\"^]*c|f[\"^]*r[\"^]*a[\"^]*m[\"^]*e)|l[\"^]*a[\"^]*s[\"^]*m|m[\"^]*e[\"^]*w[\"^]*d[\"^]*b[\"^]*l[\"^]*d|n[\"^]*(?:f[\"^]*d[\"^]*e[\"^]*f[\"^]*a[\"^]*u[\"^]*l[\"^]*t[\"^]*i[\"^]*n[\"^]*s[\"^]*t[\"^]*a[\"^]*l|s[\"^]*t[\"^]*a[\"^]*l[\"^]*l[\"^]*u[\"^]*t[\"^]*i)[\"^]*l)|j[\"^]*s[\"^]*c|l[\"^]*(?:a[\"^]*u[\"^]*n[\"^]*c[\"^]*h[\"^]*-[\"^]*v[\"^]*s[\"^]*d[\"^]*e[\"^]*v[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l|d[\"^]*i[\"^]*f[\"^]*d[\"^]*e)|m[\"^]*(?:a[\"^]*(?:k[\"^]*e[\"^]*c[\"^]*a[\"^]*b|n[\"^]*a[\"^]*g[\"^]*e[\"^]*-[\"^]*b[\"^]*d[\"^]*e|v[\"^]*i[\"^]*n[\"^]*j[\"^]*e[\"^]*c[\"^]*t)|f[\"^]*t[\"^]*r[\"^]*a[\"^]*c[\"^]*e|i[\"^]*c[\"^]*r[\"^]*o[\"^]*s[\"^]*o[\"^]*f[\"^]*t|m[\"^]*c|p[\"^]*c[\"^]*m[\"^]*d[\"^]*r[\"^]*u[\"^]*n|s[\"^]*(?:(?:b[\"^]*u[\"^]*i[\"^]*l|o[\"^]*h[\"^]*t[\"^]*m[\"^]*e)[\"^]*d|c[\"^]*o[\"^]*n[\"^]*f[\"^]*i[\"^]*g|d[\"^]*(?:e[\"^]*p[\"^]*l[\"^]*o[\"^]*y|t)|h[\"^]*t[\"^]*(?:a|m[\"^]*l)|i[\"^]*e[\"^]*x[\"^]*e[\"^]*c|p[\"^]*u[\"^]*b|x[\"^]*s[\"^]*l))|n[\"^]*(?:e[\"^]*t[\"^]*s[\"^]*h|t[\"^]*d[\"^]*s[\"^]*u[\"^]*t[\"^]*i[\"^]*l)|o[\"^]*(?:d[\"^]*b[\"^]*c[\"^]*c[\"^]*o[\"^]*n[\"^]*f|f[\"^]*f[\"^]*l[\"^]*i[\"^]*n[\"^]*e[\"^]*s[\"^]*c[\"^]*a[\"^]*n[\"^]*n[\"^]*e[\"^]*r[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l|n[\"^]*e[\"^]*d[\"^]*r[\"^]*i[\"^]*v[\"^]*e[\"^]*s[\"^]*t[\"^]*a[\"^]*n[\"^]*d[\"^]*a[\"^]*l[\"^]*o[\"^]*n[\"^]*e[\"^]*u[\"^]*p[\"^]*d[\"^]*a[\"^]*t[\"^]*e[\"^]*r|p[\"^]*e[\"^]*n[\"^]*c[\"^]*o[\"^]*n[\"^]*s[\"^]*o[\"^]*l[\"^]*e)|p[\"^]*(?:c[\"^]*(?:a[\"^]*l[\"^]*u[\"^]*a|w[\"^]*(?:r[\"^]*u[\"^]*n|u[\"^]*t[\"^]*l))|(?:e[\"^]*s[\"^]*t[\"^]*e|s)[\"^]*r|(?:k[\"^]*t[\"^]*m[\"^]*o|u[\"^]*b[\"^]*p[\"^]*r)[\"^]*n|n[\"^]*p[\"^]*u[\"^]*t[\"^]*i[\"^]*l|o[\"^]*w[\"^]*e[\"^]*r[\"^]*p[\"^]*n[\"^]*t|r[\"^]*(?:e[\"^]*s[\"^]*e[\"^]*n[\"^]*t[\"^]*a[\"^]*t[\"^]*i[\"^]*o[\"^]*n[\"^]*h[\"^]*o[\"^]*s[\"^]*t|i[\"^]*n[\"^]*t(?:[\"^]*b[\"^]*r[\"^]*m)?|o[\"^]*(?:c[\"^]*d[\"^]*u[\"^]*m[\"^]*p|t[\"^]*o[\"^]*c[\"^]*o[\"^]*l[\"^]*h[\"^]*a[\"^]*n[\"^]*d[\"^]*l[\"^]*e[\"^]*r)))|r[\"^]*(?:a[\"^]*s[\"^]*a[\"^]*u[\"^]*t[\"^]*o[\"^]*u|c[\"^]*s[\"^]*i|(?:d[\"^]*r[\"^]*l[\"^]*e[\"^]*a[\"^]*k[\"^]*d[\"^]*i[\"^]*a|p[\"^]*c[\"^]*p[\"^]*i[\"^]*n)[\"^]*g|e[\"^]*(?:g(?:[\"^]*(?:a[\"^]*s[\"^]*m|e[\"^]*d[\"^]*i[\"^]*t|i[\"^]*(?:n[\"^]*i|s[\"^]*t[\"^]*e[\"^]*r[\"^]*-[\"^]*c[\"^]*i[\"^]*m[\"^]*p[\"^]*r[\"^]*o[\"^]*v[\"^]*i[\"^]*d[\"^]*e[\"^]*r)|s[\"^]*v[\"^]*(?:c[\"^]*s|r[\"^]*3[\"^]*2)))?|(?:m[\"^]*o[\"^]*t|p[\"^]*l[\"^]*a[\"^]*c)[\"^]*e)|u[\"^]*n[\"^]*(?:d[\"^]*l[\"^]*l[\"^]*3[\"^]*2|(?:e[\"^]*x[\"^]*e|s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)[\"^]*h[\"^]*e[\"^]*l[\"^]*p[\"^]*e[\"^]*r|o[\"^]*n[\"^]*c[\"^]*e))|s[\"^]*(?:c[\"^]*(?:[sv,.-/;-<>].*|h[\"^]*t[\"^]*a[\"^]*s[\"^]*k[\"^]*s|r[\"^]*i[\"^]*p[\"^]*t[\"^]*r[\"^]*u[\"^]*n[\"^]*n[\"^]*e[\"^]*r)|e[\"^]*t[\"^]*(?:r[\"^]*e[\"^]*s|t[\"^]*i[\"^]*n[\"^]*g[\"^]*s[\"^]*y[\"^]*n[\"^]*c[\"^]*h[\"^]*o[\"^]*s[\"^]*t|u[\"^]*p[\"^]*a[\"^]*p[\"^]*i)|h[\"^]*(?:d[\"^]*o[\"^]*c[\"^]*v[\"^]*w|e[\"^]*l[\"^]*l[\"^]*3[\"^]*2)|q[\"^]*(?:l[\"^]*(?:d[\"^]*u[\"^]*m[\"^]*p[\"^]*e[\"^]*r|(?:t[\"^]*o[\"^]*o[\"^]*l[\"^]*s[\"^]*)?p[\"^]*s)|u[\"^]*i[\"^]*r[\"^]*r[\"^]*e[\"^]*l)|s[\"^]*h|t[\"^]*o[\"^]*r[\"^]*d[\"^]*i[\"^]*a[\"^]*g|y[\"^]*(?:n[\"^]*c[\"^]*a[\"^]*p[\"^]*p[\"^]*v[\"^]*p[\"^]*u[\"^]*b[\"^]*l[\"^]*i[\"^]*s[\"^]*h[\"^]*i[\"^]*n[\"^]*g[\"^]*s[\"^]*e[\"^]*r[\"^]*v[\"^]*e[\"^]*r|s[\"^]*s[\"^]*e[\"^]*t[\"^]*u[\"^]*p))|t[\"^]*(?:e[\"^]*[sv,.-/;-<>].*|r[\"^]*a[\"^]*c[\"^]*k[\"^]*e[\"^]*r|t[\"^]*(?:d[\"^]*i[\"^]*n[\"^]*j[\"^]*e[\"^]*c[\"^]*t|t[\"^]*r[\"^]*a[\"^]*c[\"^]*e[\"^]*r))|u[\"^]*(?:n[\"^]*r[\"^]*e[\"^]*g[\"^]*m[\"^]*p[\"^]*2|p[\"^]*d[\"^]*a[\"^]*t[\"^]*e|r[\"^]*l|t[\"^]*i[\"^]*l[\"^]*i[\"^]*t[\"^]*y[\"^]*f[\"^]*u[\"^]*n[\"^]*c[\"^]*t[\"^]*i[\"^]*o[\"^]*n[\"^]*s)|v[\"^]*(?:b[\"^]*c|e[\"^]*r[\"^]*c[\"^]*l[\"^]*s[\"^]*i[\"^]*d|i[\"^]*s[\"^]*u[\"^]*a[\"^]*l[\"^]*u[\"^]*i[\"^]*a[\"^]*v[\"^]*e[\"^]*r[\"^]*i[\"^]*f[\"^]*y[\"^]*n[\"^]*a[\"^]*t[\"^]*i[\"^]*v[\"^]*e|s[\"^]*(?:i[\"^]*i[\"^]*s[\"^]*e[\"^]*x[\"^]*e[\"^]*l[\"^]*a[\"^]*u[\"^]*n[\"^]*c[\"^]*h|j[\"^]*i[\"^]*t[\"^]*d[\"^]*e[\"^]*b[\"^]*u[\"^]*g[\"^]*g)[\"^]*e[\"^]*r)|w[\"^]*(?:a[\"^]*b|(?:f|m[\"^]*i)[\"^]*c|i[\"^]*n[\"^]*(?:g[\"^]*e[\"^]*t|r[\"^]*m|w[\"^]*o[\"^]*r[\"^]*d)|l[\"^]*r[\"^]*m[\"^]*d[\"^]*r|o[\"^]*r[\"^]*k[\"^]*f[\"^]*o[\"^]*l[\"^]*d[\"^]*e[\"^]*r[\"^]*s|s[\"^]*(?:(?:c[\"^]*r[\"^]*i[\"^]*p|r[\"^]*e[\"^]*s[\"^]*e)[\"^]*t|l)|t[\"^]*[sv,.-/;-<>].*|u[\"^]*a[\"^]*u[\"^]*c[\"^]*l[\"^]*t)|x[\"^]*w[\"^]*i[\"^]*z[\"^]*a[\"^]*r[\"^]*d|z[\"^]*i[\"^]*p[\"^]*f[\"^]*l[\"^]*d[\"^]*r)(?:.[\"^]*[0-9A-Z_a-z]+)?b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:t[\"^]*i[\"^]*m[\"^]*e|[nr;`{]|||?|&&?)[sv]*[sv\"'-(,@]*(?:[\"'.-9A-Z_a-z]+/|(?:[\"'x5c^]*[0-9A-Z_a-z][\"'x5c^]*:.*|[ \"'.-9A-Zx5c^-_a-z]*)x5c)?[\"^]*(?:a[\"^]*(?:s[\"^]*s[\"^]*o[\"^]*c|t[\"^]*(?:m[\"^]*a[\"^]*d[\"^]*m|t[\"^]*r[\"^]*i[\"^]*b)|u[\"^]*(?:d[\"^]*i[\"^]*t[\"^]*p[\"^]*o[\"^]*l|t[\"^]*o[\"^]*(?:c[\"^]*(?:h[\"^]*k|o[\"^]*n[\"^]*v)|(?:f[\"^]*m|m[\"^]*o[\"^]*u[\"^]*n)[\"^]*t)))|b[\"^]*(?:c[\"^]*d[\"^]*(?:b[\"^]*o[\"^]*o|e[\"^]*d[\"^]*i)[\"^]*t|(?:d[\"^]*e[\"^]*h[\"^]*d|o[\"^]*o[\"^]*t)[\"^]*c[\"^]*f[\"^]*g|i[\"^]*t[\"^]*s[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|c[\"^]*(?:a[\"^]*c[\"^]*l[\"^]*s|e[\"^]*r[\"^]*t[\"^]*(?:r[\"^]*e[\"^]*q|u[\"^]*t[\"^]*i[\"^]*l)|h[\"^]*(?:c[\"^]*p|d[\"^]*i[\"^]*r|g[\"^]*(?:l[\"^]*o[\"^]*g[\"^]*o[\"^]*n|p[\"^]*o[\"^]*r[\"^]*t|u[\"^]*s[\"^]*r)|k[\"^]*(?:d[\"^]*s[\"^]*k|n[\"^]*t[\"^]*f[\"^]*s))|l[\"^]*e[\"^]*a[\"^]*n[\"^]*m[\"^]*g[\"^]*r|m[\"^]*(?:d(?:[\"^]*k[\"^]*e[\"^]*y)?|s[\"^]*t[\"^]*p)|s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)|d[\"^]*(?:c[\"^]*(?:d[\"^]*i[\"^]*a[\"^]*g|g[\"^]*p[\"^]*o[\"^]*f[\"^]*i[\"^]*x)|e[\"^]*(?:f[\"^]*r[\"^]*a[\"^]*g|l)|f[\"^]*s[\"^]*(?:d[\"^]*i[\"^]*a|r[\"^]*m[\"^]*i)[\"^]*g|i[\"^]*(?:a[\"^]*n[\"^]*t[\"^]*z|r|s[\"^]*(?:k[\"^]*(?:c[\"^]*o[\"^]*(?:m[\"^]*p|p[\"^]*y)|p[\"^]*(?:a[\"^]*r[\"^]*t|e[\"^]*r[\"^]*f)|r[\"^]*a[\"^]*i[\"^]*d|s[\"^]*h[\"^]*a[\"^]*d[\"^]*o[\"^]*w)|p[\"^]*d[\"^]*i[\"^]*a[\"^]*g))|n[\"^]*s[\"^]*c[\"^]*m[\"^]*d|(?:o[\"^]*s[\"^]*k[\"^]*e|r[\"^]*i[\"^]*v[\"^]*e[\"^]*r[\"^]*q[\"^]*u[\"^]*e[\"^]*r)[\"^]*y)|e[\"^]*(?:n[\"^]*d[\"^]*l[\"^]*o[\"^]*c[\"^]*a[\"^]*l|v[\"^]*e[\"^]*n[\"^]*t[\"^]*c[\"^]*r[\"^]*e[\"^]*a[\"^]*t[\"^]*e)|E[\"^]*v[\"^]*n[\"^]*t[\"^]*c[\"^]*m[\"^]*d|f[\"^]*(?:c|i[\"^]*(?:l[\"^]*e[\"^]*s[\"^]*y[\"^]*s[\"^]*t[\"^]*e[\"^]*m[\"^]*s|n[\"^]*d[\"^]*s[\"^]*t[\"^]*r)|l[\"^]*a[\"^]*t[\"^]*t[\"^]*e[\"^]*m[\"^]*p|o[\"^]*r(?:[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*s)?|r[\"^]*e[\"^]*e[\"^]*d[\"^]*i[\"^]*s[\"^]*k|s[\"^]*u[\"^]*t[\"^]*i[\"^]*l|(?:t[\"^]*y[\"^]*p|v[\"^]*e[\"^]*u[\"^]*p[\"^]*d[\"^]*a[\"^]*t)[\"^]*e)|g[\"^]*(?:e[\"^]*t[\"^]*(?:m[\"^]*a[\"^]*c|t[\"^]*y[\"^]*p[\"^]*e)|o[\"^]*t[\"^]*o|p[\"^]*(?:f[\"^]*i[\"^]*x[\"^]*u[\"^]*p|(?:r[\"^]*e[\"^]*s[\"^]*u[\"^]*l[\"^]*)?t|u[\"^]*p[\"^]*d[\"^]*a[\"^]*t[\"^]*e)|r[\"^]*a[\"^]*f[\"^]*t[\"^]*a[\"^]*b[\"^]*l)|h[\"^]*(?:e[\"^]*l[\"^]*p[\"^]*c[\"^]*t[\"^]*r|o[\"^]*s[\"^]*t[\"^]*n[\"^]*a[\"^]*m[\"^]*e)|i[\"^]*(?:c[\"^]*a[\"^]*c[\"^]*l[\"^]*s|f|p[\"^]*(?:c[\"^]*o[\"^]*n[\"^]*f[\"^]*i[\"^]*g|x[\"^]*r[\"^]*o[\"^]*u[\"^]*t[\"^]*e)|r[\"^]*f[\"^]*t[\"^]*p)|j[\"^]*e[\"^]*t[\"^]*p[\"^]*a[\"^]*c[\"^]*k|k[\"^]*(?:l[\"^]*i[\"^]*s[\"^]*t|s[\"^]*e[\"^]*t[\"^]*u[\"^]*p|t[\"^]*(?:m[\"^]*u[\"^]*t[\"^]*i[\"^]*l|p[\"^]*a[\"^]*s[\"^]*s))|l[\"^]*(?:o[\"^]*(?:d[\"^]*c[\"^]*t[\"^]*r|g[\"^]*(?:m[\"^]*a[\"^]*n|o[\"^]*f[\"^]*f))|p[\"^]*[q-r])|m[\"^]*(?:a[\"^]*(?:c[\"^]*f[\"^]*i[\"^]*l[\"^]*e|k[\"^]*e[\"^]*c[\"^]*a[\"^]*b|p[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|k[\"^]*(?:d[\"^]*i[\"^]*r|l[\"^]*i[\"^]*n[\"^]*k)|m[\"^]*c|o[\"^]*u[\"^]*n[\"^]*t[\"^]*v[\"^]*o[\"^]*l|q[\"^]*(?:b[\"^]*k[\"^]*u[\"^]*p|(?:t[\"^]*g[\"^]*)?s[\"^]*v[\"^]*c)|s[\"^]*(?:d[\"^]*t|i[\"^]*(?:e[\"^]*x[\"^]*e[\"^]*c|n[\"^]*f[\"^]*o[\"^]*3[\"^]*2)|t[\"^]*s[\"^]*c))|n[\"^]*(?:b[\"^]*t[\"^]*s[\"^]*t[\"^]*a[\"^]*t|e[\"^]*t[\"^]*(?:c[\"^]*f[\"^]*g|d[\"^]*o[\"^]*m|s[\"^]*(?:h|t[\"^]*a[\"^]*t))|f[\"^]*s[\"^]*(?:a[\"^]*d[\"^]*m[\"^]*i[\"^]*n|s[\"^]*(?:h[\"^]*a[\"^]*r[\"^]*e|t[\"^]*a[\"^]*t))|l[\"^]*(?:b[\"^]*m[\"^]*g[\"^]*r|t[\"^]*e[\"^]*s[\"^]*t)|s[\"^]*l[\"^]*o[\"^]*o[\"^]*k[\"^]*u[\"^]*p|t[\"^]*(?:b[\"^]*a[\"^]*c[\"^]*k[\"^]*u[\"^]*p|c[\"^]*m[\"^]*d[\"^]*p[\"^]*r[\"^]*o[\"^]*m[\"^]*p[\"^]*t|f[\"^]*r[\"^]*s[\"^]*u[\"^]*t[\"^]*l))|o[\"^]*(?:f[\"^]*f[\"^]*l[\"^]*i[\"^]*n[\"^]*e|p[\"^]*e[\"^]*n[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*s)|p[\"^]*(?:a[\"^]*(?:g[\"^]*e[\"^]*f[\"^]*i[\"^]*l[\"^]*e[\"^]*c[\"^]*o[\"^]*n[\"^]*f[\"^]*i|t[\"^]*h[\"^]*p[\"^]*i[\"^]*n)[\"^]*g|(?:b[\"^]*a[\"^]*d[\"^]*m[\"^]*i|k[\"^]*t[\"^]*m[\"^]*o)[\"^]*n|e[\"^]*(?:n[\"^]*t[\"^]*n[\"^]*t|r[\"^]*f[\"^]*m[\"^]*o[\"^]*n)|n[\"^]*p[\"^]*u[\"^]*(?:n[\"^]*a[\"^]*t[\"^]*t[\"^]*e[\"^]*n[\"^]*d|t[\"^]*i[\"^]*l)|o[\"^]*(?:p[\"^]*d|w[\"^]*e[\"^]*r[\"^]*s[\"^]*h[\"^]*e[\"^]*l[\"^]*l)|r[\"^]*n[\"^]*(?:c[\"^]*n[\"^]*f[\"^]*g|(?:d[\"^]*r[\"^]*v|m[\"^]*n[\"^]*g)[\"^]*r|j[\"^]*o[\"^]*b[\"^]*s|p[\"^]*o[\"^]*r[\"^]*t|q[\"^]*c[\"^]*t[\"^]*l)|u[\"^]*(?:b[\"^]*p[\"^]*r[\"^]*n|s[\"^]*h[\"^]*(?:d|p[\"^]*r[\"^]*i[\"^]*n[\"^]*t[\"^]*e[\"^]*r[\"^]*c[\"^]*o[\"^]*n[\"^]*n[\"^]*e[\"^]*c[\"^]*t[\"^]*i[\"^]*o[\"^]*n[\"^]*s))|w[\"^]*(?:l[\"^]*a[\"^]*u[\"^]*n[\"^]*c[\"^]*h[\"^]*e[\"^]*r|s[\"^]*h))|q[\"^]*(?:a[\"^]*p[\"^]*p[\"^]*s[\"^]*r[\"^]*v|p[\"^]*r[\"^]*o[\"^]*c[\"^]*e[\"^]*s[\"^]*s|u[\"^]*s[\"^]*e[\"^]*r|w[\"^]*i[\"^]*n[\"^]*s[\"^]*t[\"^]*a)|r[\"^]*(?:d(?:[\"^]*p[\"^]*s[\"^]*i[\"^]*g[\"^]*n)?|e[\"^]*(?:f[\"^]*s[\"^]*u[\"^]*t[\"^]*i[\"^]*l|g(?:[\"^]*(?:i[\"^]*n[\"^]*i|s[\"^]*v[\"^]*r[\"^]*3[\"^]*2))?|l[\"^]*o[\"^]*g|(?:(?:p[\"^]*a[\"^]*d[\"^]*m[\"^]*i|s[\"^]*c[\"^]*a)[\"^]*)?n|x[\"^]*e[\"^]*c)|i[\"^]*s[\"^]*e[\"^]*t[\"^]*u[\"^]*p|m[\"^]*d[\"^]*i[\"^]*r|o[\"^]*b[\"^]*o[\"^]*c[\"^]*o[\"^]*p[\"^]*y|p[\"^]*c[\"^]*(?:i[\"^]*n[\"^]*f[\"^]*o|p[\"^]*i[\"^]*n[\"^]*g)|s[\"^]*h|u[\"^]*n[\"^]*d[\"^]*l[\"^]*l[\"^]*3[\"^]*2|w[\"^]*i[\"^]*n[\"^]*s[\"^]*t[\"^]*a)|s[\"^]*(?:a[\"^]*n|c[\"^]*(?:h[\"^]*t[\"^]*a[\"^]*s[\"^]*k[\"^]*s|w[\"^]*c[\"^]*m[\"^]*d)|e[\"^]*(?:c[\"^]*e[\"^]*d[\"^]*i[\"^]*t|r[\"^]*v[\"^]*e[\"^]*r[\"^]*(?:(?:c[\"^]*e[\"^]*i[\"^]*p|w[\"^]*e[\"^]*r)[\"^]*o[\"^]*p[\"^]*t[\"^]*i[\"^]*n|m[\"^]*a[\"^]*n[\"^]*a[\"^]*g[\"^]*e[\"^]*r[\"^]*c[\"^]*m[\"^]*d)|t[\"^]*x)|f[\"^]*c|(?:h[\"^]*o[\"^]*w[\"^]*m[\"^]*o[\"^]*u[\"^]*n|u[\"^]*b[\"^]*s)[\"^]*t|x[\"^]*s[\"^]*t[\"^]*r[\"^]*a[\"^]*c[\"^]*e|y[\"^]*s[\"^]*(?:o[\"^]*c[\"^]*m[\"^]*g[\"^]*r|t[\"^]*e[\"^]*m[\"^]*i[\"^]*n[\"^]*f[\"^]*o))|t[\"^]*(?:a[\"^]*(?:k[\"^]*e[\"^]*o[\"^]*w[\"^]*n|p[\"^]*i[\"^]*c[\"^]*f[\"^]*g|s[\"^]*k[\"^]*(?:k[\"^]*i[\"^]*l[\"^]*l|l[\"^]*i[\"^]*s[\"^]*t))|(?:c[\"^]*m[\"^]*s[\"^]*e[\"^]*t[\"^]*u|f[\"^]*t)[\"^]*p|(?:(?:e[\"^]*l[\"^]*n[\"^]*e|i[\"^]*m[\"^]*e[\"^]*o[\"^]*u)[\"^]*|r[\"^]*a[\"^]*c[\"^]*e[\"^]*r[\"^]*(?:p[\"^]*)?)t|l[\"^]*n[\"^]*t[\"^]*a[\"^]*d[\"^]*m[\"^]*n|p[\"^]*m[\"^]*(?:t[\"^]*o[\"^]*o[\"^]*l|v[\"^]*s[\"^]*c[\"^]*m[\"^]*g[\"^]*r)|s[\"^]*(?:(?:d[\"^]*i[\"^]*s[\"^]*)?c[\"^]*o[\"^]*n|e[\"^]*c[\"^]*i[\"^]*m[\"^]*p|k[\"^]*i[\"^]*l[\"^]*l|p[\"^]*r[\"^]*o[\"^]*f)|y[\"^]*p[\"^]*e[\"^]*p[\"^]*e[\"^]*r[\"^]*f|z[\"^]*u[\"^]*t[\"^]*i[\"^]*l)|u[\"^]*n[\"^]*(?:e[\"^]*x[\"^]*p[\"^]*o[\"^]*s[\"^]*e|i[\"^]*q[\"^]*u[\"^]*e[\"^]*i[\"^]*d|l[\"^]*o[\"^]*d[\"^]*c[\"^]*t[\"^]*r)|v[\"^]*(?:o[\"^]*l|s[\"^]*s[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n)|w[\"^]*(?:a[\"^]*i[\"^]*t[\"^]*f[\"^]*o[\"^]*r|b[\"^]*a[\"^]*d[\"^]*m[\"^]*i[\"^]*n|(?:d[\"^]*s|e[\"^]*(?:c|v[\"^]*t))[\"^]*u[\"^]*t[\"^]*i[\"^]*l|h[\"^]*(?:e[\"^]*r[\"^]*e|o[\"^]*a[\"^]*m[\"^]*i)|i[\"^]*n[\"^]*(?:n[\"^]*t(?:[\"^]*3[\"^]*2)?|r[\"^]*s)|m[\"^]*i[\"^]*c|s[\"^]*c[\"^]*r[\"^]*i[\"^]*p[\"^]*t)|x[\"^]*c[\"^]*o[\"^]*p[\"^]*y)(?:.[\"^]*[0-9A-Z_a-z]+)?b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*.[sv].*b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?:$(?:((?:(.*)|.*))|{.*})|[<>](.*)|[!?.+])"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx /"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx s"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ^[^.]+.[^;?]+[;?](.*(['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx /"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx s"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ^[^.]*?(?:['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{])"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx /"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx s"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i).|(?:[sv]*|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[arx])?|G[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?E[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?T|a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:b|(?:p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?t|r(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[jp])?|s(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)?|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[ks])|b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z|c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[8-9][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?9|[au][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|c|(?:m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?p|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[dfu]|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[gr])|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[bdx]|n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?v|q[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n|s(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)?)|f[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[c-dgi]|m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)|g[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[chr][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|o|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?g)|h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:d|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[dp]|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b)|j[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:j[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s|q)|k[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h|l[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:d(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d)?|[nps]|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a|z(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?4)?)|m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r|v)|n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[cl]|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t|(?:p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?m)|o[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:[at][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?x|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?b|f|(?:k[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?g|h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[cp]|r(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?y)?|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?z)|r[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?r|c(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p)?|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dv]|(?:p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?)?m)|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[dt]|[g-hu]|s(?:[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h)?|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n)|t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[cr]|b[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?l|[co][\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[ex]|i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c)|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|l)|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:3[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m|c)|x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:x[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|z)|y[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:e[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?s|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m)|z[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p|s[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?h))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)[-0-9_a-z]+(?:[\"'[-]]+|$+[!#*-0-9?-@x5c_a-{]+|``|[$<>]())[sv]*[-0-9_a-z]+"
+    },
+    {
+        "category": "RCE",
+        "pattern": "!@rx [0-9]s*'s*[0-9]"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx ;[sv]*.[sv]*[\"']?(?:a(?:rchive|uth)|b(?:a(?:ckup|il)|inary)|c(?:d|h(?:anges|eck)|lone|onnection)|d(?:atabases|b(?:config|info)|ump)|e(?:cho|qp|x(?:cel|it|p(?:ert|lain)))|f(?:ilectrl|ullschema)|he(?:aders|lp)|i(?:mpo(?:rt|ster)|ndexes|otrace)|l(?:i(?:mi|n)t|o(?:ad|g))|(?:mod|n(?:onc|ullvalu)|unmodul)e|o(?:nce|pen|utput)|p(?:arameter|r(?:int|o(?:gress|mpt)))|quit|re(?:ad|cover|store)|s(?:ave|c(?:anstats|hema)|e(?:lftest|parator|ssion)|h(?:a3sum|ell|ow)?|tats|ystem)|t(?:ables|estc(?:ase|trl)|ime(?:out|r)|race)|vfs(?:info|list|name)|width)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx rn(?s:.)*?b(?:(?i:E)(?:HLO [--.A-Za-zx17fx212a]{1,255}|XPN .{1,64})|HELO [--.A-Za-zx17fx212a]{1,255}|MAIL FROM:<.{1,64}(?i:@).{1,255}(?i:>)|(?i:R)(?:CPT TO:(?:(?i:<).{1,64}(?i:@).{1,255}(?i:>)|(?i: ))?(?i:<).{1,64}(?i:>)|SETb)|VRFY .{1,64}(?: <.{1,64}(?i:@).{1,255}(?i:>)|(?i:@).{1,255})|AUTH [-0-9A-Z_a-zx17fx212a]{1,20}(?i: )(?:(?:[+/-9A-Z_a-zx17fx212a]{4})*(?:[+/-9A-Z_a-zx17fx212a]{2}(?i:=)|[+/-9A-Z_a-zx17fx212a]{3}))?(?i:=)|STARTTLSb|NOOPb(?:(?i: ).{1,255})?)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?is)rn[0-9A-Z_a-z]{1,50}b (?:A(?:PPEND (?:[\"-#%-&*--9A-Zx5c_a-z]+)?(?: ([ x5ca-z]+))?(?: \"?[0-9]{1,2}-[0-9A-Z_a-z]{3}-[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}\"?)? {[0-9]{1,20}+?}|UTHENTICATE [-0-9_a-z]{1,20}rn)|L(?:SUB (?:[\"-#*.-9A-Z_a-z~]+)? (?:[\"%-&*.-9A-Zx5c_a-z]+)?|ISTRIGHTS (?:[\"%-&*--9A-Zx5c_a-z]+)?)|S(?:TATUS (?:[\"%-&*--9A-Zx5c_a-z]+)? ((?:U(?:NSEEN|IDNEXT)|MESSAGES|UIDVALIDITY|RECENT| )+)|ETACL (?:[\"%-&*--9A-Zx5c_a-z]+)? [+-][ac-eik-lpr-tw-x]+?)|UID (?:COPY|FETCH|STORE) (?:[*,0-:]+)?|(?:(?:DELETE|GET)ACL|MYRIGHTS) (?:[\"%-&*--9A-Zx5c_a-z]+)?)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?is)rn.*?b(?:(?:LIST|TOP [0-9]+)(?: [0-9]+)?|U(?:SER .+?|IDL(?: [0-9]+)?)|PASS .+?|(?:RETR|DELE) [0-9]+?|A(?:POP [0-9A-Z_a-z]+ [0-9a-f]{32}|UTH [-0-9A-Z_]{1,20} (?:(?:[+/-9A-Z_a-z]{4})*(?:[+/-9A-Z_a-z]{2}=|[+/-9A-Z_a-z]{3}))?=))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*|(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*)[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7z[arx]?|(?:(?:GE|POS)T|HEAD)[sv&)<>|]|a(?:(?:b|w[ks]|l(?:ias|pine))[sv&)<>|]|pt(?:[sv&)<>|]|-get)|r(?:[sv&)<>j|]|(?:p|ch)[sv&)<>|]|ia2c)|s(?:h?[sv&)<>|]|cii(?:-xfr|85)|pell)|t(?:[sv&)<>|]|obm)|dd(?:group|user)|getty|nsible-playbook|xel)|b(?:z(?:z[sv&)<>|]|c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more)|a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu))|c(?:[8-9]9|(?:a(?:t|ncel|psh)|c)[sv&)<>|]|mp|p(?:[sv&)<>|]|an|io|ulimit)|s(?:h|plit|vtool)|u(?:(?:t|rl)[sv&)<>|]|psfilter)|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|r(?:ash[sv&)<>|]|on(?:tab)?))|d(?:(?:[du]|i(?:(?:alo)?g|r|ff)|a(?:sh|te))[sv&)<>|]|f|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:(?:[bd]|cho)[sv&)<>|]|n(?:v(?:-update)?|d(?:if|sw))|qn|s(?:[sv&)<>h|]|ac)|x(?:(?:ec)?[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r))|2fsck|(?:asy_instal|va)l|fax|grep|macs)|f(?:(?:c|etch|lock|unction)[sv&)<>|]|d|g(?:rep)?|i(?:(?:n(?:d|ger)|sh)?[sv&)<>|]|le(?:[sv&)<>|]|test))|mt|tp(?:[sv&)<>|]|stats|who)|acter|o(?:ld[sv&)<>|]|reach)|ping)|g(?:c(?:c[^sv]|ore)|db|e(?:(?:m|tfacl)[sv&)<>|]|ni(?:e[sv&)<>|]|soimage))|hci?|i(?:(?:t|mp)[sv&)<>|]|nsh)|(?:o|awk)[sv&)<>|]|pg|r(?:c|ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:d|up|ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:d|p(?:6?tables|config)?|rb|conv|f(?:config|top)|nstall[sv&)<>|]|onice|spell)|j(?:js|q|ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:s(?:h|shell)|ill(?:[sv&)<>|]|all)|nife[sv&)<>|])|l(?:d(?:d?[sv&)<>|]|config)|(?:[np]|inks|ynx)[sv&)<>|]|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)?|ua(?:[sv&)<>|]|(?:la)?tex)|z(?:[sv&)4<>|]|4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore))|a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|trace|wp-(?:d(?:ownload|ump)|mirror|request))|m(?:a(?:(?:n|ke)[sv&)<>|]|il(?:[sv&)<>q|]|x[sv&)<>|])|ster.passwd|wk)|tr|(?:v|utt)[sv&)<>|]|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:c(?:[sv&)<>|]|.(?:openbsd|traditional)|at)|e(?:t(?:[sv&)<>|]|(?:c|st)at|kit-ftp|plan)|ofetch)|(?:(?:ul)?l|ice)[sv&)<>|]|m(?:[sv&)<>|]|ap)|p(?:m[sv&)<>|]|ing)|a(?:no[sv&)<>|]|sm|wk)|o(?:de[sv&)<>|]|hup)|roff|s(?:enter|lookup|tat))|o(?:(?:d|ctave)[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:x|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:b|f(?:la)?tex|ksh)|f(?:[sv&)<>|]|tp)|g(?:rep)?|hp(?:[sv&)57<>|]|-cgi)|i(?:(?:co?|ng)[sv&)<>|]|p[^sv]|dstat|gz)|k(?:g(?:_?info)?|exec|ill)|r(?:y?[sv&)<>|]|int(?:env|f[sv&)<>|]))|t(?:x|ar(?:diff|grep)?)|wd(?:.db)?|xz|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|opd|s(?:ed|ftp|ql)|u(?:ppet[sv&)<>|]|shd)|ython[^sv])|r(?:a(?:r[sv&)<>|]|k(?:e[sv&)<>|]|u))|c(?:p[sv&)<>|])?|e(?:(?:d(?:carpet)?|v|name|p(?:eat|lace))[sv&)<>|]|a(?:delf|lpath)|stic)|m(?:(?:dir)?[sv&)<>|]|user)|pm(?:[sv&)<>|]|db|(?:quer|verif)y)|bash|l(?:ogin|wrap)|nano|oute[sv&)<>|]|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:c(?:p|hed|r(?:een|ipt)[sv&)<>|])|e(?:(?:d|lf|rvice)[sv&)<>|]|t(?:arch|env|facl[sv&)<>|]|sid)?|ndmail)|(?:g|ash|nap)[sv&)<>|]|h(?:(?:adow|ells)?[sv&)<>|]|.distrib|u(?:f|tdown[sv&)<>|]))|s(?:[sv&)<>|]|h(?:[sv&)<>|]|-key(?:ge|sca)n|pass))|u(?:[sv&)<>|]|do)|vn|diff|ftp|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:c|r[sv&)<>|]|il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|bl|c(?:p(?:[sv&)<>|]|dump|ing|traceroute)|l?sh)|e(?:[ex][sv&)<>|]|lnet)|i(?:c[sv&)<>|]|me(?:(?:out)?[sv&)<>|]|datectl))|o(?:p|uch[sv&)<>|])|ftp|mux|r(?:aceroute6?|off)|shark)|u(?:dp|l(?:imit)?[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|pdate-alternatives|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:i(?:m(?:[sv&)<>|]|diff)|ew[sv&)<>|]|gr|pw|rsh)|algrind|olatility[sv&)<>|])|w(?:3m|c|a(?:ll|tch)[sv&)<>|]|get|h(?:iptail[sv&)<>|]|o(?:ami|is))|i(?:reshark|sh[sv&)<>|]))|x(?:(?:x|pa)d|z(?:[sv&)<>|]|c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more)|args|e(?:la)?tex|mo(?:dmap|re)|term)|y(?:(?:e(?:s|lp)|arn)[sv&)<>|]|um)|z(?:ip(?:[sv&)<>|]|c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|s(?:h|oelim|td(?:(?:ca|m)t|grep|less)?)|athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|less|more|run|ypper))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*|(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*)[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:7z[arx]?|(?:(?:GE|POS)T|HEAD)[sv&)<>|]|a(?:(?:b|w[ks]|l(?:ias|pine))[sv&)<>|]|pt(?:[sv&)<>|]|-get)|r(?:[sv&)<>j|]|(?:p|ch)[sv&)<>|]|ia2c)|s(?:h?[sv&)<>|]|cii(?:-xfr|85)|pell)|t(?:[sv&)<>|]|obm)|dd(?:group|user)|getty|nsible-playbook|xel)|b(?:z(?:z[sv&)<>|]|c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more)|a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu))|c(?:[8-9]9|(?:a(?:t|ncel|psh)|c)[sv&)<>|]|mp|p(?:[sv&)<>|]|io|ulimit)|s(?:h|plit|vtool)|u(?:t[sv&)<>|]|psfilter)|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|r(?:ash[sv&)<>|]|on(?:tab)?))|d(?:(?:[du]|i(?:(?:alo)?g|r|ff)|a(?:sh|te))[sv&)<>|]|f|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:(?:[bd]|cho)[sv&)<>|]|n(?:v(?:-update)?|d(?:if|sw))|qn|s(?:[sv&)<>h|]|ac)|x(?:(?:ec)?[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r))|2fsck|(?:asy_instal|va)l|fax|grep|macs)|f(?:(?:c|etch|lock|unction)[sv&)<>|]|d|g(?:rep)?|i(?:(?:n(?:d|ger)|sh)?[sv&)<>|]|le(?:[sv&)<>|]|test))|mt|tp(?:[sv&)<>|]|stats|who)|acter|o(?:ld[sv&)<>|]|reach)|ping)|g(?:c(?:c[^sv]|ore)|db|e(?:(?:m|tfacl)[sv&)<>|]|ni(?:e[sv&)<>|]|soimage))|hci?|i(?:(?:t|mp)[sv&)<>|]|nsh)|(?:o|awk)[sv&)<>|]|pg|r(?:c|ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:d|up|ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:d|p(?:6?tables|config)?|rb|conv|f(?:config|top)|nstall[sv&)<>|]|onice|spell)|j(?:js|q|ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:s(?:h|shell)|ill(?:[sv&)<>|]|all)|nife[sv&)<>|])|l(?:d(?:d?[sv&)<>|]|config)|(?:[np]|ynx)[sv&)<>|]|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)?|ua(?:[sv&)<>|]|(?:la)?tex)|z(?:[sv&)4<>|]|4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore))|a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|trace|wp-(?:d(?:ownload|ump)|mirror|request))|m(?:a(?:(?:n|ke)[sv&)<>|]|il(?:[sv&)<>q|]|x[sv&)<>|])|ster.passwd|wk)|tr|(?:v|utt)[sv&)<>|]|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:c(?:[sv&)<>|]|.(?:openbsd|traditional)|at)|e(?:t(?:[sv&)<>|]|(?:c|st)at|kit-ftp|plan)|ofetch)|(?:(?:ul)?l|ice)[sv&)<>|]|m(?:[sv&)<>|]|ap)|p(?:m[sv&)<>|]|ing)|a(?:no[sv&)<>|]|sm|wk)|o(?:de[sv&)<>|]|hup)|roff|s(?:enter|lookup|tat))|o(?:(?:d|ctave)[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:x|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:b|f(?:la)?tex|ksh)|f(?:[sv&)<>|]|tp)|g(?:rep)?|hp(?:[sv&)57<>|]|-cgi)|i(?:(?:co?|ng)[sv&)<>|]|p[^sv]|dstat|gz)|k(?:g(?:_?info)?|exec|ill)|r(?:y?[sv&)<>|]|int(?:env|f[sv&)<>|]))|t(?:x|ar(?:diff|grep)?)|wd(?:.db)?|xz|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|opd|s(?:ed|ftp|ql)|u(?:ppet[sv&)<>|]|shd)|ython[2-3])|r(?:a(?:r[sv&)<>|]|k(?:e[sv&)<>|]|u))|c(?:p[sv&)<>|])?|e(?:(?:d(?:carpet)?|v|name|p(?:eat|lace))[sv&)<>|]|a(?:delf|lpath)|stic)|m(?:(?:dir)?[sv&)<>|]|user)|pm(?:[sv&)<>|]|db|(?:quer|verif)y)|bash|l(?:ogin|wrap)|nano|oute[sv&)<>|]|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:c(?:p|hed|r(?:een|ipt)[sv&)<>|])|e(?:(?:d|lf|rvice)[sv&)<>|]|t(?:arch|env|facl[sv&)<>|]|sid)?|ndmail)|(?:g|ash)[sv&)<>|]|h(?:(?:adow|ells)?[sv&)<>|]|.distrib|u(?:f|tdown[sv&)<>|]))|s(?:[sv&)<>|]|h(?:[sv&)<>|]|-key(?:ge|sca)n|pass))|u(?:[sv&)<>|]|do)|vn|diff|ftp|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:c|r[sv&)<>|]|il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|bl|c(?:p(?:[sv&)<>|]|dump|ing|traceroute)|l?sh)|e(?:[ex][sv&)<>|]|lnet)|i(?:c[sv&)<>|]|me(?:(?:out)?[sv&)<>|]|datectl))|o(?:p|uch[sv&)<>|])|ftp|mux|r(?:aceroute6?|off)|shark)|u(?:dp|l(?:imit)?[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|pdate-alternatives|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:i(?:m(?:[sv&)<>|]|diff)|ew[sv&)<>|]|gr|pw|rsh)|algrind|olatility[sv&)<>|])|w(?:c|a(?:ll|tch)[sv&)<>|]|h(?:iptail[sv&)<>|]|o(?:ami|is))|i(?:reshark|sh[sv&)<>|]))|x(?:(?:x|pa)d|z(?:[sv&)<>|]|c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more)|args|e(?:la)?tex|mo(?:dmap|re)|term)|y(?:(?:e(?:s|lp)|arn)[sv&)<>|]|um)|z(?:ip(?:[sv&)<>|]|c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|s(?:h|oelim|td(?:(?:ca|m)t|grep|less)?)|athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|less|more|run|ypper))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@pmFromFile unix-shell.data"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:(?:(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?2[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|s)|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?o|[sv&),<>|].*))b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)b(?:7z[arx]?|(?:(?:GE|POS)T|HEAD)[sv&)<>|]|a(?:(?:b|w[ks]|l(?:ias|pine))[sv&)<>|]|pt(?:(?:itude)?[sv&)<>|]|-get)|r(?:[sv&)<>j|]|(?:p|ch)[sv&)<>|]|ia2c)|s(?:h?[sv&)<>|]|cii(?:-xfr|85)|pell)|t(?:[sv&)<>|]|obm)|dd(?:group|user)|getty|nsible-playbook|xel)|b(?:z(?:z[sv&)<>|]|c(?:at|mp)|diff|e(?:grep|xe)|f?grep|ip2(?:recover)?|less|more)|a(?:s(?:e(?:32|64|n(?:ame[sv&)<>|]|c))|h[sv&)<>|])|tch[sv&)<>|])|lkid|pftrace|r(?:eaksw|idge[sv&)<>|])|sd(?:cat|iff|tar)|u(?:iltin|n(?:dler[sv&)<>|]|zip2)|s(?:ctl|ybox))|y(?:ebug|obu))|c(?:[8-9]9|(?:a(?:t|ncel|psh)|c)[sv&)<>|]|mp|p(?:[sv&)<>|]|io|ulimit)|s(?:h|plit|vtool)|u(?:t[sv&)<>|]|psfilter)|ertbot|h(?:attr|(?:dir|root)[sv&)<>|]|eck_(?:by_ssh|cups|log|memory|raid|s(?:sl_cert|tatusfile))|(?:flag|pas)s|g(?:passwd|rp)|mod|o(?:om|wn)|sh)|lang(?:[sv&)<>|]|++)|o(?:(?:b|pro)c|lumn[sv&)<>|]|m(?:m(?:and[sv&)<>|])?|p(?:oser|ress)[sv&)<>|])|w(?:say|think))|r(?:ash[sv&)<>|]|on(?:tab)?))|d(?:(?:[du]|i(?:(?:alo)?g|r|ff)|a(?:sh|te))[sv&)<>|]|n?f|hclient|m(?:esg|idecode|setup)|o(?:as|(?:cker|ne)[sv&)<>|]|sbox)|pkg|vips)|e(?:(?:[bd]|cho)[sv&)<>|]|n(?:v(?:-update)?|d(?:if|sw))|qn|s(?:[sv&)<>h|]|ac)|x(?:(?:ec)?[sv&)<>|]|iftool|p(?:(?:and|(?:ec|or)t)[sv&)<>|]|r))|2fsck|(?:asy_instal|va)l|fax|grep|macs)|f(?:(?:c|etch|lock|unction)[sv&)<>|]|d|g(?:rep)?|i(?:(?:n(?:d|ger)|sh)?[sv&)<>|]|le(?:[sv&)<>|]|test))|mt|tp(?:[sv&)<>|]|stats|who)|acter|o(?:ld[sv&)<>|]|reach)|ping)|g(?:c(?:c[^sv]|ore)|db|e(?:(?:m|tfacl)[sv&)<>|]|ni(?:e[sv&)<>|]|soimage))|hci?|i(?:(?:t|mp)[sv&)<>|]|nsh)|(?:o|awk)[sv&)<>|]|pg|r(?:c|ep[sv&)<>|]|oup(?:[sv&)<>|]|mod))|tester|unzip|z(?:cat|exe|ip))|h(?:(?:d|up|ash|i(?:ghlight|story))[sv&)<>|]|e(?:ad[sv&)<>|]|xdump)|ost(?:id|name)|ping3|t(?:digest|op|passwd))|i(?:d|p(?:6?tables|config)?|rb|conv|f(?:config|top)|nstall[sv&)<>|]|onice|spell)|j(?:js|q|ava[sv&)<>|]|exec|o(?:(?:bs|in)[sv&)<>|]|urnalctl)|runscript)|k(?:s(?:h|shell)|ill(?:[sv&)<>|]|all)|nife[sv&)<>|])|l(?:d(?:d?[sv&)<>|]|config)|(?:[np]|ynx)[sv&)<>|]|s(?:-F|b_release|cpu|hw|mod|of|pci|usb)?|ua(?:[sv&)<>|]|(?:la)?tex)|z(?:[sv&)4<>|]|4c(?:at)?|c(?:at|mp)|diff|[e-f]?grep|less|m(?:a(?:dec|info)?|ore))|a(?:st(?:[sv&)<>|]|comm|log(?:in)?)|tex[sv&)<>|])|ess(?:[sv&)<>|]|echo|(?:fil|pip)e)|ftp(?:get)?|o(?:(?:ca(?:l|te)|ok)[sv&)<>|]|g(?:inctl|(?:nam|sav)e)|setup)|trace|wp-(?:d(?:ownload|ump)|mirror|request))|m(?:a(?:(?:n|ke)[sv&)<>|]|il(?:[sv&)<>q|]|x[sv&)<>|])|ster.passwd|wk)|tr|(?:v|utt)[sv&)<>|]|k(?:dir[sv&)<>|]|fifo|nod|temp)|locate|o(?:(?:re|unt)[sv&)<>|]|squitto)|sg(?:attrib|c(?:at|onv)|filter|merge|uniq)|ysql(?:admin|dump(?:slow)?|hotcopy|show)?)|n(?:c(?:[sv&)<>|]|.(?:openbsd|traditional)|at)|e(?:t(?:[sv&)<>|]|(?:c|st)at|kit-ftp|plan)|ofetch)|(?:(?:ul)?l|ice)[sv&)<>|]|m(?:[sv&)<>|]|ap)|p(?:m[sv&)<>|]|ing)|a(?:no[sv&)<>|]|sm|wk)|o(?:de[sv&)<>|]|hup)|roff|s(?:enter|lookup|tat))|o(?:(?:d|ctave)[sv&)<>|]|nintr|p(?:en(?:ssl|v(?:pn|t))|kg))|p(?:a(?:(?:x|cman|rted|tch)[sv&)<>|]|s(?:swd|te[sv&)<>|]))|d(?:b|f(?:la)?tex|ksh)|f(?:[sv&)<>|]|tp)|g(?:rep)?|hp(?:[sv&)57<>|]|-cgi)|i(?:(?:co?|ng)[sv&)<>|]|p[^sv]|dstat|gz)|k(?:g(?:_?info)?|exec|ill)|r(?:y?[sv&)<>|]|int(?:env|f[sv&)<>|]))|s(?:[sv&)<>|]|ed|ftp|ql)?|t(?:x|ar(?:diff|grep)?)|wd(?:.db)?|xz|er(?:f|l(?:5|sh)?|ms[sv&)<>|])|opd|u(?:ppet[sv&)<>|]|shd)|ython[2-3])|r(?:a(?:r[sv&)<>|]|k(?:e[sv&)<>|]|u))|c(?:p[sv&)<>|])?|e(?:(?:d(?:carpet)?|v|name|p(?:eat|lace))[sv&)<>|]|a(?:delf|lpath)|stic)|m(?:(?:dir)?[sv&)<>|]|user)|pm(?:[sv&)<>|]|db|(?:quer|verif)y)|bash|l(?:ogin|wrap)|nano|oute[sv&)<>|]|sync|u(?:by[^sv]|n-(?:mailcap|parts))|vi(?:ew|m))|s(?:c(?:p|hed|r(?:een|ipt)[sv&)<>|])|e(?:(?:d|lf|rvice)[sv&)<>|]|t(?:arch|env|facl[sv&)<>|]|sid)?|ndmail)|(?:g|ash)[sv&)<>|]|h(?:(?:adow|ells)?[sv&)<>|]|.distrib|u(?:f|tdown[sv&)<>|]))|s(?:[sv&)<>|]|h(?:[sv&)<>|]|-key(?:ge|sca)n|pass))|u(?:[sv&)<>|]|do)|vn|diff|ftp|l(?:eep[sv&)<>|]|sh)|mbclient|o(?:cat|elim|(?:rt|urce)[sv&)<>|])|p(?:lit[sv&)<>|]|wd.db)|qlite3|t(?:art-stop-daemon|d(?:buf|err|in|out)|r(?:ace|ings[sv&)<>|]))|ys(?:ctl|tem(?:ctl|d-resolve)))|t(?:a(?:c|r[sv&)<>|]|il[sv&)<>f|]|sk(?:[sv&)<>|]|set))|bl|c(?:p(?:[sv&)<>|]|dump|ing|traceroute)|l?sh)|e(?:[ex][sv&)<>|]|lnet)|i(?:c[sv&)<>|]|me(?:(?:out)?[sv&)<>|]|datectl))|o(?:p|uch[sv&)<>|])|ftp|mux|r(?:aceroute6?|off)|shark)|u(?:dp|l(?:imit)?[sv&)<>|]|n(?:ame|(?:compress|s(?:et|hare))[sv&)<>|]|expand|iq|l(?:ink[sv&)<>|]|z(?:4|ma))|(?:pig|x)z|rar|z(?:ip[sv&)<>|]|std))|p(?:2date[sv&)<>|]|date-alternatives)|ser(?:(?:ad|mo)d|del)|u(?:de|en)code)|v(?:i(?:(?:ew)?[sv&)<>|]|m(?:[sv&)<>|]|diff)|gr|pw|rsh)|algrind|olatility[sv&)<>|])|w(?:[sv&)<>c|]|h(?:o(?:[sv&)<>|]|ami|is)?|iptail[sv&)<>|])|a(?:ll|tch)[sv&)<>|]|i(?:reshark|sh[sv&)<>|]))|x(?:(?:x|pa)d|z(?:[sv&)<>|]|c(?:at|mp)|d(?:ec|iff)|[e-f]?grep|less|more)|args|e(?:la)?tex|mo(?:dmap|re)|term)|y(?:(?:e(?:s|lp)|arn)[sv&)<>|]|um)|z(?:ip(?:[sv&)<>|]|c(?:loak|mp)|details|grep|info|(?:merg|not)e|split|tool)|s(?:h|oelim|td(?:(?:ca|m)t|grep|less)?)|athura|c(?:at|mp)|diff|e(?:grep|ro[sv&)<>|])|f?grep|less|more|run|ypper))b"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?i)(?:(?:^|=)[sv]*(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*|(?:t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|[nr;`{]|||?|&&?|$(?:((?|{)|[<>](|([sv]*))[sv]*(?:[${]|(?:[sv]*(|!)[sv]*|[0-9A-Z_a-z]+=(?:[^sv]*|$(?:.*|.*)|[<>].*|'.*'|\".*\")[sv]+)*)[sv]*[\"']*(?:[\"'-+--9?A-]_a-z|]+/)?[\"'x5c]*(?:(?:(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d|u[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?2[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?t)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?e|v[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i)[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|d[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?f|p[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?c[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?m[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?n[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?[sv&),<>|].*|s)|w[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?(?:h[\"')[-x5c]*(?:(?:(?:|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?o|[sv&),<>|].*))"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx /(?:[?*]+[a-z/]+|[a-z/]+[?*]+)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx rn(?s:.)*?b(?:DATA|QUIT|HELP(?: .{1,255})?)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx (?is)rn[0-9A-Z_a-z]{1,50}b (?:C(?:(?:REATE|OPY [*,0-:]+) [\"-#%-&*--9A-Zx5c_a-z]+|APABILITY|HECK|LOSE)|DELETE [\"-#%-&*--.0-9A-Zx5c_a-z]+|EX(?:AMINE [\"-#%-&*--.0-9A-Zx5c_a-z]+|PUNGE)|FETCH [*,0-:]+|L(?:IST [\"-#*--9A-Zx5c_a-z~]+? [\"-#%-&*--9A-Zx5c_a-z]+|OG(?:IN [--.0-9@_a-z]{1,40} .*?|OUT))|RENAME [\"-#%-&*--9A-Zx5c_a-z]+? [\"-#%-&*--9A-Zx5c_a-z]+|S(?:E(?:LECT [\"-#%-&*--9A-Zx5c_a-z]+|ARCH(?: CHARSET [--.0-9A-Z_a-z]{1,40})? (?:(KEYWORD x5c)?(?:A(?:LL|NSWERED)|BCC|D(?:ELETED|RAFT)|(?:FLAGGE|OL)D|RECENT|SEEN|UN(?:(?:ANSWER|FLAGG)ED|D(?:ELETED|RAFT)|SEEN)|NEW)|(?:BODY|CC|FROM|HEADER .{1,100}|NOT|OR .{1,255}|T(?:EXT|O)) .{1,255}|LARGER [0-9]{1,20}|[*,0-:]+|(?:BEFORE|ON|S(?:ENT(?:(?:BEFOR|SINC)E|ON)|INCE)) \"?[0-9]{1,2}-[0-9A-Z_a-z]{3}-[0-9]{4}\"?|S(?:MALLER [0-9]{1,20}|UBJECT .{1,255})|U(?:ID [*,0-:]+?|NKEYWORD x5c(Seen|(?:Answer|Flagg)ed|D(?:eleted|raft)|Recent))))|T(?:ORE [*,0-:]+? [+-]?FLAGS(?:.SILENT)? (?:(x5c[a-z]{1,20}))?|ARTTLS)|UBSCRIBE [\"-#%-&*--9A-Zx5c_a-z]+)|UN(?:SUBSCRIBE [\"-#%-&*--9A-Zx5c_a-z]+|AUTHENTICATE)|NOOP)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx rn(?s:.)*?b(?:(?:QUI|STA|RSE)(?i:T)|NOOP|CAPA)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@rx !(?:d|!)"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "RCE",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@eq 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "EVALUATION",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 1"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@rx [a-z]:x5cinetpubb"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@rx (?:Microsoft OLE DB Provider for SQL Server(?:</font>.{1,20}?error '800(?:04005|40e31)'.{1,40}?Timeout expired| (0x80040e31)<br>Timeout expired<br>)|<h1>internal server error</h1>.*?<h2>part of the server has crashed or it has a configuration error.</h2>|cannot connect to the server: timed out)"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@pmFromFile iis-errors.data"
+    },
+    {
+        "category": "IIS",
+        "pattern": "!@rx ^404$"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@rx bServer Error in.{0,50}?bApplicationb"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 2"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 3"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 4"
+    },
+    {
+        "category": "IIS",
+        "pattern": "@lt 4"
+    },
+    {
         "category": "SHELLS",
         "pattern": "@lt 1"
     },
@@ -2288,66 +2508,6 @@
         "pattern": "@lt 4"
     },
     {
-        "category": "RFI",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@rx ^(?i:file|ftps?|https?)://(?:d{1,3}.d{1,3}.d{1,3}.d{1,3})"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@rx (?i)(?:bincludes*([^)]*|mosConfig_absolute_path|_CONF[path]|_SERVER[DOCUMENT_ROOT]|GALLERY_BASEDIR|path[docroot]|appserv_root|config[root_dir])=(?:file|ftps?|https?)://"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@rx ^(?i:file|ftps?|https?).*??+$"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)"
-    },
-    {
-        "category": "RFI",
-        "pattern": "!@endsWith .%{request_headers.host}"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)"
-    },
-    {
-        "category": "RFI",
-        "pattern": "!@endsWith .%{request_headers.host}"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "RFI",
-        "pattern": "@lt 4"
-    },
-    {
         "category": "CORRELATION",
         "pattern": "@eq 0"
     },
@@ -2421,166 +2581,6 @@
     },
     {
         "category": "CORRELATION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@rx [a-z]:x5cinetpubb"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@rx (?:Microsoft OLE DB Provider for SQL Server(?:</font>.{1,20}?error '800(?:04005|40e31)'.{1,40}?Timeout expired| (0x80040e31)<br>Timeout expired<br>)|<h1>internal server error</h1>.*?<h2>part of the server has crashed or it has a configuration error.</h2>|cannot connect to the server: timed out)"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@pmFromFile iis-errors.data"
-    },
-    {
-        "category": "IIS",
-        "pattern": "!@rx ^404$"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@rx bServer Error in.{0,50}?bApplicationb"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "IIS",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge 4"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@eq 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 1"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 2"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 3"
-    },
-    {
-        "category": "EVALUATION",
-        "pattern": "@lt 4"
-    },
-    {
-        "category": "EVALUATION",
         "pattern": "@lt 4"
     }
 ]

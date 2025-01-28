@@ -15,6 +15,9 @@ logging.basicConfig(
 # Input and output paths
 INPUT_FILE = Path(os.getenv("INPUT_FILE", "owasp_rules.json"))
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "waf_patterns/nginx"))
+MAPS_FILE = OUTPUT_DIR / "waf_maps.conf"
+RULES_FILE = OUTPUT_DIR / "waf_rules.conf"
+
 
 # Create output directory if it doesn't exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -52,10 +55,18 @@ def sanitize_pattern(pattern):
         return None
 
     if pattern.startswith("@rx "):
-        sanitized_pattern = pattern.replace("@rx ", "").strip()
-        return sanitized_pattern if validate_regex(sanitized_pattern) else None
-
-    return pattern if validate_regex(pattern) else None
+         sanitized_pattern = pattern.replace("@rx ", "").strip()
+         if validate_regex(sanitized_pattern):
+            return re.escape(sanitized_pattern).replace(r'\@', '@')
+         else:
+            logging.warning(f"Invalid regex in pattern: {sanitized_pattern}")
+            return None
+    
+    if validate_regex(pattern):
+        return re.escape(pattern).replace(r'\@', '@')
+    else:
+        logging.warning(f"Invalid regex in pattern: {pattern}")
+        return None
 
 
 def generate_nginx_waf(rules):
@@ -73,54 +84,72 @@ def generate_nginx_waf(rules):
         else:
             logging.warning(f"Invalid or unsupported pattern skipped: {pattern}")
 
-    # Write Nginx rule snippets per category
-    for category, patterns in categorized_rules.items():
-        output_file = OUTPUT_DIR / f"{category}.conf"
-        try:
-            with open(output_file, "w") as f:
-                f.write(f"# Nginx WAF rules for {category.upper()}\n")
-                f.write("# Automatically generated from OWASP rules.\n")
-                f.write("# Include this file in your server or location block.\n\n")
+    # Write map definitions to a dedicated file
+    try:
+        with open(MAPS_FILE, "w") as f:
+            f.write("# Nginx WAF Maps Definitions\n")
+            f.write("# Automatically generated from OWASP rules.\n\n")
+            f.write("http {\n")
+            for category, patterns in categorized_rules.items():
+               f.write(f"  map $request_uri $waf_block_{category} {{\n")
+               f.write("      default 0;\n")
+               for pattern in patterns:
+                 escaped_pattern = pattern.replace('"', '\\"')
+                 f.write(f'      "~*{escaped_pattern}" 1;\n')
+               f.write("  }\n\n")
+            f.write("}\n")
 
-                # Use a map to avoid redundant patterns
-                f.write("map $request_uri $waf_block_{category} {{\n".format(category=category))
-                f.write("    default 0;\n")
-                for pattern in patterns:
-                    escaped_pattern = pattern.replace('"', '\\"')
-                    f.write(f'    "~*{escaped_pattern}" 1;\n')
-                f.write("}\n\n")
+        logging.info(f"Generated {MAPS_FILE} containing map definitions")
+    except IOError as e:
+          logging.error(f"Failed to write {MAPS_FILE}: {e}")
 
-                # Apply the WAF rule
-                f.write("if ($waf_block_{category}) {{\n".format(category=category))
-                f.write("    return 403;\n")
-                f.write("    # Log the blocked request (optional)\n")
-                f.write("    # access_log /var/log/nginx/waf_blocked.log;\n")
-                f.write("}\n\n")
 
-            logging.info(f"Generated {output_file} ({len(patterns)} patterns)")
-        except IOError as e:
-            logging.error(f"Failed to write {output_file}: {e}")
+    # Write if blocks to a dedicated file
+    try:
+        with open(RULES_FILE, "w") as f:
+            f.write("# Nginx WAF Rules\n")
+            f.write("# Automatically generated from OWASP rules.\n")
+            f.write("# Include this file inside server block\n\n")
+            f.write("  # WAF rules\n")
+            for category in categorized_rules.keys():
+                f.write(f"    if ($waf_block_{category}) {{\n")
+                f.write("      return 403;\n")
+                f.write("      # Log the blocked request (optional)\n")
+                f.write("      # access_log /var/log/nginx/waf_blocked.log;\n")
+                f.write("    }\n\n")
+
+        logging.info(f"Generated {RULES_FILE} containing rules")
+    except IOError as e:
+        logging.error(f"Failed to write {RULES_FILE}: {e}")
 
     # Generate a README file with usage instructions
     readme_file = OUTPUT_DIR / "README.md"
     with open(readme_file, "w") as f:
-        f.write("# Nginx WAF Rule Snippets\n\n")
-        f.write("This directory contains Nginx WAF rule snippets generated from OWASP rules.\n")
-        f.write("You can include these snippets in your existing Nginx configuration to enhance security.\n\n")
+        f.write("# Nginx WAF Configuration\n\n")
+        f.write("This directory contains Nginx WAF configuration files generated from OWASP rules.\n")
+        f.write("You can include these files in your existing Nginx configuration to enhance security.\n\n")
         f.write("## Usage\n")
-        f.write("1. Include the rule snippets in your `server` or `location` block:\n")
+        f.write("1. Include the `waf_maps.conf` file in your `nginx.conf` *inside the `http` block*:\n")
         f.write("   ```nginx\n")
-        f.write("   server {\n")
-        f.write("       # Your existing configuration\n")
-        f.write("       include /path/to/waf_patterns/nginx/*.conf;\n")
+        f.write("   http {\n")
+        f.write("       include /path/to/waf_patterns/nginx/waf_maps.conf;\n")
+        f.write("       # ... other http configurations ...\n")
         f.write("   }\n")
         f.write("   ```\n")
-        f.write("2. Reload Nginx to apply the changes:\n")
+        f.write("2. Include the `waf_rules.conf` file in your `server` block:\n")
+        f.write("   ```nginx\n")
+        f.write("   server {\n")
+        f.write("       # ... other server configurations ...\n")
+        f.write("       include /path/to/waf_patterns/nginx/waf_rules.conf;\n")
+        f.write("   }\n")
+        f.write("   ```\n")
+        f.write("3. Reload Nginx to apply the changes:\n")
         f.write("   ```bash\n")
         f.write("   sudo nginx -t && sudo systemctl reload nginx\n")
         f.write("   ```\n")
         f.write("\n## Notes\n")
-        f.write("- The rules use `map` directives for efficient pattern matching.\n")
+        f.write("- The rules use `map` directives for efficient pattern matching. The maps are defined in the `waf_maps.conf` file.\n")
+        f.write("- The rules (if statements) are defined in the `waf_rules.conf` file.\n")
         f.write("- Blocked requests return a `403 Forbidden` response by default.\n")
         f.write("- You can enable logging for blocked requests by uncommenting the `access_log` line.\n")
 

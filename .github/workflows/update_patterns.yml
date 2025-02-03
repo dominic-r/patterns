@@ -1,5 +1,9 @@
 name: Update patterns
 
+permissions:
+  contents: read
+  pull-requests: write
+  
 on:
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC

@@ -1,5 +1,8 @@
 name: Nginx patterns validation
 
+permissions:
+  contents: read  # Needed to read repository contents (e.g., WAF rules)
+  
 on:
   push:
     branches:

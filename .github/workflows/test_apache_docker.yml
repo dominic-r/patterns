@@ -1,5 +1,8 @@
 name: Apache with Docker patterns validation
 
+permissions:
+  contents: read  # Needed to read Apache WAF configuration files
+
 on:
   push:
     branches:

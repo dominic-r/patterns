@@ -99,6 +99,7 @@ acl bad_bot hdr_sub(User-Agent) -i Bad-Neighborhood
 acl bad_bot hdr_sub(User-Agent) -i Badass
 acl bad_bot hdr_sub(User-Agent) -i Bandit
 acl bad_bot hdr_sub(User-Agent) -i Barkrowler
+acl bad_bot hdr_sub(User-Agent) -i Barracuda Sentinel \(EE\)
 acl bad_bot hdr_sub(User-Agent) -i BatchFTP
 acl bad_bot hdr_sub(User-Agent) -i Battleztar Bazinga
 acl bad_bot hdr_sub(User-Agent) -i Battleztar\ Bazinga
@@ -635,6 +636,7 @@ acl bad_bot hdr_sub(User-Agent) -i Mass\ Downloader
 acl bad_bot hdr_sub(User-Agent) -i Masscan
 acl bad_bot hdr_sub(User-Agent) -i Mata Hari
 acl bad_bot hdr_sub(User-Agent) -i Mata\ Hari
+acl bad_bot hdr_sub(User-Agent) -i MatchorySearch\/
 acl bad_bot hdr_sub(User-Agent) -i MauiBot
 acl bad_bot hdr_sub(User-Agent) -i Mb2345Browser
 acl bad_bot hdr_sub(User-Agent) -i MeanPath\ Bot
@@ -1369,6 +1371,7 @@ acl bad_bot hdr_sub(User-Agent) -i ^git\/
 acl bad_bot hdr_sub(User-Agent) -i ^npm\/
 acl bad_bot hdr_sub(User-Agent) -i ^pip\/
 acl bad_bot hdr_sub(User-Agent) -i ^pnpm\/
+acl bad_bot hdr_sub(User-Agent) -i ^symbolicator\/
 acl bad_bot hdr_sub(User-Agent) -i ^twine\/
 acl bad_bot hdr_sub(User-Agent) -i ^ureq
 acl bad_bot hdr_sub(User-Agent) -i a3logics\.in

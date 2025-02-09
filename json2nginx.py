@@ -37,19 +37,39 @@ def load_owasp_rules(file_path):
         raise
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=128)
 def validate_regex(pattern):
     """Validate if a pattern is a valid regex."""
     try:
-        _compile_pattern(pattern)
+        re.compile(pattern)
         return True
     except re.error:
         return False
 
 
+@lru_cache(maxsize=128)
 def sanitize_pattern(pattern):
-    """Wrapper function to use caching for patterns."""
-    return _sanitize_pattern(pattern)
+    """Sanitize and validate OWASP patterns for Nginx compatibility."""
+    # Directly proceed with check for unsupported patterns
+    unsupported_keywords = ["@pmFromFile", "!@eq", "!@within", "@lt"]
+    if any(keyword in pattern for keyword in unsupported_keywords):
+        logging.warning(f"Skipping unsupported pattern: {pattern}")
+        return None
+
+    # Faster check for patterns starting with "@rx "
+    if pattern.startswith("@rx "):
+        sanitized_pattern = pattern.replace("@rx ", "").strip()
+        if validate_regex(sanitized_pattern):
+            return re.escape(sanitized_pattern).replace(r'\@', '@')
+        else:
+            logging.warning(f"Invalid regex in pattern: {sanitized_pattern}")
+            return None
+
+    if validate_regex(pattern):
+        return re.escape(pattern).replace(r'\@', '@')
+    else:
+        logging.warning(f"Invalid regex in pattern: {pattern}")
+        return None
 
 
 def generate_nginx_waf(rules):
@@ -150,29 +170,6 @@ def main():
     except Exception as e:
         logging.critical(f"Script failed: {e}")
         exit(1)
-
-@lru_cache(maxsize=128)
-def _compile_pattern(pattern):
-    """Compile the regex pattern with caching to avoid recompilation."""
-    return re.compile(pattern)
-
-@lru_cache(maxsize=128)
-def _sanitize_pattern(pattern):
-    """Sanitize and validate OWASP patterns for Nginx compatibility."""
-    if any(keyword in pattern for keyword in ["@pmFromFile", "!@eq", "!@within", "@lt"]):
-        logging.warning(f"Skipping unsupported pattern: {pattern}")
-        return None
-
-    if pattern.startswith("@rx "):
-        sanitized_pattern = pattern.replace("@rx ", "").strip()
-    else:
-        sanitized_pattern = pattern
-
-    if validate_regex(sanitized_pattern):
-        return re.escape(sanitized_pattern).replace(r'\@', '@')
-    else:
-        logging.warning(f"Invalid regex in pattern: {sanitized_pattern}")
-        return None
 
 
 if __name__ == "__main__":

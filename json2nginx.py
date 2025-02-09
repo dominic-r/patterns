@@ -37,6 +37,7 @@ def load_owasp_rules(file_path):
         raise
 
 
+@lru_cache(maxsize=None)
 def validate_regex(pattern):
     """Validate if a pattern is a valid regex."""
     try:

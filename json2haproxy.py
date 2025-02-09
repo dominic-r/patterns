@@ -4,6 +4,7 @@ import re
 import logging
 from pathlib import Path
 from typing import List, Dict, Optional
+from functools import lru_cache
 
 # Configure logging
 logging.basicConfig(
@@ -46,6 +47,7 @@ def load_owasp_rules(file_path: Path) -> List[Dict]:
         logging.error(f"[!] Error loading OWASP rules: {e}")
         raise
 
+@lru_cache(maxsize=None)
 def validate_regex(pattern: str) -> bool:
     """
     Validate regex pattern for HAProxy.

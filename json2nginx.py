@@ -4,6 +4,7 @@ import re
 import logging
 from pathlib import Path
 from collections import defaultdict
+from functools import lru_cache
 
 # Configure logging
 logging.basicConfig(
@@ -36,6 +37,7 @@ def load_owasp_rules(file_path):
         raise
 
 
+@lru_cache(maxsize=None)
 def validate_regex(pattern):
     """Validate if a pattern is a valid regex."""
     try:

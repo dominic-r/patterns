@@ -5,6 +5,7 @@ from collections import defaultdict
 import logging
 from pathlib import Path
 from typing import List, Dict, Set, Tuple, Optional
+from functools import lru_cache
 
 # Configure logging
 logging.basicConfig(
@@ -58,6 +59,7 @@ def load_owasp_rules(file_path: Path) -> List[Dict]:
         raise
 
 
+@lru_cache(maxsize=None)
 def validate_regex(pattern: str) -> bool:
     """
     Validate regex pattern to ensure it is compatible with ModSecurity.
@@ -164,6 +166,51 @@ def main() -> None:
     except Exception as e:
         logging.critical(f"[!] Script failed: {e}")
         exit(1)
+
+def load_json(file_path):
+    """
+    Load and parse JSON file.
+
+    Args:
+        file_path (Path): Path to the JSON file to be loaded.
+
+    Returns:
+        dict: Parsed JSON content.
+    """
+    with file_path.open('r', encoding='utf-8') as f:
+        return json.load(f)
+
+def write_rules_to_file(rules, output_path):
+    """
+    Write ModSecurity rules to a file.
+
+    Args:
+        rules (list): List of ModSecurity rules as strings.
+        output_path (Path): Path to the output file.
+    """
+    with output_path.open('w', encoding='utf-8') as f:
+        f.writelines(rules)
+
+def main():
+    json_data = load_json(INPUT_FILE)
+    
+    rules = []
+    rule_id = 1000  # Initial rule ID
+
+    for rule in json_data.get('rules', []):
+        pattern = rule.get('pattern')
+        category = rule.get('category')
+
+        if not pattern or any(unsupported in pattern for unsupported in UNSUPPORTED_PATTERNS):
+            logging.info(f"[!] Skipping unsupported pattern: {pattern}")
+            continue
+
+        if validate_regex(pattern):
+            rules.append(MODSEC_RULE_TEMPLATE.format(pattern=pattern, rule_id=rule_id, category=category))
+            rule_id += 1
+
+    output_file_path = OUTPUT_DIR / "rules.conf"
+    write_rules_to_file(rules, output_file_path)
 
 
 if __name__ == "__main__":

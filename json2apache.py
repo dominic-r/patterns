@@ -151,22 +151,6 @@ def generate_apache_waf(rules: List[Dict]) -> None:
             raise
 
 
-def main() -> None:
-    """
-    Main function to execute the script.
-    """
-    try:
-        logging.info("[*] Loading OWASP rules...")
-        owasp_rules = load_owasp_rules(INPUT_FILE)
-
-        logging.info(f"[*] Generating Apache WAF configs from {len(owasp_rules)} rules...")
-        generate_apache_waf(owasp_rules)
-
-        logging.info("[✔] Apache ModSecurity configurations generated successfully.")
-    except Exception as e:
-        logging.critical(f"[!] Script failed: {e}")
-        exit(1)
-
 def load_json(file_path):
     """
     Load and parse JSON file.
@@ -197,21 +181,26 @@ def main():
     rules = []
     rule_id = 1000  # Initial rule ID
 
-    for rule in json_data.get('rules', []):
-        pattern = rule.get('pattern')
-        category = rule.get('category')
+    # Check if json_data is a dictionary and contains the 'rules' key
+    if isinstance(json_data, dict):
+        for rule in json_data.get('rules', []):
+            pattern = rule.get('pattern')
+            category = rule.get('category')
 
-        if not pattern or any(unsupported in pattern for unsupported in UNSUPPORTED_PATTERNS):
-            logging.info(f"[!] Skipping unsupported pattern: {pattern}")
-            continue
+            if not pattern or any(unsupported in pattern for unsupported in UNSUPPORTED_PATTERNS):
+                logging.info(f"[!] Skipping unsupported pattern: {pattern}")
+                continue
 
-        if validate_regex(pattern):
-            rules.append(MODSEC_RULE_TEMPLATE.format(pattern=pattern, rule_id=rule_id, category=category))
-            rule_id += 1
-
+            if validate_regex(pattern):
+                rules.append(MODSEC_RULE_TEMPLATE.format(pattern=pattern, rule_id=rule_id, category=category))
+                rule_id += 1
+    else:
+       logging.error("[!] Invalid JSON format: Expected a dictionary with a 'rules' key.")
+       return
+   
     output_file_path = OUTPUT_DIR / "rules.conf"
     write_rules_to_file(rules, output_file_path)
-
+    logging.info(f"[+] Generated rules.conf in {output_file_path}")
 
 if __name__ == "__main__":
     main()

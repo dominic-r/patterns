@@ -1,5 +1,134 @@
 # HAProxy WAF ACL rules
 
+acl block_initialization hdr_sub(User-Agent) -i ^\.*$
+http-request deny if block_initialization
+
+acl block_initialization hdr_sub(User-Agent) -i !(URLENCODED|MULTIPART|XML|JSON)
+http-request deny if block_initialization
+
+acl block_initialization hdr_sub(User-Agent) -i ^[a-f]*([0-9])[a-f]*([0-9])
+http-request deny if block_initialization
+
+acl block_exceptions hdr_sub(User-Agent) -i @streq GET /
+http-request deny if block_exceptions
+
+acl block_exceptions hdr_sub(User-Agent) -i @ipMatch 127.0.0.1,::1
+http-request deny if block_exceptions
+
+acl block_exceptions hdr_sub(User-Agent) -i @endsWith (internal dummy connection)
+http-request deny if block_exceptions
+
+acl block_exceptions hdr_sub(User-Agent) -i ^(GET /|OPTIONS *) HTTP/[12]\.[01]$
+http-request deny if block_exceptions
+
+acl block_rfi hdr_sub(User-Agent) -i ^(?i:file|ftps?|https?)://(d{1,3}.d{1,3}.d{1,3}.d{1,3})
+http-request deny if block_rfi
+
+acl block_rfi hdr_sub(User-Agent) -i !@endsWith \.%{request_headers.host}
+http-request deny if block_rfi
+
+acl block_leakages hdr_sub(User-Agent) -i (<(TITLE>Index of\.*?<H|title>Index of\.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)
+http-request deny if block_leakages
+
+acl block_leakages hdr_sub(User-Agent) -i ^#!s?/
+http-request deny if block_leakages
+
+acl block_leakages hdr_sub(User-Agent) -i ^5d{2}$
+http-request deny if block_leakages
+
+acl block_java hdr_sub(User-Agent) -i java.lang\.(runtime|processbuilder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (runtime|processbuilder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (unmarshaller|base64data|java\.)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i \.*\.(jsp|jspx)\.*$
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]{0,15}($|\$?)({|&l(brace|cub);?)|jndi|ctx)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]*($|\$?)({|&l(brace|cub);?)|jndi|ctx)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i xacxedx00x05
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (rO0ABQ|KztAAU|Cs7QAF)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i javab\.+(runtime|processbuilder)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (class.module.classLoader.resources.context.parent.pipeline|springframework.context.support.FileSystemXmlApplicationContext)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i (cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)
+http-request deny if block_java
+
+acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)
+http-request deny if block_java
+
+acl block_attack hdr_sub(User-Agent) -i ^content-types*:s*(\.*)$
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i content-transfer-encoding:(\.*)
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i (get|post|head|options|connect|put|delete|trace|track|patch|propfind|propatch|mkcol|copy|move|lock|unlock)s+[^s]+s+http/d
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i [rn]W*?(content-(type|length)|set-cookie|location):s*w
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i (bhttp/d|<(html|meta)b)
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i [nr]
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i [nr]+(s|location|refresh|(set-)?cookie|(x-)?(forwarded-(for|host|server)|host|via|remote-ip|remote-addr|originating-IP))s*:
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?(application/(\.++)?json|(application/(soap+)?|text/)xml)
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i unix:[^|]*|
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?b(((tex|multipar)t|application)|((audi|vide)o|image|cs[sv]|(vn|relate)d|p(df|lain)|json|(soa|cs)p|x(ml|-www-form-urlencoded)|form-data|x-amf|(octe|repor)t|stream)|([+/]))b
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i \.
+http-request deny if block_attack
+
+acl block_attack hdr_sub(User-Agent) -i TX:paramcounter_(\.*)
+http-request deny if block_attack
+
+acl block_fixation hdr_sub(User-Agent) -i (?i:.cookieb\.*?;W*?(expires|domain)W*?=|bhttp-equivW+set-cookieb)
+http-request deny if block_fixation
+
+acl block_fixation hdr_sub(User-Agent) -i ^(jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$
+http-request deny if block_fixation
+
+acl block_fixation hdr_sub(User-Agent) -i ^(ht|f)tps?://(\.*?)/
+http-request deny if block_fixation
+
+acl block_fixation hdr_sub(User-Agent) -i !@endsWith %{request_headers.host}
+http-request deny if block_fixation
+
+acl block_php hdr_sub(User-Agent) -i (b(f(tp_(nb_)?f?(ge|pu)t|get(s?s|c)|scanf|write|open|read)|gz((encod|writ)e|compress|open|read)|s(ession_start|candir)|read((gz)?file|dir)|move_uploaded_file|(proc_|bz)open|call_user_func)|$_((pos|ge)t|session))b
+http-request deny if block_php
+
+acl block_php hdr_sub(User-Agent) -i <?(=|php)?s+
+http-request deny if block_php
+
 acl block_sql hdr_sub(User-Agent) -i (?i:JET Database Engine|Access Database Engine|[Microsoft][ODBC Microsoft Access Driver])
 http-request deny if block_sql
 
@@ -39,158 +168,44 @@ http-request deny if block_sql
 acl block_sql hdr_sub(User-Agent) -i (Sybase message:|Warning\.{2,20}sybase|Sybase\.*Server message\.*)
 http-request deny if block_sql
 
-acl block_sqli hdr_sub(User-Agent) -i @detectSQLi
-http-request deny if block_sqli
+acl block_lfi hdr_sub(User-Agent) -i ((^|[x5c/;])\.{2,3}[x5c/;]|[x5c/;]\.{2,3}([x5c/;]|$))
+http-request deny if block_lfi
 
-acl block_sqli hdr_sub(User-Agent) -i (?i:sleep(s*?d*?s*?)|benchmark(\.*?,\.*?))
-http-request deny if block_sqli
+acl block_generic hdr_sub(User-Agent) -i while[sv]*([sv(]*(!+(false|null|undefined|NaN|[+-]?0|"{2}|'{2}|`{2})|(!!)*((t(rue|his)|[+-]?(Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(Boolea|Functio)n|Object|Array)b|{\.*}|[\.*]|"[^"]+"|'[^']+'|`[^`]+`))\.*)
+http-request deny if block_generic
 
-acl block_sqli hdr_sub(User-Agent) -i ^(?i:-0000023456|4294967295|4294967296|2147483648|2147483647|0000012345|-2147483648|-2147483649|0000023456|2.2250738585072007e-308|2.2250738585072011e-308|1e309)$
-http-request deny if block_sqli
+acl block_generic hdr_sub(User-Agent) -i [s*constructors*]
+http-request deny if block_generic
 
-acl block_sqli hdr_sub(User-Agent) -i alter[sv]*?[0-9A-Z_a-z]+\.*?char(acter)?[sv]+set[sv]+[0-9A-Z_a-z]+|["'`](;*?[sv]*?waitfor[sv]+(time|delay)[sv]+["'`]|;\.*?:[sv]*?goto)
-http-request deny if block_sqli
+acl block_generic hdr_sub(User-Agent) -i @{\.*}
+http-request deny if block_generic
 
-acl block_sqli hdr_sub(User-Agent) -i union\.*?select\.*?from
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i (<?([^x]|x[^m]|xm[^l]|xml[^s]|xml$|$)|<?php|[(/|x5c)?php])
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i select[sv]*?pg_sleep|waitfor[sv]*?delay[sv]?["'`]+[sv]?[0-9]|;[sv]*?shutdown[sv]*?([#;{]|/*|--)
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i \.*.ph(pd*|tml|ar|ps|t|pt)\.*$
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i create[sv]+function[sv]\.+[sv]returns|;[sv]*?(alter|((cre|trunc|upd)at|renam)e|d(e(lete|sc)|rop)|(inser|selec)t|load)b[sv]*?[([]?[0-9A-Z_a-z]{2,}
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i @pm =
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i ^([^']*'|[^"]*"|[^`]*`)[sv]*;
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i php://(std(in|out|err)|(in|out)put|fd|memory|temp|filter)
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i 1.e[(-),]
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i (bzip2|expect|glob|ogg|(ph|r)ar|ssh2(\.(s(hell|(ft|c)p)|exec|tunnel))?|z(ip|lib))://
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i (^s*["'`;]+|["'`]+s*$)
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i [oOcC]:d+:"\.+?":d+:{\.*}
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i [sv"'-)`]*?b([0-9A-Z_a-z]+)b[sv"'-)`]*?(=|<=>|(sounds[sv]+)?like|glob|r(like|egexp))[sv"'-)`]*?b([0-9A-Z_a-z]+)b
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i AUTH_TYPE|HTTP_(ACCEPT(_(CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(HOS|USER_AGEN)T|KEEP_ALIVE|(REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i @streq %{TX.2}
-http-request deny if block_sqli
+acl block_php hdr_sub(User-Agent) -i \.*\.(phpd*|phtml)\.\.*$
+http-request deny if block_php
 
-acl block_sqli hdr_sub(User-Agent) -i [sv"'-)`]*?b([0-9A-Z_a-z]+)b[sv"'-)`]*?(![<->]|<[=->]?|>=?|^|is[sv]+not|not[sv]+(like|r(like|egexp)))[sv"'-)`]*?b([0-9A-Z_a-z]+)b
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i !@streq %{TX.2}
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ["'`][sv]*?((and|n(and|ot)|(xx?)?or|div|like|between||||&&)[sv]+[sv0-9A-Z_a-z]+=[sv]*?[0-9A-Z_a-z]+[sv]*?having[sv]+|like[^0-9A-Z_a-z]*?["'0-9`])|[0-9A-Z_a-z][sv]+like[sv]+["'`]|like[sv]*?["'`]%|select[sv]+?[sv"'-),-.0-9A-[]_-z]+from[sv]+
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ["'`][sv]*?b(x?or|div|like|between|and)b[sv]*?["'`]?[0-9]|x5cx(2[37]|3d)|^(\.?["'`]$|["'x5c`]*?(["'0-9`]+|[^"'`]+["'`])[sv]*?b(and|n(and|ot)|(xx?)?or|div|like|between||||&&)b[sv]*?["'0-9A-Z_-z][!&(-)+-\.@])|[^sv0-9A-Z_a-z][0-9A-Z_a-z]+[sv]*?[-|][sv]*?["'`][sv]*?[0-9A-Z_a-z]|@([0-9A-Z_a-z]+[sv]+(and|x?or|div|like|between)b[sv]*?["'0-9`]+|[-0-9A-Z_a-z]+[sv](and|x?or|div|like|between)b[sv]*?[^sv0-9A-Z_a-z])|[^sv0-:A-Z_a-z][sv]*?[0-9][^0-9A-Z_a-z]+[^sv0-9A-Z_a-z][sv]*?["'`]\.|[^0-9A-Z_a-z]information_schema|table_name[^0-9A-Z_a-z]
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (?i:^[Wd]+s*?(alter|union)b)
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i b(orb([sv]?([0-9]{1,10}|["'][^=]{1,10}["'])[sv]?[<->]+|[sv]+([0-9]{1,10}|'[^=]{1,10}')([sv]*?[<->])?)|xorb[sv]+([0-9]{1,10}|'[^=]{1,10}')([sv]*?[<->])?)|'[sv]+x?or[sv]+\.{1,20}[!+-<->]
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i bandb([sv]+([0-9]{1,10}[sv]*?[<->]|'[^=]{1,10}')| ?([0-9]{1,10}|["'][^=]{1,10}["']) ?[<->]+)
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i autonomous_transaction|(current_use|n?varcha|tbcreato)r|db(a_users|ms_java)|open(owa_util|query|rowset)|s(p_((addextendedpro|sqlexe)c|execute(sql)?|help|is_srvrolemember|makewebtask|oacreate|p(assword|repare)|replwritetovarbin)|ql_(longvarchar|variant))|utl_(file|http)|xp_(availablemedia|(cmdshel|servicecontro)l|dirtree|e(numdsn|xecresultset)|filelist|loginconfig|makecab|ntsec(_enumdomains)?|reg(addmultistring|delete(key|value)|enum(key|value)s|re(ad|movemultistring)|write)|terminate(_process)?)
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){12})
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i !^ey[-0-9A-Z_a-z]+.ey[-0-9A-Z_a-z]+\.[-0-9A-Z_a-z]+$
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (?i:b0x[a-fd]{3,})
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ["'`][sv]*?((is[sv]+not|not[sv]+(like|glob|(betwee|i)n|null|regexp|match)|mod|div|sounds[sv]+like)b|[%-&*-+-/<->^|])
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ^([^']*?('[^']*?'[^']*?)*?'|[^"]*?("[^"]*?"[^"]*?)*?"|[^`]*?(`[^`]*?`[^`]*?)*?`)[sv]*([0-9A-Z_a-z]+)b
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ^(and|or)$
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ^\.*?x5c['"`](\.*?['"`])?s*(and|or)b
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i W+d*?s*?bhavingbs*?[^s-]
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ["'`][sd]*?[^ws]W*?dW*?\.*?["'`d]
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){8})
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){6})
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i W{4}
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i ';
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){3})
-http-request deny if block_sqli
-
-acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){2})
-http-request deny if block_sqli
-
-acl block_rfi hdr_sub(User-Agent) -i ^(?i:file|ftps?|https?)://(d{1,3}.d{1,3}.d{1,3}.d{1,3})
-http-request deny if block_rfi
-
-acl block_rfi hdr_sub(User-Agent) -i !@endsWith \.%{request_headers.host}
-http-request deny if block_rfi
-
-acl block_fixation hdr_sub(User-Agent) -i (?i:.cookieb\.*?;W*?(expires|domain)W*?=|bhttp-equivW+set-cookieb)
-http-request deny if block_fixation
-
-acl block_fixation hdr_sub(User-Agent) -i ^(jsessionid|aspsessionid|asp.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$
-http-request deny if block_fixation
-
-acl block_fixation hdr_sub(User-Agent) -i ^(ht|f)tps?://(\.*?)/
-http-request deny if block_fixation
-
-acl block_fixation hdr_sub(User-Agent) -i !@endsWith %{request_headers.host}
-http-request deny if block_fixation
-
-acl block_attack hdr_sub(User-Agent) -i (get|post|head|options|connect|put|delete|trace|track|patch|propfind|propatch|mkcol|copy|move|lock|unlock)s+[^s]+s+http/d
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i [rn]W*?(content-(type|length)|set-cookie|location):s*w
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i (bhttp/d|<(html|meta)b)
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i [nr]
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i [nr]+(s|location|refresh|(set-)?cookie|(x-)?(forwarded-(for|host|server)|host|via|remote-ip|remote-addr|originating-IP))s*:
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?(application/(\.++)?json|(application/(soap+)?|text/)xml)
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i unix:[^|]*|
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i ^[^sv,;]+[sv,;]\.*?b(((tex|multipar)t|application)|((audi|vide)o|image|cs[sv]|(vn|relate)d|p(df|lain)|json|(soa|cs)p|x(ml|-www-form-urlencoded)|form-data|x-amf|(octe|repor)t|stream)|([+/]))b
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i \.
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i TX:paramcounter_(\.*)
-http-request deny if block_attack
+acl block_php hdr_sub(User-Agent) -i @pm ?>
+http-request deny if block_php
 
 acl block_enforcement hdr_sub(User-Agent) -i !^(&(([acegiln-or-suz]acut|[aeiou]grav|[ain-o]tild)e|[c-elnr-tz]caron|([cgk-lnr-t]cedi|[aeiouy]um)l|[aceg-josuwy]circ|[au]ring|a(mp|pos)|nbsp|oslash);|[^"';=])*$
 http-request deny if block_enforcement
@@ -333,168 +348,6 @@ http-request deny if block_enforcement
 acl block_enforcement hdr_sub(User-Agent) -i (^|[^x5c])x5c[cdeghijklmpqwxyz123456789]
 http-request deny if block_enforcement
 
-acl block_lfi hdr_sub(User-Agent) -i ((^|[x5c/;])\.{2,3}[x5c/;]|[x5c/;]\.{2,3}([x5c/;]|$))
-http-request deny if block_lfi
-
-acl block_java hdr_sub(User-Agent) -i java.lang\.(runtime|processbuilder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (runtime|processbuilder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (unmarshaller|base64data|java\.)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i \.*\.(jsp|jspx)\.*$
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]{0,15}($|\$?)({|&l(brace|cub);?)|jndi|ctx)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)([^}]*($|\$?)({|&l(brace|cub);?)|jndi|ctx)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i xacxedx00x05
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (rO0ABQ|KztAAU|Cs7QAF)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i javab\.+(runtime|processbuilder)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (class.module.classLoader.resources.context.parent.pipeline|springframework.context.support.FileSystemXmlApplicationContext)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i (cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)
-http-request deny if block_java
-
-acl block_java hdr_sub(User-Agent) -i ($|\$?)({|&l(brace|cub);?)
-http-request deny if block_java
-
-acl block_rce hdr_sub(User-Agent) -i $(((\.*|(\.*)))|{\.*})|[<>](\.*)|/[0-9A-Z_a-z]*[!?\.+]
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i b(for(/[dflr]\.*)? %+[^ ]+ in(\.*)[sv]?do|if(/i)?( not)?( (e(xist|rrorlevel)|defined|cmdextversion)b|[ (]\.*(b(g(eq|tr)|equ|neq|l(eq|ss))b|==)))
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ![0-9]s*'s*[0-9]
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i !-d
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ^(s*)s+{
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ba["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?l["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?sb[sv]+[!-"%',0-9@-Z_a-z]+=[^sv]
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ($((((\.*)|\.*))|{\.*})|[<>](\.*)|[!?\.+])
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i /
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i s
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ^[^\.]+\.[^;?]+[;?](\.*(['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]))
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ^[^\.]*?(['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{])
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i ;[sv]*\.[sv]*["']?(a(rchive|uth)|b(a(ckup|il)|inary)|c(d|h(anges|eck)|lone|onnection)|d(atabases|b(config|info)|ump)|e(cho|qp|x(cel|it|p(ert|lain)))|f(ilectrl|ullschema)|he(aders|lp)|i(mpo(rt|ster)|ndexes|otrace)|l(i(mi|n)t|o(ad|g))|(mod|n(onc|ullvalu)|unmodul)e|o(nce|pen|utput)|p(arameter|r(int|o(gress|mpt)))|quit|re(ad|cover|store)|s(ave|c(anstats|hema)|e(lftest|parator|ssion)|h(a3sum|ell|ow)?|tats|ystem)|t(ables|estc(ase|trl)|ime(out|r)|race)|vfs(info|list|name)|width)
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i rn(?s:\.)*?b((?i:E)(HLO [--.A-Za-zx17fx212a]{1,255}|XPN \.{1,64})|HELO [--.A-Za-zx17fx212a]{1,255}|MAIL FROM:<\.{1,64}(?i:@)\.{1,255}(?i:>)|(?i:R)(CPT TO:((?i:<)\.{1,64}(?i:@)\.{1,255}(?i:>)|(?i: ))?(?i:<)\.{1,64}(?i:>)|SETb)|VRFY \.{1,64}( <\.{1,64}(?i:@)\.{1,255}(?i:>)|(?i:@)\.{1,255})|AUTH [-0-9A-Z_a-zx17fx212a]{1,20}(?i: )(([+/-9A-Z_a-zx17fx212a]{4})*([+/-9A-Z_a-zx17fx212a]{2}(?i:=)|[+/-9A-Z_a-zx17fx212a]{3}))?(?i:=)|STARTTLSb|NOOPb((?i: )\.{1,255})?)
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i (?is)rn\.*?b((LIST|TOP [0-9]+)( [0-9]+)?|U(SER \.+?|IDL( [0-9]+)?)|PASS \.+?|(RETR|DELE) [0-9]+?|A(POP [0-9A-Z_a-z]+ [0-9a-f]{32}|UTH [-0-9A-Z_]{1,20} (([+/-9A-Z_a-z]{4})*([+/-9A-Z_a-z]{2}=|[+/-9A-Z_a-z]{3}))?=))
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i /([?*]+[a-z/]+|[a-z/]+[?*]+)
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i rn(?s:\.)*?b(DATA|QUIT|HELP( \.{1,255})?)
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i (?is)rn[0-9A-Z_a-z]{1,50}b (C((REATE|OPY [*,0-:]+) ["-#%-&*--9A-Zx5c_a-z]+|APABILITY|HECK|LOSE)|DELETE ["-#%-&*--.0-9A-Zx5c_a-z]+|EX(AMINE ["-#%-&*--.0-9A-Zx5c_a-z]+|PUNGE)|FETCH [*,0-:]+|L(IST ["-#*--9A-Zx5c_a-z~]+? ["-#%-&*--9A-Zx5c_a-z]+|OG(IN [--.0-9@_a-z]{1,40} \.*?|OUT))|RENAME ["-#%-&*--9A-Zx5c_a-z]+? ["-#%-&*--9A-Zx5c_a-z]+|S(E(LECT ["-#%-&*--9A-Zx5c_a-z]+|ARCH( CHARSET [--.0-9A-Z_a-z]{1,40})? ((KEYWORD x5c)?(A(LL|NSWERED)|BCC|D(ELETED|RAFT)|(FLAGGE|OL)D|RECENT|SEEN|UN((ANSWER|FLAGG)ED|D(ELETED|RAFT)|SEEN)|NEW)|(BODY|CC|FROM|HEADER \.{1,100}|NOT|OR \.{1,255}|T(EXT|O)) \.{1,255}|LARGER [0-9]{1,20}|[*,0-:]+|(BEFORE|ON|S(ENT((BEFOR|SINC)E|ON)|INCE)) "?[0-9]{1,2}-[0-9A-Z_a-z]{3}-[0-9]{4}"?|S(MALLER [0-9]{1,20}|UBJECT \.{1,255})|U(ID [*,0-:]+?|NKEYWORD x5c(Seen|(Answer|Flagg)ed|D(eleted|raft)|Recent))))|T(ORE [*,0-:]+? [+-]?FLAGS(.SILENT)? ((x5c[a-z]{1,20}))?|ARTTLS)|UBSCRIBE ["-#%-&*--9A-Zx5c_a-z]+)|UN(SUBSCRIBE ["-#%-&*--9A-Zx5c_a-z]+|AUTHENTICATE)|NOOP)
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i rn(?s:\.)*?b((QUI|STA|RSE)(?i:T)|NOOP|CAPA)
-http-request deny if block_rce
-
-acl block_rce hdr_sub(User-Agent) -i !(d|!)
-http-request deny if block_rce
-
-acl block_initialization hdr_sub(User-Agent) -i ^\.*$
-http-request deny if block_initialization
-
-acl block_initialization hdr_sub(User-Agent) -i !(URLENCODED|MULTIPART|XML|JSON)
-http-request deny if block_initialization
-
-acl block_initialization hdr_sub(User-Agent) -i ^[a-f]*([0-9])[a-f]*([0-9])
-http-request deny if block_initialization
-
-acl block_php hdr_sub(User-Agent) -i (<?([^x]|x[^m]|xm[^l]|xml[^s]|xml$|$)|<?php|[(/|x5c)?php])
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i \.*.ph(pd*|tml|ar|ps|t|pt)\.*$
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i @pm =
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i php://(std(in|out|err)|(in|out)put|fd|memory|temp|filter)
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i (bzip2|expect|glob|ogg|(ph|r)ar|ssh2(\.(s(hell|(ft|c)p)|exec|tunnel))?|z(ip|lib))://
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i [oOcC]:d+:"\.+?":d+:{\.*}
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i AUTH_TYPE|HTTP_(ACCEPT(_(CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(HOS|USER_AGEN)T|KEEP_ALIVE|(REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i \.*\.(phpd*|phtml)\.\.*$
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i @pm ?>
-http-request deny if block_php
-
-acl block_generic hdr_sub(User-Agent) -i while[sv]*([sv(]*(!+(false|null|undefined|NaN|[+-]?0|"{2}|'{2}|`{2})|(!!)*((t(rue|his)|[+-]?(Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(Boolea|Functio)n|Object|Array)b|{\.*}|[\.*]|"[^"]+"|'[^']+'|`[^`]+`))\.*)
-http-request deny if block_generic
-
-acl block_generic hdr_sub(User-Agent) -i [s*constructors*]
-http-request deny if block_generic
-
-acl block_generic hdr_sub(User-Agent) -i @{\.*}
-http-request deny if block_generic
-
-acl block_leakages hdr_sub(User-Agent) -i (<(TITLE>Index of\.*?<H|title>Index of\.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)
-http-request deny if block_leakages
-
-acl block_leakages hdr_sub(User-Agent) -i ^#!s?/
-http-request deny if block_leakages
-
-acl block_leakages hdr_sub(User-Agent) -i ^5d{2}$
-http-request deny if block_leakages
-
-acl block_attack hdr_sub(User-Agent) -i ^content-types*:s*(\.*)$
-http-request deny if block_attack
-
-acl block_attack hdr_sub(User-Agent) -i content-transfer-encoding:(\.*)
-http-request deny if block_attack
-
 acl block_xss hdr_sub(User-Agent) -i !@validateByteRange 20, 45-47, 48-57, 65-90, 95, 97-122
 http-request deny if block_xss
 
@@ -569,24 +422,6 @@ http-request deny if block_xss
 
 acl block_xss hdr_sub(User-Agent) -i {{\.*?}}
 http-request deny if block_xss
-
-acl block_exceptions hdr_sub(User-Agent) -i @streq GET /
-http-request deny if block_exceptions
-
-acl block_exceptions hdr_sub(User-Agent) -i @ipMatch 127.0.0.1,::1
-http-request deny if block_exceptions
-
-acl block_exceptions hdr_sub(User-Agent) -i @endsWith (internal dummy connection)
-http-request deny if block_exceptions
-
-acl block_exceptions hdr_sub(User-Agent) -i ^(GET /|OPTIONS *) HTTP/[12]\.[01]$
-http-request deny if block_exceptions
-
-acl block_php hdr_sub(User-Agent) -i (b(f(tp_(nb_)?f?(ge|pu)t|get(s?s|c)|scanf|write|open|read)|gz((encod|writ)e|compress|open|read)|s(ession_start|candir)|read((gz)?file|dir)|move_uploaded_file|(proc_|bz)open|call_user_func)|$_((pos|ge)t|session))b
-http-request deny if block_php
-
-acl block_php hdr_sub(User-Agent) -i <?(=|php)?s+
-http-request deny if block_php
 
 acl block_iis hdr_sub(User-Agent) -i [a-z]:x5cinetpubb
 http-request deny if block_iis
@@ -674,4 +509,169 @@ http-request deny if block_shells
 
 acl block_shells hdr_sub(User-Agent) -i @contains <h1 style="margin-bottom: 0">webadmin.php</h1>
 http-request deny if block_shells
+
+acl block_sqli hdr_sub(User-Agent) -i @detectSQLi
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (?i:sleep(s*?d*?s*?)|benchmark(\.*?,\.*?))
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ^(?i:-0000023456|4294967295|4294967296|2147483648|2147483647|0000012345|-2147483648|-2147483649|0000023456|2.2250738585072007e-308|2.2250738585072011e-308|1e309)$
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i alter[sv]*?[0-9A-Z_a-z]+\.*?char(acter)?[sv]+set[sv]+[0-9A-Z_a-z]+|["'`](;*?[sv]*?waitfor[sv]+(time|delay)[sv]+["'`]|;\.*?:[sv]*?goto)
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i union\.*?select\.*?from
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i select[sv]*?pg_sleep|waitfor[sv]*?delay[sv]?["'`]+[sv]?[0-9]|;[sv]*?shutdown[sv]*?([#;{]|/*|--)
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i create[sv]+function[sv]\.+[sv]returns|;[sv]*?(alter|((cre|trunc|upd)at|renam)e|d(e(lete|sc)|rop)|(inser|selec)t|load)b[sv]*?[([]?[0-9A-Z_a-z]{2,}
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ^([^']*'|[^"]*"|[^`]*`)[sv]*;
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i 1.e[(-),]
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (^s*["'`;]+|["'`]+s*$)
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i [sv"'-)`]*?b([0-9A-Z_a-z]+)b[sv"'-)`]*?(=|<=>|(sounds[sv]+)?like|glob|r(like|egexp))[sv"'-)`]*?b([0-9A-Z_a-z]+)b
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i @streq %{TX.2}
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i [sv"'-)`]*?b([0-9A-Z_a-z]+)b[sv"'-)`]*?(![<->]|<[=->]?|>=?|^|is[sv]+not|not[sv]+(like|r(like|egexp)))[sv"'-)`]*?b([0-9A-Z_a-z]+)b
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i !@streq %{TX.2}
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ["'`][sv]*?((and|n(and|ot)|(xx?)?or|div|like|between||||&&)[sv]+[sv0-9A-Z_a-z]+=[sv]*?[0-9A-Z_a-z]+[sv]*?having[sv]+|like[^0-9A-Z_a-z]*?["'0-9`])|[0-9A-Z_a-z][sv]+like[sv]+["'`]|like[sv]*?["'`]%|select[sv]+?[sv"'-),-.0-9A-[]_-z]+from[sv]+
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ["'`][sv]*?b(x?or|div|like|between|and)b[sv]*?["'`]?[0-9]|x5cx(2[37]|3d)|^(\.?["'`]$|["'x5c`]*?(["'0-9`]+|[^"'`]+["'`])[sv]*?b(and|n(and|ot)|(xx?)?or|div|like|between||||&&)b[sv]*?["'0-9A-Z_-z][!&(-)+-\.@])|[^sv0-9A-Z_a-z][0-9A-Z_a-z]+[sv]*?[-|][sv]*?["'`][sv]*?[0-9A-Z_a-z]|@([0-9A-Z_a-z]+[sv]+(and|x?or|div|like|between)b[sv]*?["'0-9`]+|[-0-9A-Z_a-z]+[sv](and|x?or|div|like|between)b[sv]*?[^sv0-9A-Z_a-z])|[^sv0-:A-Z_a-z][sv]*?[0-9][^0-9A-Z_a-z]+[^sv0-9A-Z_a-z][sv]*?["'`]\.|[^0-9A-Z_a-z]information_schema|table_name[^0-9A-Z_a-z]
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (?i:^[Wd]+s*?(alter|union)b)
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i b(orb([sv]?([0-9]{1,10}|["'][^=]{1,10}["'])[sv]?[<->]+|[sv]+([0-9]{1,10}|'[^=]{1,10}')([sv]*?[<->])?)|xorb[sv]+([0-9]{1,10}|'[^=]{1,10}')([sv]*?[<->])?)|'[sv]+x?or[sv]+\.{1,20}[!+-<->]
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i bandb([sv]+([0-9]{1,10}[sv]*?[<->]|'[^=]{1,10}')| ?([0-9]{1,10}|["'][^=]{1,10}["']) ?[<->]+)
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i autonomous_transaction|(current_use|n?varcha|tbcreato)r|db(a_users|ms_java)|open(owa_util|query|rowset)|s(p_((addextendedpro|sqlexe)c|execute(sql)?|help|is_srvrolemember|makewebtask|oacreate|p(assword|repare)|replwritetovarbin)|ql_(longvarchar|variant))|utl_(file|http)|xp_(availablemedia|(cmdshel|servicecontro)l|dirtree|e(numdsn|xecresultset)|filelist|loginconfig|makecab|ntsec(_enumdomains)?|reg(addmultistring|delete(key|value)|enum(key|value)s|re(ad|movemultistring)|write)|terminate(_process)?)
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){12})
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i !^ey[-0-9A-Z_a-z]+.ey[-0-9A-Z_a-z]+\.[-0-9A-Z_a-z]+$
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (?i:b0x[a-fd]{3,})
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ["'`][sv]*?((is[sv]+not|not[sv]+(like|glob|(betwee|i)n|null|regexp|match)|mod|div|sounds[sv]+like)b|[%-&*-+-/<->^|])
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ^([^']*?('[^']*?'[^']*?)*?'|[^"]*?("[^"]*?"[^"]*?)*?"|[^`]*?(`[^`]*?`[^`]*?)*?`)[sv]*([0-9A-Z_a-z]+)b
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ^(and|or)$
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ^\.*?x5c['"`](\.*?['"`])?s*(and|or)b
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i W+d*?s*?bhavingbs*?[^s-]
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ["'`][sd]*?[^ws]W*?dW*?\.*?["'`d]
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){8})
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){6})
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i W{4}
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i ';
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){3})
+http-request deny if block_sqli
+
+acl block_sqli hdr_sub(User-Agent) -i (([~!@#$%^&*()-+={}[]|:;"'´’‘`<>][^~!@#$%^&*()-+={}[]|:;"'´’‘`<>]*?){2})
+http-request deny if block_sqli
+
+acl block_rce hdr_sub(User-Agent) -i $(((\.*|(\.*)))|{\.*})|[<>](\.*)|/[0-9A-Z_a-z]*[!?\.+]
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i b(for(/[dflr]\.*)? %+[^ ]+ in(\.*)[sv]?do|if(/i)?( not)?( (e(xist|rrorlevel)|defined|cmdextversion)b|[ (]\.*(b(g(eq|tr)|equ|neq|l(eq|ss))b|==)))
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ![0-9]s*'s*[0-9]
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i !-d
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ^(s*)s+{
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ba["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?l["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?i["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?a["')[-x5c]*(((|||&&)[sv]*)?$[!#(*-0-9?-@_a-{]*)?x5c?sb[sv]+[!-"%',0-9@-Z_a-z]+=[^sv]
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ($((((\.*)|\.*))|{\.*})|[<>](\.*)|[!?\.+])
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i /
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i s
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ^[^\.]+\.[^;?]+[;?](\.*(['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{]))
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ^[^\.]*?(['*?x5c`][^n/]+/|/[^/]+?['*?x5c`]|$[!#-$(*-0-9?-[_a-{])
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i ;[sv]*\.[sv]*["']?(a(rchive|uth)|b(a(ckup|il)|inary)|c(d|h(anges|eck)|lone|onnection)|d(atabases|b(config|info)|ump)|e(cho|qp|x(cel|it|p(ert|lain)))|f(ilectrl|ullschema)|he(aders|lp)|i(mpo(rt|ster)|ndexes|otrace)|l(i(mi|n)t|o(ad|g))|(mod|n(onc|ullvalu)|unmodul)e|o(nce|pen|utput)|p(arameter|r(int|o(gress|mpt)))|quit|re(ad|cover|store)|s(ave|c(anstats|hema)|e(lftest|parator|ssion)|h(a3sum|ell|ow)?|tats|ystem)|t(ables|estc(ase|trl)|ime(out|r)|race)|vfs(info|list|name)|width)
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i rn(?s:\.)*?b((?i:E)(HLO [--.A-Za-zx17fx212a]{1,255}|XPN \.{1,64})|HELO [--.A-Za-zx17fx212a]{1,255}|MAIL FROM:<\.{1,64}(?i:@)\.{1,255}(?i:>)|(?i:R)(CPT TO:((?i:<)\.{1,64}(?i:@)\.{1,255}(?i:>)|(?i: ))?(?i:<)\.{1,64}(?i:>)|SETb)|VRFY \.{1,64}( <\.{1,64}(?i:@)\.{1,255}(?i:>)|(?i:@)\.{1,255})|AUTH [-0-9A-Z_a-zx17fx212a]{1,20}(?i: )(([+/-9A-Z_a-zx17fx212a]{4})*([+/-9A-Z_a-zx17fx212a]{2}(?i:=)|[+/-9A-Z_a-zx17fx212a]{3}))?(?i:=)|STARTTLSb|NOOPb((?i: )\.{1,255})?)
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i (?is)rn\.*?b((LIST|TOP [0-9]+)( [0-9]+)?|U(SER \.+?|IDL( [0-9]+)?)|PASS \.+?|(RETR|DELE) [0-9]+?|A(POP [0-9A-Z_a-z]+ [0-9a-f]{32}|UTH [-0-9A-Z_]{1,20} (([+/-9A-Z_a-z]{4})*([+/-9A-Z_a-z]{2}=|[+/-9A-Z_a-z]{3}))?=))
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i /([?*]+[a-z/]+|[a-z/]+[?*]+)
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i rn(?s:\.)*?b(DATA|QUIT|HELP( \.{1,255})?)
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i (?is)rn[0-9A-Z_a-z]{1,50}b (C((REATE|OPY [*,0-:]+) ["-#%-&*--9A-Zx5c_a-z]+|APABILITY|HECK|LOSE)|DELETE ["-#%-&*--.0-9A-Zx5c_a-z]+|EX(AMINE ["-#%-&*--.0-9A-Zx5c_a-z]+|PUNGE)|FETCH [*,0-:]+|L(IST ["-#*--9A-Zx5c_a-z~]+? ["-#%-&*--9A-Zx5c_a-z]+|OG(IN [--.0-9@_a-z]{1,40} \.*?|OUT))|RENAME ["-#%-&*--9A-Zx5c_a-z]+? ["-#%-&*--9A-Zx5c_a-z]+|S(E(LECT ["-#%-&*--9A-Zx5c_a-z]+|ARCH( CHARSET [--.0-9A-Z_a-z]{1,40})? ((KEYWORD x5c)?(A(LL|NSWERED)|BCC|D(ELETED|RAFT)|(FLAGGE|OL)D|RECENT|SEEN|UN((ANSWER|FLAGG)ED|D(ELETED|RAFT)|SEEN)|NEW)|(BODY|CC|FROM|HEADER \.{1,100}|NOT|OR \.{1,255}|T(EXT|O)) \.{1,255}|LARGER [0-9]{1,20}|[*,0-:]+|(BEFORE|ON|S(ENT((BEFOR|SINC)E|ON)|INCE)) "?[0-9]{1,2}-[0-9A-Z_a-z]{3}-[0-9]{4}"?|S(MALLER [0-9]{1,20}|UBJECT \.{1,255})|U(ID [*,0-:]+?|NKEYWORD x5c(Seen|(Answer|Flagg)ed|D(eleted|raft)|Recent))))|T(ORE [*,0-:]+? [+-]?FLAGS(.SILENT)? ((x5c[a-z]{1,20}))?|ARTTLS)|UBSCRIBE ["-#%-&*--9A-Zx5c_a-z]+)|UN(SUBSCRIBE ["-#%-&*--9A-Zx5c_a-z]+|AUTHENTICATE)|NOOP)
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i rn(?s:\.)*?b((QUI|STA|RSE)(?i:T)|NOOP|CAPA)
+http-request deny if block_rce
+
+acl block_rce hdr_sub(User-Agent) -i !(d|!)
+http-request deny if block_rce
 

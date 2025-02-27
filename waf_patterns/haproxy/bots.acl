@@ -618,6 +618,7 @@ acl bad_bot hdr_sub(User-Agent) -i MTRobot
 acl bad_bot hdr_sub(User-Agent) -i MVAClient
 acl bad_bot hdr_sub(User-Agent) -i MacOutlook\/
 acl bad_bot hdr_sub(User-Agent) -i Mag-Net
+acl bad_bot hdr_sub(User-Agent) -i MagentaNews\/
 acl bad_bot hdr_sub(User-Agent) -i Magnet
 acl bad_bot hdr_sub(User-Agent) -i MagpieRSS
 acl bad_bot hdr_sub(User-Agent) -i Mail.RU_Bot
@@ -1572,6 +1573,7 @@ acl bad_bot hdr_sub(User-Agent) -i jobo
 acl bad_bot hdr_sub(User-Agent) -i khttp\/
 acl bad_bot hdr_sub(User-Agent) -i knows\.is
 acl bad_bot hdr_sub(User-Agent) -i kouio
+acl bad_bot hdr_sub(User-Agent) -i krawler\.dk
 acl bad_bot hdr_sub(User-Agent) -i kube-probe
 acl bad_bot hdr_sub(User-Agent) -i kubectl
 acl bad_bot hdr_sub(User-Agent) -i kulturarw3

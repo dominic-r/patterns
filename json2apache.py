@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 from typing import List, Dict, Set, Tuple, Optional
 from functools import lru_cache
+from collections import defaultdict  # Import defaultdict
 
 # --- Configuration ---
 LOG_LEVEL = logging.INFO  # Adjust as needed (DEBUG, INFO, WARNING, ERROR)
@@ -21,19 +22,19 @@ DEFAULT_ACTIONS = "deny,status:403,log"
 
 # Unsupported ModSecurity directives (expand as needed)
 UNSUPPORTED_PATTERNS = [
-    "@pmFromFile", #  File lookups not directly supported
+    "@pmFromFile",  # File lookups not directly supported
     # You might handle some of these with ctl:ruleRemoveTargetById later
 ]
 # Supported ModSecurity operators and their rough translations (for logging/info)
 SUPPORTED_OPERATORS = {
-     "@rx": "Regular Expression",
-     "@streq": "String Equals",
-     "@contains": "Contains String",
-     "@beginsWith": "Begins With",
-     "@endsWith": "Ends With",
-     "@within": "Contained Within",
-     "@ipMatch": "IP Address Match",
-     # ... add more as needed
+    "@rx": "Regular Expression",
+    "@streq": "String Equals",
+    "@contains": "Contains String",
+    "@beginsWith": "Begins With",
+    "@endsWith": "Ends With",
+    "@within": "Contained Within",
+    "@ipMatch": "IP Address Match",
+    # ... add more as needed
 }
 
 # --- Logging Setup ---
@@ -78,7 +79,7 @@ def _determine_variables(location: str) -> str:
     # Add other location mappings as needed
     else:
         logger.warning(f"Unknown location '{location}', defaulting to REQUEST_URI")
-        return "REQUEST_URI" # Default variable
+        return "REQUEST_URI"  # Default variable
 
 
 def generate_apache_waf(rules: List[Dict]) -> None:
@@ -93,16 +94,24 @@ def generate_apache_waf(rules: List[Dict]) -> None:
 
     for rule in rules:
         rule_id = rule.get("id", "no_id")  # Get rule ID
-        if not isinstance(rule_id, int): # check if is an int
-             # Extract ID from rule and convert to an integer
+        if not isinstance(rule_id, int):  # check if is an int
+            # Extract ID from rule and convert to an integer
             match = re.search(r'id:(\d+)', rule_id)
-            rule_id = int(match.group(1)) if match else rule_id_counter
-            rule_id_counter += 1
+            if match:
+                try:
+                    rule_id = int(match.group(1))
+                except ValueError:
+                    logger.warning(f"Invalid rule ID '{match.group(1)}' in rule: {rule}. Using generated ID.")
+                    rule_id = rule_id_counter
+                    rule_id_counter += 1
+            else:
+                rule_id = rule_id_counter
+                rule_id_counter += 1
 
         category = rule.get("category", "generic").lower()
         pattern = rule["pattern"]
-        location = rule.get("location", "REQUEST_URI") # Set a default variable
-        severity = rule.get("severity", "CRITICAL").upper() # CRITICAL, ERROR, WARNING, NOTICE
+        location = rule.get("location", "REQUEST_URI")  # Set a default variable
+        severity = rule.get("severity", "CRITICAL").upper()  # CRITICAL, ERROR, WARNING, NOTICE
         # --- Operator Handling ---
         operator_used = "Unknown"  # Default
         for op in SUPPORTED_OPERATORS:
@@ -133,7 +142,7 @@ def generate_apache_waf(rules: List[Dict]) -> None:
             phase=2,  # Phase 2 (request body processing) is common, adjust if needed
             actions=DEFAULT_ACTIONS,
         )
-        categorized_rules[category].add(rule_str) # added into a dict
+        categorized_rules[category].add(rule_str)  # added into a dict
 
 
     # --- File Output ---

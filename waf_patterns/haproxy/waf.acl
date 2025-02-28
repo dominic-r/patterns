@@ -1,29 +1,25 @@
 # HAProxy WAF ACL rules
 
 # Rules for User-Agent
-acl block_php_no_id hdr_reg(User-Agent) -i (<?([^x]|x[^m]|xm[^l]|xml[^s]|xml\$|\$)|<?php|[(/|x5c)?php])
-acl block_exceptions_no_id hdr_sub(User-Agent) -i str -m str GET /
 acl block_initialization_no_id hdr_reg(User-Agent) -i ^\.*\$
-acl block_lfi_no_id hdr_reg(User-Agent) -i ((^|[x5c/;])\.{2,3}[x5c/;]|[x5c/;]\.{2,3}([x5c/;]|\$))
-acl block_rfi_no_id hdr_reg(User-Agent) -i ^(?i:file|ftps?|https?)://(d{1,3}.d{1,3}.d{1,3}.d{1,3})
-acl block_leakages_no_id hdr_reg(User-Agent) -i (<(TITLE>Index of\.*?<H|title>Index of\.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)
-acl block_generic_no_id hdr_reg(User-Agent) -i while[sv]*([sv(]*(!+(false|null|undefined|NaN|[+-]?0|"{2}|'{2}|`{2})|(!!)*((t(rue|his)|[+-]?(Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(Boolea|Functio)n|Object|Array)b|{\.*}|[\.*]|"[^"]+"|'[^']+'|`[^`]+`))\.*)
-acl block_attack_no_id hdr_sub(User-Agent) -i str -m !str 0
-acl block_sql_no_id hdr_reg(User-Agent) -i (?i:JET Database Engine|Access Database Engine|[Microsoft][ODBC Microsoft Access Driver])
-acl block_xss_no_id hdr_sub(User-Agent) -i @detectXSS
 acl block_enforcement_no_id hdr_sub(User-Agent) -i str -m !reg %{tx.allowed_methods}
-acl block_sqli_no_id hdr_reg(User-Agent) -i (?i:sleep(s*?d*?s*?)|benchmark(\.*?,\.*?))
 acl block_fixation_no_id hdr_reg(User-Agent) -i (?i:.cookieb\.*?;W*?(expires|domain)W*?=|bhttp-equivW+set-cookieb)
-acl block_java_no_id hdr_reg(User-Agent) -i java.lang\.(runtime|processbuilder)
+acl block_attack_no_id hdr_sub(User-Agent) -i str -m !str 0
+acl block_rfi_no_id hdr_reg(User-Agent) -i ^(?i:file|ftps?|https?)://(d{1,3}.d{1,3}.d{1,3}.d{1,3})
+acl block_exceptions_no_id hdr_sub(User-Agent) -i str -m str GET /
+acl block_lfi_no_id hdr_reg(User-Agent) -i ((^|[x5c/;])\.{2,3}[x5c/;]|[x5c/;]\.{2,3}([x5c/;]|\$))
+acl block_generic_no_id hdr_reg(User-Agent) -i while[sv]*([sv(]*(!+(false|null|undefined|NaN|[+-]?0|"{2}|'{2}|`{2})|(!!)*((t(rue|his)|[+-]?(Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(Boolea|Functio)n|Object|Array)b|{\.*}|[\.*]|"[^"]+"|'[^']+'|`[^`]+`))\.*)
+acl block_xss_no_id hdr_reg(User-Agent) -i <script[^>]*>[sS]*?
+acl block_php_no_id hdr_reg(User-Agent) -i (<?([^x]|x[^m]|xm[^l]|xml[^s]|xml\$|\$)|<?php|[(/|x5c)?php])
 acl block_rce_no_id hdr_reg(User-Agent) -i \$(((\.*|(\.*)))|{\.*})|[<>](\.*)|/[0-9A-Z_a-z]*[!?\.+]
+acl block_sqli_no_id hdr_reg(User-Agent) -i (?i:sleep(s*?d*?s*?)|benchmark(\.*?,\.*?))
+acl block_java_no_id hdr_reg(User-Agent) -i java.lang\.(runtime|processbuilder)
+acl block_sql_no_id hdr_reg(User-Agent) -i (?i:JET Database Engine|Access Database Engine|[Microsoft][ODBC Microsoft Access Driver])
+acl block_leakages_no_id hdr_reg(User-Agent) -i (<(TITLE>Index of\.*?<H|title>Index of\.*?<h)1>Index of|>[To Parent Directory]</[Aa]><br>)
 acl block_shells_no_id hdr_reg(User-Agent) -i (<title>r57 Shell Version [0-9\.]+</title>|<title>r57 shell</title>)
 acl block_iis_no_id hdr_reg(User-Agent) -i [a-z]:x5cinetpubb
 
 
-# High Severity Rules (Deny)
-
-# Medium Severity Rules (Log)
-http-request log if block_php_no_id or block_exceptions_no_id or block_initialization_no_id or block_lfi_no_id or block_rfi_no_id or block_leakages_no_id or block_generic_no_id or block_attack_no_id or block_sql_no_id or block_xss_no_id or block_enforcement_no_id or block_sqli_no_id or block_fixation_no_id or block_java_no_id or block_rce_no_id or block_shells_no_id or block_iis_no_id
-
-# Low Severity Rules (Tarpit)
+# Deny Actions
+http-request log if block_initialization_no_id or block_enforcement_no_id or block_fixation_no_id or block_attack_no_id or block_rfi_no_id or block_exceptions_no_id or block_lfi_no_id or block_generic_no_id or block_xss_no_id or block_php_no_id or block_rce_no_id or block_sqli_no_id or block_java_no_id or block_sql_no_id or block_leakages_no_id or block_shells_no_id or block_iis_no_id
 

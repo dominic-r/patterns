@@ -17,7 +17,7 @@ logging.basicConfig(
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "waf_patterns/haproxy/"))  # Output directory
 INPUT_FILE = Path(os.getenv("INPUT_FILE", "owasp_rules.json"))  # Input JSON file
 
-UNSUPPORTED_PATTERNS = ["@pmFromFile", "@detectSQLi", "@validateByteRange"] # Add more unsupported patterns
+UNSUPPORTED_PATTERNS = ["@pmFromFile", "@detectSQLi", "@validateByteRange", "@detectXSS"] # ADDED REMOVE xss and added more unsupported patterns
 
 # Operator mapping (ModSecurity to HAProxy) - Added more mappings
 OPERATOR_MAP = {
@@ -232,12 +232,14 @@ def generate_haproxy_conf(rules: List[Dict]) -> None:
 
             f.write("\n")
             # Add all the actions based on rules
-            for action, rules in all_deny_actions.items():
-                action_string = 'deny' if action == "deny_high" else 'log' if action == "log_medium" else 'tarpit'
-                f.write(f"# {action.split('_')[1].capitalize()} Severity Rules ({action_string.capitalize()})\n") # comment action
-                if rules:
-                    f.write(f"http-request {action_string} if {' or '.join(rules)}\n")
-                f.write("\n")
+            f.write("# Deny Actions\n") # start final actions block
+            if deny_high:
+                f.write(f"http-request deny if {' or '.join(deny_high)}\n")
+            if log_medium:
+                f.write(f"http-request log if {' or '.join(log_medium)}\n")
+            if tarpit_low:
+                f.write(f"http-request tarpit if {' or '.join(tarpit_low)}\n")
+            f.write("\n") # end of actions log
 
         logging.info(f"[+] HAProxy WAF rules generated at {config_file}")
 

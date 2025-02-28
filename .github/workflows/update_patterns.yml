@@ -1,13 +1,15 @@
-name: Update patterns
+name: Update Patterns
 
 permissions:
-  contents: write  # Needed for committing changes and pushing updates
-  statuses: write  # Required for updating commit statuses (e.g., CI/CD status)
-  
+  contents: write  # Commit changes, push updates
+  statuses: write  # Update commit statuses
+  actions: read    # Required for checking out the repository
+  packages: write  # For GitHub Packages (if used)
+
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight UTC
-  workflow_dispatch:  # Allow manual trigger
+    - cron: '0 0 * * *'  # Daily at midnight UTC
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   update-owasp-waf:
@@ -17,15 +19,14 @@ jobs:
     - name: 🚚 Checkout Repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Full history to avoid shallow clone issues
+        fetch-depth: 0 # get full git history
 
-    - name: ⚙️ Set Up Python
+    - name: ⚙️ Set Up Python 3.11
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
 
-    - name: 📦 Cache Python Packages
-      id: cache-pip
+    - name: 📦 Cache pip dependencies
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
@@ -34,134 +35,130 @@ jobs:
           ${{ runner.os }}-pip-
 
     - name: 📥 Install Dependencies
-      if: steps.cache-pip.outputs.cache-hit != 'true'
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-      continue-on-error: false  # Fail the workflow if dependencies fail to install
 
     - name: 🕷️ Run OWASP Scraper
-      run: |
-        python owasp2json.py
-      continue-on-error: false
+      run: python owasp2json.py
 
     - name: 🔄 Convert OWASP to Nginx WAF
-      run: |
-        python json2nginx.py
-      continue-on-error: false
+      run: python json2nginx.py
 
     - name: 🔄 Convert OWASP to Apache WAF
-      run: |
-        python json2apache.py
-      continue-on-error: false
+      run: python json2apache.py
 
     - name: 🔄 Convert OWASP to Traefik WAF
-      run: |
-        python json2traefik.py
-      continue-on-error: false
+      run: python json2traefik.py
 
     - name: 🔄 Convert OWASP to HAProxy WAF
+      run: python json2haproxy.py
+
+    - name: 🔄 Generate Bad Bot Blockers (Placeholder - Provide badbots.py)
       run: |
-        python json2haproxy.py
-      continue-on-error: false
-      
-    - name: 🔄 Generate Bad Bot Blockers
-      run: |
-        python badbots.py
-      continue-on-error: false
-      
-    # Ensure conf files are pushed even if no changes detected
-    - name: 🚀 Commit and Push OWASP WAF patterns
+        # Placeholder:  Replace this with your actual badbots.py script.
+        # Assuming badbots.py generates files in waf_patterns/
+        # Example (if badbots.py creates nginx/bots.conf):
+        # python badbots.py
+        echo "Placeholder for badbots.py execution"
+
+    - name: 🚀 Commit and Push Changes (if any)
       run: |
         git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "Update: [$(date)]" || echo "No changes to commit"
-        git push
-      continue-on-error: true  # Continue even if no changes are made
+        # Check if there are any changes *before* committing.
+        if ! git diff --quiet --exit-code; then
+          git commit -m "Update WAF rules [$(date +'%Y-%m-%d')]"
+          git push
+        else
+          echo "No changes to commit."
+        fi
+      continue-on-error: true  # Continue even if no changes
 
-    - name: 📦 Create Zip Files for Each Web Server
+    - name: 📦 Create Zip Archives
       run: |
-        mkdir -p zips
-        zip -r zips/nginx_waf.zip waf_patterns/nginx/
-        zip -r zips/apache_waf.zip waf_patterns/apache/
-        zip -r zips/traefik_waf.zip waf_patterns/traefik/
-        zip -r zips/haproxy_waf.zip waf_patterns/haproxy/
+        mkdir -p dist
+        (cd waf_patterns/nginx && zip -r ../../dist/nginx_waf.zip .)
+        (cd waf_patterns/apache && zip -r ../../dist/apache_waf.zip .)
+        (cd waf_patterns/traefik && zip -r ../../dist/traefik_waf.zip .)
+        (cd waf_patterns/haproxy && zip -r ../../dist/haproxy_waf.zip .)
 
     - name: 🗑️ Delete Existing 'latest' Tag and Release (if they exist)
       run: |
-        # Delete the local 'latest' tag
-        if git rev-parse --verify --quiet refs/tags/latest; then
-          git tag -d latest
-        fi
-
-        # Delete the remote 'latest' tag
-        git push origin :refs/tags/latest || echo "Tag 'latest' does not exist on remote."
-
-        # Delete the 'latest' release (if it exists)
-        gh release delete latest --yes || echo "Release 'latest' does not exist."
-
+        gh auth login --with-token <<< "$GITHUB_TOKEN"
+        # Delete local tag
+        git tag -d latest || true
+        # Delete remote tag (force)
+        git push --delete origin latest || true
+        # Delete release, --yes for confirmation
+        gh release delete latest --yes || true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: 🚀 Create GitHub Release
-      id: create_release
+
+    - name: 🚀 Create GitHub Release (if previous steps succeeded)
+      if: success()  # Only create release if previous steps were successful
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: latest  # Use "latest" as the tag name
+        tag_name: latest
         release_name: Latest Release
         draft: false
         prerelease: false
 
-    - name: 📤 Upload Nginx WAF Zip to Release
+    - name: 📤 Upload Nginx WAF Zip
+      if: success()
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: zips/nginx_waf.zip
+        asset_path: dist/nginx_waf.zip
         asset_name: nginx_waf.zip
         asset_content_type: application/zip
 
-    - name: 📤 Upload Apache WAF Zip to Release
+    - name: 📤 Upload Apache WAF Zip
+      if: success()
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: zips/apache_waf.zip
+        asset_path: dist/apache_waf.zip
         asset_name: apache_waf.zip
         asset_content_type: application/zip
 
-    - name: 📤 Upload Traefik WAF Zip to Release
+    - name: 📤 Upload Traefik WAF Zip
+      if: success()
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: zips/traefik_waf.zip
+        asset_path: dist/traefik_waf.zip
         asset_name: traefik_waf.zip
         asset_content_type: application/zip
 
-    - name: 📤 Upload HAProxy WAF Zip to Release
+    - name: 📤 Upload HAProxy WAF Zip
+      if: success()
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: zips/haproxy_waf.zip
+        asset_path: dist/haproxy_waf.zip
         asset_name: haproxy_waf.zip
         asset_content_type: application/zip
 
-    - name: 🧹 Cleanup Cache (Optional)
-      run: |
-        rm -rf ~/.cache/pip
-      if: always()  # Run this step even if previous steps fail
+    - name: 🧹 Clean Up (Optional)
+      if: always()  # Run cleanup even on failure
+      run: rm -rf ~/.cache/pip
 
     - name: 🚨 Notify on Failure (Optional)
       if: failure()
       run: |
         echo "🚨 Workflow failed! Please investigate."
-        # Slack or email notification logic (add webhook or SMTP integration here).
+        # Example: Send a Slack notification (requires a Slack webhook URL)
+        # curl -X POST -H 'Content-type: application/json' --data '{"text":"WAF update workflow failed!"}' ${{ secrets.SLACK_WEBHOOK }}

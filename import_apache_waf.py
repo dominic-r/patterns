@@ -3,120 +3,117 @@ import subprocess
 import logging
 from pathlib import Path
 import shutil
+import filecmp  # Import for file comparison
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler()],
-)
+# --- Configuration ---
+LOG_LEVEL = logging.INFO  # DEBUG, INFO, WARNING, ERROR
+WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/apache")).resolve()
+APACHE_WAF_DIR = Path(os.getenv("APACHE_WAF_DIR", "/etc/modsecurity.d/")).resolve()
+APACHE_CONF = Path(os.getenv("APACHE_CONF", "/etc/apache2/apache2.conf")).resolve()
+INCLUDE_STATEMENT = "IncludeOptional /etc/modsecurity.d/*.conf"
+BACKUP_DIR = Path(os.getenv("BACKUP_DIR", "/etc/modsecurity.d/backup")).resolve()
 
-# Constants (configurable via environment variables)
-WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/apache")).resolve()  # Source directory for WAF files
-APACHE_WAF_DIR = Path(os.getenv("APACHE_WAF_DIR", "/etc/modsecurity.d/")).resolve()  # Target directory
-APACHE_CONF = Path(os.getenv("APACHE_CONF", "/etc/apache2/apache2.conf")).resolve()  # Apache config file
-INCLUDE_STATEMENT = "IncludeOptional /etc/modsecurity.d/*.conf"  # Include directive
+
+# --- Logging Setup ---
+logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 
 def copy_waf_files():
-    """
-    Copy Apache WAF configuration files to the target directory.
+    """Copies WAF files, handling existing files and creating backups."""
+    logger.info("Copying Apache WAF patterns...")
 
-    Raises:
-        Exception: If there is an error copying files.
-    """
-    logging.info("Copying Apache WAF patterns...")
+    # Ensure target directory exists
+    APACHE_WAF_DIR.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Target directory: {APACHE_WAF_DIR}")
 
-    try:
-        # Ensure the target directory exists
-        APACHE_WAF_DIR.mkdir(parents=True, exist_ok=True)
-        logging.info(f"[+] Created or verified directory: {APACHE_WAF_DIR}")
+    # Ensure backup directory exists
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Backup directory: {BACKUP_DIR}")
 
-        # Copy .conf files from source to target directory
-        for conf_file in WAF_DIR.glob("*.conf"):
-            dst_path = APACHE_WAF_DIR / conf_file.name
+    for conf_file in WAF_DIR.glob("*.conf"):
+        dst_path = APACHE_WAF_DIR / conf_file.name
 
+        try:
             if dst_path.exists():
-                logging.warning(f"[!] File already exists: {dst_path}")
-                continue
+                # Compare files.  If identical, skip.  If different, backup and replace.
+                if filecmp.cmp(conf_file, dst_path, shallow=False):
+                    logger.info(f"Skipping {conf_file.name} (identical file exists).")
+                    continue  # Identical file, skip
 
-            try:
-                shutil.copy2(conf_file, dst_path)
-                logging.info(f"[+] Copied {conf_file} to {APACHE_WAF_DIR}")
-            except Exception as e:
-                logging.error(f"[!] Failed to copy {conf_file}: {e}")
-                raise
-    except Exception as e:
-        logging.error(f"[!] Error copying WAF files: {e}")
-        raise
+                # Different file exists: create backup
+                backup_path = BACKUP_DIR / f"{dst_path.name}.{int(time.time())}"  # Timestamped backup
+                logger.warning(f"Existing file {dst_path.name} differs. Backing up to {backup_path}")
+                shutil.copy2(dst_path, backup_path)  # Backup existing file
+
+            # Copy the new file (or overwrite if it was different)
+            shutil.copy2(conf_file, dst_path)  # Copy with metadata
+            logger.info(f"Copied {conf_file.name} to {dst_path}")
+
+        except OSError as e:
+            logger.error(f"Error copying {conf_file.name}: {e}")
+            raise  # Re-raise for critical error handling
 
 
 def update_apache_conf():
-    """
-    Ensure the WAF include statement is present in the Apache configuration file.
-
-    Raises:
-        Exception: If there is an error updating the Apache configuration.
-    """
-    logging.info("Ensuring WAF patterns are included in apache2.conf...")
+    """Ensures the include statement is present, avoiding duplicates."""
+    logger.info("Checking Apache configuration for WAF include...")
 
     try:
-        # Read the current configuration
         with open(APACHE_CONF, "r") as f:
-            config = f.read()
+            config_lines = f.readlines()
 
-        # Append include statement if not present
-        if INCLUDE_STATEMENT not in config:
-            logging.info("Adding WAF include to apache2.conf...")
+        # Check if the include statement *already* exists.
+        include_present = any(INCLUDE_STATEMENT in line for line in config_lines)
+
+        if not include_present:
+            # Append the include statement to the *end* of the file.
             with open(APACHE_CONF, "a") as f:
-                f.write(f"\n{INCLUDE_STATEMENT}\n")
-            logging.info("[+] WAF include statement added to apache2.conf.")
+                f.write(f"\n{INCLUDE_STATEMENT}\n")  # Add a newline for safety
+            logger.info(f"Added include statement to {APACHE_CONF}")
         else:
-            logging.info("WAF patterns already included in apache2.conf.")
-    except Exception as e:
-        logging.error(f"[!] Error updating Apache configuration: {e}")
+            logger.info("Include statement already present.")
+
+    except FileNotFoundError:
+        logger.error(f"Apache configuration file not found: {APACHE_CONF}")
+        raise  # Critical error
+    except OSError as e:
+        logger.error(f"Error updating Apache configuration: {e}")
         raise
 
 
 def reload_apache():
-    """
-    Reload Apache to apply the new WAF rules.
-
-    Raises:
-        Exception: If there is an error reloading Apache.
-    """
-    logging.info("Reloading Apache to apply new WAF rules...")
+    """Tests the Apache configuration and reloads if valid."""
+    logger.info("Reloading Apache...")
 
     try:
-        # Test Apache configuration
-        subprocess.run(["apachectl", "configtest"], check=True)
-        logging.info("[+] Apache configuration test passed.")
+        # Test configuration
+        subprocess.run(["apachectl", "configtest"], check=True, capture_output=True, text=True)
+        logger.info("Apache configuration test successful.")
 
         # Reload Apache
-        subprocess.run(["systemctl", "reload", "apache2"], check=True)
-        logging.info("[+] Apache reloaded successfully.")
+        subprocess.run(["systemctl", "reload", "apache2"], check=True, capture_output=True, text=True)
+        logger.info("Apache reloaded.")
+
     except subprocess.CalledProcessError as e:
-        logging.error(f"[!] Apache configuration test failed: {e}")
-        raise
+        logger.error(f"Apache command failed: {e.cmd} - Return code: {e.returncode}")
+        logger.error(f"Stdout: {e.stdout}")
+        logger.error(f"Stderr: {e.stderr}")
+        raise  # Re-raise to signal failure
     except FileNotFoundError:
-        logging.error("[!] 'apachectl' or 'systemctl' command not found. Are you on a supported system?")
-        raise
-    except Exception as e:
-        logging.error(f"[!] Error reloading Apache: {e}")
+        logger.error("apachectl or systemctl command not found.  Is Apache/systemd installed?")
         raise
 
 
 def main():
-    """
-    Main function to execute the script.
-    """
+    """Main function."""
     try:
         copy_waf_files()
         update_apache_conf()
         reload_apache()
-        logging.info("[✔] Apache configured with latest WAF rules.")
+        logger.info("Apache WAF configuration updated successfully.")
     except Exception as e:
-        logging.critical(f"[!] Script failed: {e}")
+        logger.critical(f"Script failed: {e}")
         exit(1)
 
 

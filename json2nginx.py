@@ -85,6 +85,12 @@ def sanitize_pattern(pattern: str, location: str) -> Optional[str]:
     pattern = re.escape(pattern)
     # Unescape:  \.  \(  \)  \[  \]  \|  \?  \*  \+  \{  \}  \^  \$  \\
     pattern = re.sub(r'\\([.()[\]|?*+{}^$\\])', r'\1', pattern)
+    
+    # Final check for quotes to prevent NGINX errors
+    if pattern.count('"') % 2 != 0:
+        logger.warning(f"Unbalanced quotes in pattern, fixing: {pattern}")
+        pattern = pattern.replace('"', '\\"')  # Escape all quotes
+    
     return pattern
 
 def generate_nginx_waf(rules: List[Dict]) -> None:
@@ -104,6 +110,10 @@ def generate_nginx_waf(rules: List[Dict]) -> None:
         if not sanitized_pattern or not validate_regex(sanitized_pattern):
             continue  # Skip invalid or unsupported patterns
 
+        # Additional validation to prevent regex pattern issues
+        if len(sanitized_pattern) > 1000:  # If pattern is too long, it might cause issues
+            logger.warning(f"Pattern too long, truncating: {rule_id}")
+            sanitized_pattern = sanitized_pattern[:1000]
 
         if location == "request-uri":
             variable = "$request_uri"

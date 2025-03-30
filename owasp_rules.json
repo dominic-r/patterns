@@ -218,104 +218,6 @@
     },
     {
         "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile scanners-user-agents.data",
-        "location": "USER-AGENT",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "DETECTION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@streq GET /",
-        "location": "REQUEST_LINE",
-        "severity": "medium",
-        "category": "EXCEPTIONS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ipMatch 127.0.0.1,::1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EXCEPTIONS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ipMatch 127.0.0.1,::1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EXCEPTIONS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@endsWith (internal dummy connection)",
-        "location": "USER-AGENT",
-        "severity": "medium",
-        "category": "EXCEPTIONS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?:GET /|OPTIONS \\*) HTTP/[12]\\.[01]$",
-        "location": "REQUEST_LINE",
-        "severity": "medium",
-        "category": "EXCEPTIONS"
-    },
-    {
-        "id": "no_id",
         "pattern": "!@eq 0",
         "location": "UNKNOWN",
         "severity": "medium",
@@ -355,6 +257,314 @@
         "location": "UNKNOWN",
         "severity": "medium",
         "category": "ATTACK"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@streq GET /",
+        "location": "REQUEST_LINE",
+        "severity": "medium",
+        "category": "EXCEPTIONS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ipMatch 127.0.0.1,::1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EXCEPTIONS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ipMatch 127.0.0.1,::1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EXCEPTIONS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@endsWith (internal dummy connection)",
+        "location": "USER-AGENT",
+        "severity": "medium",
+        "category": "EXCEPTIONS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:GET /|OPTIONS \\*) HTTP/[12]\\.[01]$",
+        "location": "REQUEST_LINE",
+        "severity": "medium",
+        "category": "EXCEPTIONS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@within %{tx.allowed_methods}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ENFORCEMENT"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx _(?:\\$\\$ND_FUNC\\$\\$_|_js_function)|(?:\\beval|new[\\s\\x0b]+Function[\\s\\x0b]*)\\(|String\\.fromCharCode|function\\(\\)\\{|this\\.constructor|module\\.exports=|\\([\\s\\x0b]*[^0-9A-Z_a-z]child_process[^0-9A-Z_a-z][\\s\\x0b]*\\)|process(?:\\.(?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?(?:\\.call)?\\(|binding|constructor|env|global|main(?:Module)?|process|require)|\\[[\\\"'`](?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?|binding|constructor|env|global|main(?:Module)?|process|require)[\\\"'`]\\])|(?:binding|constructor|env|global|main(?:Module)?|process|require)\\[|console(?:\\.(?:debug|error|info|trace|warn)(?:\\.call)?\\(|\\[[\\\"'`](?:debug|error|info|trace|warn)[\\\"'`]\\])|require(?:\\.(?:resolve(?:\\.call)?\\(|main|extensions|cache)|\\[[\\\"'`](?:(?:resolv|cach)e|main|extensions)[\\\"'`]\\])",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile ssrf.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:__proto__|constructor\\s*(?:\\.|\\[)\\s*prototype)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx Process[\\s\\x0b]*\\.[\\s\\x0b]*spawn[\\s\\x0b]*\\(",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx while[\\s\\x0b]*\\([\\s\\x0b\\(]*(?:!+(?:false|null|undefined|NaN|[\\+\\-]?0|\\\"{2}|'{2}|`{2})|(?:!!)*(?:(?:t(?:rue|his)|[\\+\\-]?(?:Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(?:Boolea|Functio)n|Object|Array)\\b|\\{.*\\}|\\[.*\\]|\\\"[^\\\"]+\\\"|'[^']+'|`[^`]+`)).*\\)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^data:(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:close|exists|fork|(?:ope|spaw)n|re(?:ad|quire)|w(?:atch|rite))[\\s\\x0b]*\\(",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[0-9]{10}|(?:0x[0-9a-f]{2}\\.){3}0x[0-9a-f]{2}|0x(?:[0-9a-f]{8}|[0-9a-f]{16})|(?:0{1,4}[0-9]{1,3}\\.){3}0{1,4}[0-9]{1,3}|[0-9]{1,3}\\.(?:[0-9]{1,3}\\.[0-9]{5}|[0-9]{8})|(?:\\x5c\\x5c[\\-0-9a-z]\\.?_?)+|\\[[0-:a-f]+(?:[\\.0-9]+|%[0-9A-Z_a-z]+)?\\]|[a-z][\\-\\.0-9A-Z_a-z]{1,255}:[0-9]{1,5}(?:#?[\\s\\x0b]*&?@(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[a-z][\\-\\.0-9A-Z_a-z]{1,255}):[0-9]{1,5}/?)+|[\\.0-9]{0,11}(?:\\xe2(?:\\x91[\\xa0-\\xbf]|\\x92[\\x80-\\xbf]|\\x93[\\x80-\\xa9\\xab-\\xbf])|\\xe3\\x80\\x82)+)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:[^@]|@[^\\{])*@+\\{.*\\}",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))(?:\\.(?:%0[01]|\\?)?|\\?\\.?|%(?:2(?:(?:5(?:2|c0%25a))?e|%45)|c0(?:\\.|%[256aef]e)|u(?:(?:ff0|002)e|2024)|%32(?:%(?:%6|4)5|E)|(?:e|f(?:(?:8|c%80)%8)?0%8)0%80%ae)|0x2e){2,3}(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:(?:^|[\\x5c/;])\\.{2,3}[\\x5c/;]|[\\x5c/;]\\.{2,3}(?:[\\x5c/;]|$))",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile lfi-os-files.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile restricted-files.data",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile lfi-os-files.data",
+        "location": "REFERER",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LFI"
     },
     {
         "id": "no_id",
@@ -460,97 +670,6 @@
         "location": "UNKNOWN",
         "severity": "medium",
         "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))(?:\\.(?:%0[01]|\\?)?|\\?\\.?|%(?:2(?:(?:5(?:2|c0%25a))?e|%45)|c0(?:\\.|%[256aef]e)|u(?:(?:ff0|002)e|2024)|%32(?:%(?:%6|4)5|E)|(?:e|f(?:(?:8|c%80)%8)?0%8)0%80%ae)|0x2e){2,3}(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:(?:^|[\\x5c/;])\\.{2,3}[\\x5c/;]|[\\x5c/;]\\.{2,3}(?:[\\x5c/;]|$))",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile lfi-os-files.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile restricted-files.data",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile lfi-os-files.data",
-        "location": "REFERER",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
     },
     {
         "id": "no_id",
@@ -904,101 +1023,157 @@
     },
     {
         "id": "no_id",
+        "pattern": "@eq 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?i:\\.cookie\\b.*?;\\W*?(?:expires|domain)\\W*?=|\\bhttp-equiv\\W+set-cookie\\b)",
-        "location": "Query-String",
+        "pattern": "@rx (?:<(?:TITLE>Index of.*?<H|title>Index of.*?<h)1>Index of|>\\[To Parent Directory\\]</[Aa]><br>)",
+        "location": "RESPONSE_BODY",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
-        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
-        "location": "Query-String",
+        "pattern": "@rx ^#\\!\\s?/",
+        "location": "RESPONSE_BODY",
         "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?:ht|f)tps?://(.*?)/",
-        "location": "REFERER",
-        "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@endsWith %{request_headers.host}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^5\\d{2}$",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile scanners-user-agents.data",
+        "location": "USER-AGENT",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "DETECTION"
     },
     {
         "id": "no_id",
@@ -1184,6 +1359,293 @@
     },
     {
         "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:\\.cookie\\b.*?;\\W*?(?:expires|domain)\\W*?=|\\bhttp-equiv\\W+set-cookie\\b)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:ht|f)tps?://(.*?)/",
+        "location": "REFERER",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@endsWith %{request_headers.host}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 0",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
         "pattern": "@pm gzip compress deflate br zstd",
         "location": "UNKNOWN",
         "severity": "medium",
@@ -1258,573 +1720,6 @@
         "location": "UNKNOWN",
         "severity": "medium",
         "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:<(?:TITLE>Index of.*?<H|title>Index of.*?<h)1>Index of|>\\[To Parent Directory\\]</[Aa]><br>)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^#\\!\\s?/",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^5\\d{2}$",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-errors.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:\\b(?:f(?:tp_(?:nb_)?f?(?:ge|pu)t|get(?:s?s|c)|scanf|write|open|read)|gz(?:(?:encod|writ)e|compress|open|read)|s(?:ession_start|candir)|read(?:(?:gz)?file|dir)|move_uploaded_file|(?:proc_|bz)open|call_user_func)|\\$_(?:(?:pos|ge)t|session))\\b",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<\\?(?:=|php)?\\s+",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-errors-pl2.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 5",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@gt 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@within %{tx.allowed_methods}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ENFORCEMENT"
     },
     {
         "id": "no_id",
@@ -2073,6 +1968,195 @@
     },
     {
         "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
         "pattern": "@pm gzip compress deflate br zstd",
         "location": "UNKNOWN",
         "severity": "medium",
@@ -2168,6 +2252,307 @@
         "location": "UNKNOWN",
         "severity": "medium",
         "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-errors.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:\\b(?:f(?:tp_(?:nb_)?f?(?:ge|pu)t|get(?:s?s|c)|scanf|write|open|read)|gz(?:(?:encod|writ)e|compress|open|read)|s(?:ession_start|candir)|read(?:(?:gz)?file|dir)|move_uploaded_file|(?:proc_|bz)open|call_user_func)|\\$_(?:(?:pos|ge)t|session))\\b",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<\\?(?:=|php)?\\s+",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-errors-pl2.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<\\?(?:[^x]|x(?:[^m]|m(?:[^l]|l(?:[^\\s\\x0b]|[\\s\\x0b]+[^a-z]|$)))|$|php)|\\[[/\\x5c]?php\\]",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx .*\\.ph(?:p\\d*|tml|ar|ps|t|pt)\\.*$",
+        "location": "X-FILENAME",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-config-directives.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\b([^\\s]+)\\s*=[^=]",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-config-directives.data",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-variables.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\$\\s*\\{\\s*\\S[^\\{\\}]*\\}",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)php://(?:std(?:in|out|err)|(?:in|out)put|fd|memory|temp|filter)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:bzip2|expect|glob|ogg|(?:ph|r)ar|ssh2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?|z(?:ip|lib))://",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-function-names-933150.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)\\b\\(?[\\\"']*(?:assert(?:_options)?|c(?:hr|reate_function)|e(?:val|x(?:ec|p))|f(?:ile(?:group)?|open)|glob|i(?:mage(?:gif|(?:jpe|pn)g|wbmp|xbm)|s_a)|md5|o(?:pendir|rd)|p(?:assthru|open|rev)|(?:read|tmp)file|un(?:pac|lin)k|s(?:tat|ubstr|ystem))(?:/(?:\\*.*\\*/|/.*)|#.*|[\\s\\x0b\\\"])*[\\\"']*\\)?[\\s\\x0b]*\\([^\\)]*\\)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx [oOcC]:\\d+:\\\".+?\\\":\\d+:{.*}",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\$+(?:[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*|\\s*{.+})(?:\\s|\\[.+\\]|{.+}|/\\*.*\\*/|//.*|#.*)*\\(.*\\)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:\\((?:.+\\)(?:[\\\"'][\\-0-9A-Z_a-z]+[\\\"'])?\\(.+|[^\\)]*string[^\\)]*\\)[\\s\\x0b\\\"'\\-\\.0-9A-\\[\\]_a-\\{\\}]+\\([^\\)]*)|(?:\\[[0-9]+\\]|\\{[0-9]+\\}|\\$[^\\(\\),\\./;\\x5c]+|[\\\"'][\\-0-9A-Z\\x5c_a-z]+[\\\"'])\\(.+)\\);",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-function-names-933151.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\b([^\\s]+)\\s*[(]",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-function-names-933151.data",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx AUTH_TYPE|HTTP_(?:ACCEPT(?:_(?:CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(?:HOS|USER_AGEN)T|KEEP_ALIVE|(?:REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(?:INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)\\b(?:a(?:bs|s(?:in|sert(?:_options)?))|basename|c(?:h(?:eckdate|r(?:oot)?)|o(?:(?:mpac|(?:nsta|u)n)t|py|sh?)|r(?:eate_function|ypt)|urrent)|d(?:ate|e(?:coct|fined?)|ir)|e(?:nd|val|x(?:ec|p(?:lode)?|tract))|f(?:ile(?:(?:[acm]tim|inod|siz|typ)e|group|owner|perms)?|l(?:o(?:ck|or)|ush))|glob|h(?:ash|eader)|i(?:date|m(?:age(?:gif|(?:jpe|pn)g|wbmp|xbm)|plode)|s_a)|key|l(?:ink|og)|m(?:a(?:il|x)|d5|in)|n(?:ame|ext)|o(?:pendir|rd)|p(?:a(?:ck|ss(?:thru)?)|i|o(?:pen|w)|rev)|r(?:an(?:d|ge)|e(?:(?:adfil|nam)e|set)|ound)|s(?:(?:erializ|huffl)e|in|leep|(?:or|ta)t|ubstr|y(?:mlink|s(?:log|tem)))|t(?:an|(?:im|mpfil)e|ouch|rim)|u(?:cfirst|n(?:lin|pac)k)|virtual)(?:[\\s\\x0b]|/\\*.*\\*/|(?:#|//).*)*\\(.*\\)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx .*\\.(?:php\\d*|phtml)\\..*$",
+        "location": "X-FILENAME",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm ?>",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:\\((?:.+\\)(?:[\\\"'][\\-0-9A-Z_a-z]+[\\\"'])?\\(.+|[^\\)]*string[^\\)]*\\)[\\s\\x0b\\\"'\\-\\.0-9A-\\[\\]_a-\\{\\}]+\\([^\\)]*)|(?:\\[[0-9]+\\]|\\{[0-9]+\\}|\\$[^\\(\\),\\./;\\x5c]+|[\\\"'][\\-0-9A-Z\\x5c_a-z]+[\\\"'])\\(.+)\\)(?:;|$)?",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "PHP"
     },
     {
         "id": "no_id",
@@ -2878,521 +3263,136 @@
     },
     {
         "id": "no_id",
-        "pattern": "@ge 1",
+        "pattern": "@eq 0",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
-        "pattern": "@ge 1",
+        "pattern": "@ge 5",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
-        "pattern": "@ge 2",
+        "pattern": "@eq 0",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
-        "pattern": "@ge 2",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
-        "pattern": "@eq 1",
+        "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
-        "pattern": "@lt 3",
+        "pattern": "@gt 0",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EVALUATION"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx _(?:\\$\\$ND_FUNC\\$\\$_|_js_function)|(?:\\beval|new[\\s\\x0b]+Function[\\s\\x0b]*)\\(|String\\.fromCharCode|function\\(\\)\\{|this\\.constructor|module\\.exports=|\\([\\s\\x0b]*[^0-9A-Z_a-z]child_process[^0-9A-Z_a-z][\\s\\x0b]*\\)|process(?:\\.(?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?(?:\\.call)?\\(|binding|constructor|env|global|main(?:Module)?|process|require)|\\[[\\\"'`](?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?|binding|constructor|env|global|main(?:Module)?|process|require)[\\\"'`]\\])|(?:binding|constructor|env|global|main(?:Module)?|process|require)\\[|console(?:\\.(?:debug|error|info|trace|warn)(?:\\.call)?\\(|\\[[\\\"'`](?:debug|error|info|trace|warn)[\\\"'`]\\])|require(?:\\.(?:resolve(?:\\.call)?\\(|main|extensions|cache)|\\[[\\\"'`](?:(?:resolv|cach)e|main|extensions)[\\\"'`]\\])",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile ssrf.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:__proto__|constructor\\s*(?:\\.|\\[)\\s*prototype)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx Process[\\s\\x0b]*\\.[\\s\\x0b]*spawn[\\s\\x0b]*\\(",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx while[\\s\\x0b]*\\([\\s\\x0b\\(]*(?:!+(?:false|null|undefined|NaN|[\\+\\-]?0|\\\"{2}|'{2}|`{2})|(?:!!)*(?:(?:t(?:rue|his)|[\\+\\-]?(?:Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(?:Boolea|Functio)n|Object|Array)\\b|\\{.*\\}|\\[.*\\]|\\\"[^\\\"]+\\\"|'[^']+'|`[^`]+`)).*\\)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^data:(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:close|exists|fork|(?:ope|spaw)n|re(?:ad|quire)|w(?:atch|rite))[\\s\\x0b]*\\(",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[0-9]{10}|(?:0x[0-9a-f]{2}\\.){3}0x[0-9a-f]{2}|0x(?:[0-9a-f]{8}|[0-9a-f]{16})|(?:0{1,4}[0-9]{1,3}\\.){3}0{1,4}[0-9]{1,3}|[0-9]{1,3}\\.(?:[0-9]{1,3}\\.[0-9]{5}|[0-9]{8})|(?:\\x5c\\x5c[\\-0-9a-z]\\.?_?)+|\\[[0-:a-f]+(?:[\\.0-9]+|%[0-9A-Z_a-z]+)?\\]|[a-z][\\-\\.0-9A-Z_a-z]{1,255}:[0-9]{1,5}(?:#?[\\s\\x0b]*&?@(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[a-z][\\-\\.0-9A-Z_a-z]{1,255}):[0-9]{1,5}/?)+|[\\.0-9]{0,11}(?:\\xe2(?:\\x91[\\xa0-\\xbf]|\\x92[\\x80-\\xbf]|\\x93[\\x80-\\xa9\\xab-\\xbf])|\\xe3\\x80\\x82)+)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?:[^@]|@[^\\{])*@+\\{.*\\}",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<\\?(?:[^x]|x(?:[^m]|m(?:[^l]|l(?:[^\\s\\x0b]|[\\s\\x0b]+[^a-z]|$)))|$|php)|\\[[/\\x5c]?php\\]",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx .*\\.ph(?:p\\d*|tml|ar|ps|t|pt)\\.*$",
-        "location": "X-FILENAME",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-config-directives.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\b([^\\s]+)\\s*=[^=]",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-config-directives.data",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-variables.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\$\\s*\\{\\s*\\S[^\\{\\}]*\\}",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)php://(?:std(?:in|out|err)|(?:in|out)put|fd|memory|temp|filter)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:bzip2|expect|glob|ogg|(?:ph|r)ar|ssh2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?|z(?:ip|lib))://",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-function-names-933150.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)\\b\\(?[\\\"']*(?:assert(?:_options)?|c(?:hr|reate_function)|e(?:val|x(?:ec|p))|f(?:ile(?:group)?|open)|glob|i(?:mage(?:gif|(?:jpe|pn)g|wbmp|xbm)|s_a)|md5|o(?:pendir|rd)|p(?:assthru|open|rev)|(?:read|tmp)file|un(?:pac|lin)k|s(?:tat|ubstr|ystem))(?:/(?:\\*.*\\*/|/.*)|#.*|[\\s\\x0b\\\"])*[\\\"']*\\)?[\\s\\x0b]*\\([^\\)]*\\)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx [oOcC]:\\d+:\\\".+?\\\":\\d+:{.*}",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\$+(?:[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*|\\s*{.+})(?:\\s|\\[.+\\]|{.+}|/\\*.*\\*/|//.*|#.*)*\\(.*\\)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:\\((?:.+\\)(?:[\\\"'][\\-0-9A-Z_a-z]+[\\\"'])?\\(.+|[^\\)]*string[^\\)]*\\)[\\s\\x0b\\\"'\\-\\.0-9A-\\[\\]_a-\\{\\}]+\\([^\\)]*)|(?:\\[[0-9]+\\]|\\{[0-9]+\\}|\\$[^\\(\\),\\./;\\x5c]+|[\\\"'][\\-0-9A-Z\\x5c_a-z]+[\\\"'])\\(.+)\\);",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-function-names-933151.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\b([^\\s]+)\\s*[(]",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-function-names-933151.data",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx AUTH_TYPE|HTTP_(?:ACCEPT(?:_(?:CHARSET|ENCODING|LANGUAGE))?|CONNECTION|(?:HOS|USER_AGEN)T|KEEP_ALIVE|(?:REFERE|X_FORWARDED_FO)R)|ORIG_PATH_INFO|PATH_(?:INFO|TRANSLATED)|QUERY_STRING|REQUEST_URI",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)\\b(?:a(?:bs|s(?:in|sert(?:_options)?))|basename|c(?:h(?:eckdate|r(?:oot)?)|o(?:(?:mpac|(?:nsta|u)n)t|py|sh?)|r(?:eate_function|ypt)|urrent)|d(?:ate|e(?:coct|fined?)|ir)|e(?:nd|val|x(?:ec|p(?:lode)?|tract))|f(?:ile(?:(?:[acm]tim|inod|siz|typ)e|group|owner|perms)?|l(?:o(?:ck|or)|ush))|glob|h(?:ash|eader)|i(?:date|m(?:age(?:gif|(?:jpe|pn)g|wbmp|xbm)|plode)|s_a)|key|l(?:ink|og)|m(?:a(?:il|x)|d5|in)|n(?:ame|ext)|o(?:pendir|rd)|p(?:a(?:ck|ss(?:thru)?)|i|o(?:pen|w)|rev)|r(?:an(?:d|ge)|e(?:(?:adfil|nam)e|set)|ound)|s(?:(?:erializ|huffl)e|in|leep|(?:or|ta)t|ubstr|y(?:mlink|s(?:log|tem)))|t(?:an|(?:im|mpfil)e|ouch|rim)|u(?:cfirst|n(?:lin|pac)k)|virtual)(?:[\\s\\x0b]|/\\*.*\\*/|(?:#|//).*)*\\(.*\\)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx .*\\.(?:php\\d*|phtml)\\..*$",
-        "location": "X-FILENAME",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm ?>",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:\\((?:.+\\)(?:[\\\"'][\\-0-9A-Z_a-z]+[\\\"'])?\\(.+|[^\\)]*string[^\\)]*\\)[\\s\\x0b\\\"'\\-\\.0-9A-\\[\\]_a-\\{\\}]+\\([^\\)]*)|(?:\\[[0-9]+\\]|\\{[0-9]+\\}|\\$[^\\(\\),\\./;\\x5c]+|[\\\"'][\\-0-9A-Z\\x5c_a-z]+[\\\"'])\\(.+)\\)(?:;|$)?",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",

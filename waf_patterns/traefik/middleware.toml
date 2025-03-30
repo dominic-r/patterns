@@ -5,8 +5,8 @@
     userAgent = [
       "^up",
       "!@pm AppleWebKit Android Business Enterprise Entreprise",
-      "!@pm AppleWebKit Android",
       "^\$",
+      "!@pm AppleWebKit Android",
     ]
 
 [http.middlewares.waf_rce_user_agent]

@@ -56,10 +56,7 @@ jobs:
 
     - name: 🔄 Generate Bad Bot Blockers (Placeholder - Provide badbots.py)
       run: |
-        # Placeholder:  Replace this with your actual badbots.py script.
-        # Assuming badbots.py generates files in waf_patterns/
-        # Example (if badbots.py creates nginx/bots.conf):
-        # python badbots.py
+        # Placeholder for badbots.py execution.
         echo "Placeholder for badbots.py execution"
 
     - name: 🚀 Commit and Push Changes (if any)
@@ -67,14 +64,12 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add .
-        # Check if there are any changes *before* committing.
         if ! git diff --quiet --exit-code; then
           git commit -m "Update WAF rules [$(date +'%Y-%m-%d')]"
-          git push
+          git push origin HEAD
         else
           echo "No changes to commit."
         fi
-      continue-on-error: true  # Continue even if no changes
 
     - name: 📦 Create Zip Archives
       run: |
@@ -85,17 +80,17 @@ jobs:
         (cd waf_patterns/haproxy && zip -r ../../dist/haproxy_waf.zip .)
 
     - name: 🗑️ Delete Existing 'latest' Tag and Release (if they exist)
-      run: |
-        gh auth login --with-token <<< "$GITHUB_TOKEN"
-        # Delete local tag
-        git tag -d latest || true
-        # Delete remote tag (force)
-        git push --delete origin latest || true
-        # Delete release, --yes for confirmation
-        gh release delete latest --yes || true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      run: |
+        # Delete local tag if it exists
+        git tag -d latest || true
+        
+        # Delete remote tag if it exists
+        git push --delete origin latest || true
+        
+        # Delete release using GitHub CLI (requires GITHUB_TOKEN)
+        gh release delete latest --yes || true
 
     - name: 🚀 Create GitHub Release (if previous steps succeeded)
       if: success()  # Only create release if previous steps were successful
@@ -114,7 +109,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
         asset_path: dist/nginx_waf.zip
         asset_name: nginx_waf.zip
         asset_content_type: application/zip
@@ -125,7 +120,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
         asset_path: dist/apache_waf.zip
         asset_name: apache_waf.zip
         asset_content_type: application/zip
@@ -136,7 +131,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
         asset_path: dist/traefik_waf.zip
         asset_name: traefik_waf.zip
         asset_content_type: application/zip
@@ -147,18 +142,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
         asset_path: dist/haproxy_waf.zip
         asset_name: haproxy_waf.zip
         asset_content_type: application/zip
 
     - name: 🧹 Clean Up (Optional)
-      if: always()  # Run cleanup even on failure
-      run: rm -rf ~/.cache/pip
+      if: always()  # Run cleanup even on failure or success.
+      run:
+         rm -rf ~/.cache/pip dist waf_patterns/nginx waf_patterns/apache waf_patterns/traefik waf_patterns/haproxy
 
-    - name: 🚨 Notify on Failure (Optional)
-      if: failure()
-      run: |
-        echo "🚨 Workflow failed! Please investigate."
-        # Example: Send a Slack notification (requires a Slack webhook URL)
-        # curl -X POST -H 'Content-type: application/json' --data '{"text":"WAF update workflow failed!"}' ${{ secrets.SLACK_WEBHOOK }}

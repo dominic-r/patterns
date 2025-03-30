@@ -17,7 +17,7 @@ from tqdm import tqdm
 LOG_LEVEL = logging.INFO  # Set to DEBUG for more verbose output
 GITHUB_REPO_URL = "https://api.github.com/repos/coreruleset/coreruleset"
 OWASP_CRS_BASE_URL = f"{GITHUB_REPO_URL}/contents/rules"
-GITHUB_REF = "v4.0"  # More specific default: Major version only
+GITHUB_REF = "v4.12.0"  # More specific default: Major version only
 RATE_LIMIT_DELAY = 60  # Shorter delay, rely on exponential backoff
 RETRY_DELAY = 2       # Shorter initial retry
 MAX_RETRIES = 8        # More retries

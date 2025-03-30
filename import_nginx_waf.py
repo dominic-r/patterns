@@ -7,7 +7,7 @@ import filecmp
 import time
 
 # --- Configuration ---
-LOG_LEVEL = logging.INFO  # DEBUG, INFO, WARNING, ERROR
+LOG_LEVEL = logging.INFO
 WAF_DIR = Path(os.getenv("WAF_DIR", "waf_patterns/nginx")).resolve()
 NGINX_WAF_DIR = Path(os.getenv("NGINX_WAF_DIR", "/etc/nginx/waf/")).resolve()
 NGINX_CONF = Path(os.getenv("NGINX_CONF", "/etc/nginx/nginx.conf")).resolve()
@@ -17,8 +17,6 @@ INCLUDE_STATEMENT = "include /etc/nginx/waf/*.conf;"
 # --- Logging Setup ---
 logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
-
-
 
 def copy_waf_files():
     """Copies WAF files, handling existing files, and creating backups."""
@@ -31,17 +29,15 @@ def copy_waf_files():
         dst_path = NGINX_WAF_DIR / conf_file.name
 
         try:
+            if dst_path.exists() and filecmp.cmp(conf_file, dst_path, shallow=False):
+                logger.info(f"Skipping {conf_file.name} (identical file exists).")
+                continue
+
             if dst_path.exists():
-                # Compare and backup if different
-                if filecmp.cmp(conf_file, dst_path, shallow=False):
-                    logger.info(f"Skipping {conf_file.name} (identical file exists).")
-                    continue
-                # Backup different file
                 backup_path = BACKUP_DIR / f"{dst_path.name}.{int(time.time())}"
                 logger.warning(f"Existing {dst_path.name} differs. Backing up to {backup_path}")
                 shutil.copy2(dst_path, backup_path)
 
-            # Copy the (new/updated) file
             shutil.copy2(conf_file, dst_path)
             logger.info(f"Copied {conf_file.name} to {dst_path}")
 
@@ -49,56 +45,47 @@ def copy_waf_files():
             logger.error(f"Error copying {conf_file.name}: {e}")
             raise
 
-
 def update_nginx_conf():
-    """Ensures the include directive is present in nginx.conf (http context)."""
+    """Ensures the include directive is inside an existing http block."""
     logger.info("Checking Nginx configuration for WAF include...")
 
     try:
         with open(NGINX_CONF, "r") as f:
             config_lines = f.readlines()
 
-        # Check if the include statement is already present.
         include_present = any(INCLUDE_STATEMENT in line for line in config_lines)
 
-        if not include_present:
-            # Find the 'http' block.  This is where the include belongs.
-            http_start = -1
-            for i, line in enumerate(config_lines):
-                if line.strip().startswith("http {"):
-                    http_start = i
-                    break
-
-            if http_start == -1:
-                # No http block found.  Add the include *and* the http block.
-                logger.warning("No 'http' block found. Adding to end of file.")
-                with open(NGINX_CONF, "a") as f:
-                    f.write(f"\nhttp {{\n    {INCLUDE_STATEMENT}\n}}\n")
-                logger.info(f"Added 'http' block and WAF include to {NGINX_CONF}")
-                return
-
-            # Find the end of the 'http' block
-            http_end = -1
-            for i in range(http_start + 1, len(config_lines)):
-                if line.strip() == "}":
-                     http_end = i
-                     break
-
-            if http_end == -1:
-                # Malformed config?  Shouldn't happen, but handle it.
-                http_end = len(config_lines)
-                logger.warning("Malformed Nginx config (no closing brace for 'http' block).")
-
-            # Insert the include statement *within* the http block.
-            config_lines.insert(http_end, f"    {INCLUDE_STATEMENT}\n")
-
-            # Write the modified configuration back.
-            with open(NGINX_CONF, "w") as f:
-                f.writelines(config_lines)
-            logger.info(f"Added WAF include to 'http' block in {NGINX_CONF}")
-
-        else:
+        if include_present:
             logger.info("WAF include statement already present.")
+            return
+
+        http_start = -1
+        http_end = -1
+
+        for i, line in enumerate(config_lines):
+            if "http {" in line:
+                http_start = i
+                break
+
+        if http_start == -1:
+            logger.error("No 'http' block found in nginx.conf. Check your config!")
+            raise ValueError("Nginx config is missing an 'http' block.")
+
+        for i in range(http_start + 1, len(config_lines)):
+            if "}" in config_lines[i]:
+                http_end = i
+                break
+
+        if http_end == -1:
+            logger.error("Malformed nginx.conf: 'http' block is not closed properly.")
+            raise ValueError("Malformed nginx.conf detected.")
+
+        config_lines.insert(http_end, f"    {INCLUDE_STATEMENT}\n")
+
+        with open(NGINX_CONF, "w") as f:
+            f.writelines(config_lines)
+
+        logger.info(f"Added WAF include to existing 'http' block in {NGINX_CONF}")
 
     except FileNotFoundError:
         logger.error(f"Nginx configuration file not found: {NGINX_CONF}")
@@ -107,34 +94,26 @@ def update_nginx_conf():
         logger.error(f"Error updating Nginx configuration: {e}")
         raise
 
-
 def reload_nginx():
-    """Tests the Nginx configuration and reloads if valid."""
-    logger.info("Reloading Nginx...")
+    """Tests and reloads Nginx if the config is valid."""
+    logger.info("Testing Nginx configuration before reloading...")
 
     try:
-        # Test configuration
-        result = subprocess.run(["nginx", "-t"],
-                                capture_output=True, text=True, check=True)
+        result = subprocess.run(["nginx", "-t"], capture_output=True, text=True, check=True)
         logger.info(f"Nginx configuration test successful:\n{result.stdout}")
 
-        # Reload Nginx
-        result = subprocess.run(["systemctl", "reload", "nginx"],
-                                capture_output=True, text=True, check=True)
-        logger.info("Nginx reloaded.")
+        result = subprocess.run(["systemctl", "reload", "nginx"], capture_output=True, text=True, check=True)
+        logger.info("Nginx reloaded successfully.")
 
     except subprocess.CalledProcessError as e:
-        logger.error(f"Nginx command failed: {e.cmd} - Return code: {e.returncode}")
-        logger.error(f"Stdout: {e.stdout}")
-        logger.error(f"Stderr: {e.stderr}")
-        raise  # Re-raise to signal failure
+        logger.critical(f"Nginx test/reload failed: {e.stderr}")
+        raise SystemExit(1)
     except FileNotFoundError:
-        logger.error("'nginx' or 'systemctl' command not found. Is Nginx/systemd installed?")
-        raise
-    except Exception as e: # added extra exception
-        logger.error(f"[!] Error reloading Nginx: {e}")
-        raise
-
+        logger.critical("'nginx' or 'systemctl' command not found. Is Nginx installed?")
+        raise SystemExit(1)
+    except Exception as e:
+        logger.critical(f"Unexpected error while reloading Nginx: {e}")
+        raise SystemExit(1)
 
 def main():
     """Main function."""

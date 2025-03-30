@@ -77,6 +77,11 @@ def sanitize_pattern(pattern: str, location: str) -> Optional[str]:
             logger.warning(f"Skipping unsupported pattern: {pattern}")
             return None
 
+    # Limit pattern length before processing to avoid excessive computation
+    if len(pattern) > 1000:
+        logger.warning(f"Pattern too long (before processing), truncating: {pattern[:50]}...")
+        pattern = pattern[:1000]
+
     # Sanitize the pattern
     pattern = _sanitize_pattern(pattern)
 
@@ -87,9 +92,12 @@ def sanitize_pattern(pattern: str, location: str) -> Optional[str]:
     pattern = re.sub(r'\\([.()[\]|?*+{}^$\\])', r'\1', pattern)
     
     # Final check for quotes to prevent NGINX errors
-    if pattern.count('"') % 2 != 0:
-        logger.warning(f"Unbalanced quotes in pattern, fixing: {pattern}")
-        pattern = pattern.replace('"', '\\"')  # Escape all quotes
+    pattern = pattern.replace('"', '\\"')  # Escape all quotes
+    
+    # Final limit on pattern length to ensure NGINX can handle it
+    if len(pattern) > 900:  # More conservative limit
+        logger.warning(f"Pattern too long after processing, truncating: {pattern[:50]}...")
+        pattern = pattern[:900]
     
     return pattern
 
@@ -111,9 +119,9 @@ def generate_nginx_waf(rules: List[Dict]) -> None:
             continue  # Skip invalid or unsupported patterns
 
         # Additional validation to prevent regex pattern issues
-        if len(sanitized_pattern) > 1000:  # If pattern is too long, it might cause issues
+        if len(sanitized_pattern) > 900:  # Reduced from 1000 to be more conservative
             logger.warning(f"Pattern too long, truncating: {rule_id}")
-            sanitized_pattern = sanitized_pattern[:1000]
+            sanitized_pattern = sanitized_pattern[:900]
 
         if location == "request-uri":
             variable = "$request_uri"
@@ -131,6 +139,13 @@ def generate_nginx_waf(rules: List[Dict]) -> None:
         else:
             logger.warning(f"Unsupported location: {location} for rule: {rule_id}")
             continue
+
+        # Extra safety check for quotes and line length
+        if '"' in sanitized_pattern or len(sanitized_pattern) > 900:
+            logger.warning(f"Potentially problematic pattern in rule {rule_id}, applying extra sanitization")
+            sanitized_pattern = sanitized_pattern.replace('"', '\\"')
+            sanitized_pattern = sanitized_pattern[:900]
+
         # Add rule based on severity and location
         categorized_rules[category][variable] += f'  "~*{sanitized_pattern}" {severity};\n' # set severity as value
 

@@ -12,11 +12,14 @@ This directory contains Nginx WAF configuration files generated from OWASP rules
    }
    ```
 
-2. **Include `waf_rules.conf` in your `server` or `location` block:**
+2. **Include `waf_rules.conf` in your `location` block:**
    ```nginx
    server {
        # ... other server configurations ...
-       include /path/to/waf_patterns/nginx/waf_rules.conf;
+       location / {
+           include /path/to/waf_patterns/nginx/waf_rules.conf;
+           # ... other location configurations ...
+       }
    }
    ```
 
@@ -27,6 +30,7 @@ This directory contains Nginx WAF configuration files generated from OWASP rules
 
 ## Important Notes:
 
+* **Important:** The `add_header` directive can only be used inside a location or server block, not in an http block.
 * **Testing is Crucial:**  Thoroughly test your WAF configuration with a variety of requests (both legitimate and malicious) to ensure it's working correctly and not causing false positives.
 * **False Positives:**  WAF rules, especially those based on regex, can sometimes block legitimate traffic.  Monitor your Nginx logs and adjust the rules as needed.
 * **Performance:** Complex regexes can impact performance.  Use the simplest regex that accurately matches the threat.

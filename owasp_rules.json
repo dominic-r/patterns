@@ -218,45 +218,38 @@
     },
     {
         "id": "no_id",
-        "pattern": "!@eq 0",
-        "location": "UNKNOWN",
+        "pattern": "@streq GET /",
+        "location": "REQUEST_LINE",
         "severity": "medium",
-        "category": "ATTACK"
+        "category": "EXCEPTIONS"
     },
     {
         "id": "no_id",
-        "pattern": "!@within %{tx.allowed_request_content_type_charset}",
+        "pattern": "@ipMatch 127.0.0.1,::1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "ATTACK"
+        "category": "EXCEPTIONS"
     },
     {
         "id": "no_id",
-        "pattern": "@rx ^content-type\\s*:\\s*(.*)$",
+        "pattern": "@ipMatch 127.0.0.1,::1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "ATTACK"
+        "category": "EXCEPTIONS"
     },
     {
         "id": "no_id",
-        "pattern": "!@rx ^(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*$",
-        "location": "UNKNOWN",
+        "pattern": "@endsWith (internal dummy connection)",
+        "location": "USER-AGENT",
         "severity": "medium",
-        "category": "ATTACK"
+        "category": "EXCEPTIONS"
     },
     {
         "id": "no_id",
-        "pattern": "@rx content-transfer-encoding:(.*)",
-        "location": "UNKNOWN",
+        "pattern": "@rx ^(?:GET /|OPTIONS \\*) HTTP/[12]\\.[01]$",
+        "location": "REQUEST_LINE",
         "severity": "medium",
-        "category": "ATTACK"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx [^\\x21-\\x7E][\\x21-\\x39\\x3B-\\x7E]*:",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "ATTACK"
+        "category": "EXCEPTIONS"
     },
     {
         "id": "no_id",
@@ -326,6 +319,111 @@
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?i:file|ftps?|https?)://(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:\\binclude\\s*\\([^)]*|mosConfig_absolute_path|_CONF\\[path\\]|_SERVER\\[DOCUMENT_ROOT\\]|GALLERY_BASEDIR|path\\[docroot\\]|appserv_root|config\\[root_dir\\])=(?:file|ftps?|https?)://",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?i:file|ftps?|https?).*?\\?+$",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@endsWith .%{request_headers.host}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@endsWith .%{request_headers.host}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "RFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
         "category": "ENFORCEMENT"
     },
     {
@@ -386,157 +484,1676 @@
     },
     {
         "id": "no_id",
-        "pattern": "@streq GET /",
-        "location": "REQUEST_LINE",
-        "severity": "medium",
-        "category": "EXCEPTIONS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ipMatch 127.0.0.1,::1",
+        "pattern": "!@eq 0",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EXCEPTIONS"
+        "category": "ATTACK"
     },
     {
         "id": "no_id",
-        "pattern": "@ipMatch 127.0.0.1,::1",
+        "pattern": "!@within %{tx.allowed_request_content_type_charset}",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EXCEPTIONS"
+        "category": "ATTACK"
     },
     {
         "id": "no_id",
-        "pattern": "@endsWith (internal dummy connection)",
-        "location": "USER-AGENT",
+        "pattern": "@rx ^content-type\\s*:\\s*(.*)$",
+        "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EXCEPTIONS"
+        "category": "ATTACK"
     },
     {
         "id": "no_id",
-        "pattern": "@rx ^(?:GET /|OPTIONS \\*) HTTP/[12]\\.[01]$",
-        "location": "REQUEST_LINE",
+        "pattern": "!@rx ^(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*$",
+        "location": "UNKNOWN",
         "severity": "medium",
-        "category": "EXCEPTIONS"
+        "category": "ATTACK"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx content-transfer-encoding:(.*)",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ATTACK"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx [^\\x21-\\x7E][\\x21-\\x39\\x3B-\\x7E]*:",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "ATTACK"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
-        "pattern": "@rx _(?:\\$\\$ND_FUNC\\$\\$_|_js_function)|(?:\\beval|new[\\s\\x0b]+Function[\\s\\x0b]*)\\(|String\\.fromCharCode|function\\(\\)\\{|this\\.constructor|module\\.exports=|\\([\\s\\x0b]*[^0-9A-Z_a-z]child_process[^0-9A-Z_a-z][\\s\\x0b]*\\)|process(?:\\.(?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?(?:\\.call)?\\(|binding|constructor|env|global|main(?:Module)?|process|require)|\\[[\\\"'`](?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?|binding|constructor|env|global|main(?:Module)?|process|require)[\\\"'`]\\])|(?:binding|constructor|env|global|main(?:Module)?|process|require)\\[|console(?:\\.(?:debug|error|info|trace|warn)(?:\\.call)?\\(|\\[[\\\"'`](?:debug|error|info|trace|warn)[\\\"'`]\\])|require(?:\\.(?:resolve(?:\\.call)?\\(|main|extensions|cache)|\\[[\\\"'`](?:(?:resolv|cach)e|main|extensions)[\\\"'`]\\])",
+        "pattern": "@rx (?i)(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))(?:\\.(?:%0[01]|\\?)?|\\?\\.?|%(?:2(?:(?:5(?:2|c0%25a))?e|%45)|c0(?:\\.|%[256aef]e)|u(?:(?:ff0|002)e|2024)|%32(?:%(?:%6|4)5|E)|(?:e|f(?:(?:8|c%80)%8)?0%8)0%80%ae)|0x2e){2,3}(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))",
         "location": "Query-String",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
-        "pattern": "@pmFromFile ssrf.data",
+        "pattern": "@rx (?:(?:^|[\\x5c/;])\\.{2,3}[\\x5c/;]|[\\x5c/;]\\.{2,3}(?:[\\x5c/;]|$))",
         "location": "Query-String",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?:__proto__|constructor\\s*(?:\\.|\\[)\\s*prototype)",
+        "pattern": "@pmFromFile lfi-os-files.data",
         "location": "Query-String",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
-        "pattern": "@rx Process[\\s\\x0b]*\\.[\\s\\x0b]*spawn[\\s\\x0b]*\\(",
-        "location": "Query-String",
+        "pattern": "@pmFromFile restricted-files.data",
+        "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx while[\\s\\x0b]*\\([\\s\\x0b\\(]*(?:!+(?:false|null|undefined|NaN|[\\+\\-]?0|\\\"{2}|'{2}|`{2})|(?:!!)*(?:(?:t(?:rue|his)|[\\+\\-]?(?:Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(?:Boolea|Functio)n|Object|Array)\\b|\\{.*\\}|\\[.*\\]|\\\"[^\\\"]+\\\"|'[^']+'|`[^`]+`)).*\\)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^data:(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?:close|exists|fork|(?:ope|spaw)n|re(?:ad|quire)|w(?:atch|rite))[\\s\\x0b]*\\(",
-        "location": "Query-String",
+        "pattern": "@pmFromFile lfi-os-files.data",
+        "location": "REFERER",
         "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[0-9]{10}|(?:0x[0-9a-f]{2}\\.){3}0x[0-9a-f]{2}|0x(?:[0-9a-f]{8}|[0-9a-f]{16})|(?:0{1,4}[0-9]{1,3}\\.){3}0{1,4}[0-9]{1,3}|[0-9]{1,3}\\.(?:[0-9]{1,3}\\.[0-9]{5}|[0-9]{8})|(?:\\x5c\\x5c[\\-0-9a-z]\\.?_?)+|\\[[0-:a-f]+(?:[\\.0-9]+|%[0-9A-Z_a-z]+)?\\]|[a-z][\\-\\.0-9A-Z_a-z]{1,255}:[0-9]{1,5}(?:#?[\\s\\x0b]*&?@(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[a-z][\\-\\.0-9A-Z_a-z]{1,255}):[0-9]{1,5}/?)+|[\\.0-9]{0,11}(?:\\xe2(?:\\x91[\\xa0-\\xbf]|\\x92[\\x80-\\xbf]|\\x93[\\x80-\\xa9\\xab-\\xbf])|\\xe3\\x80\\x82)+)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?:[^@]|@[^\\{])*@+\\{.*\\}",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "GENERIC"
+        "category": "LFI"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:<(?:TITLE>Index of.*?<H|title>Index of.*?<h)1>Index of|>\\[To Parent Directory\\]</[Aa]><br>)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^#\\!\\s?/",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^5\\d{2}$",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "LEAKAGES"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile java-code-leakages.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile java-errors.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx java\\.lang\\.(?:runtime|processbuilder)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:runtime|processbuilder)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:unmarshaller|base64data|java\\.)",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:runtime|processbuilder)",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile java-classes.data",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx .*\\.(?:jsp|jspx)\\.*$",
+        "location": "X-FILENAME",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)(?:[^\\}]{0,15}(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)|jndi|ctx)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)(?:[^\\}]*(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)|jndi|ctx)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\xac\\xed\\x00\\x05",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:rO0ABQ|KztAAU|Cs7QAF)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx java\\b.+(?:runtime|processbuilder)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:class\\.module\\.classLoader\\.resources\\.context\\.parent\\.pipeline|springframework\\.context\\.support\\.FileSystemXmlApplicationContext)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "JAVA"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@pmFromFile sql-errors.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:JET Database Engine|Access Database Engine|\\[Microsoft\\]\\[ODBC Microsoft Access Driver\\])",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)\\bORA-[0-9][0-9][0-9][0-9][0-9]:|java\\.sql\\.SQLException|Oracle(?: erro|[^\\(\\)]{0,20}Drive)r|Warning.{1,10}o(?:ci_.{1,30}|ra_.{1,20})",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:DB2 SQL error:|\\[IBM\\]\\[CLI Driver\\]\\[DB2/6000\\]|CLI Driver.*DB2|DB2 SQL error|db2_\\w+\\()",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:\\[DM_QUERY_E_SYNTAX\\]|has occurred in the vicinity of:)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)Dynamic SQL Error",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)Exception (?:condition )?\\d+\\. Transaction rollback\\.",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)org\\.hsqldb\\.jdbc",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:An illegal character has been found in the statement|com\\.informix\\.jdbc|Exception.*Informix)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:Warning.*ingres_|Ingres SQLSTATE|Ingres\\W.*Driver)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:<b>Warning</b>: ibase_|Unexpected end of command in statement)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:SQL error.*POS[0-9]+.*|Warning.*maxdb.*)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:System\\.Data\\.OleDb\\.OleDbException|\\[Microsoft\\]\\[ODBC SQL Server Driver\\]|\\[Macromedia\\]\\[SQLServer JDBC Driver\\]|\\[SqlException|System\\.Data\\.SqlClient\\.SqlException|Unclosed quotation mark after the character string|'80040e14'|mssql_query\\(\\)|Microsoft OLE DB Provider for ODBC Drivers|Microsoft OLE DB Provider for SQL Server|Incorrect syntax near|Sintaxis incorrecta cerca de|Syntax error in string in query expression|Procedure or function .* expects parameter|Unclosed quotation mark before the character string|Syntax error .* in query expression|Data type mismatch in criteria expression\\.|ADODB\\.Field \\(0x800A0BCD\\)|the used select statements have different number of columns|OLE DB.*SQL Server|Warning.*mssql_.*|Driver.*SQL[ _-]*Server|SQL Server.*Driver|SQL Server.*[0-9a-fA-F]{8}|Exception.*\\WSystem\\.Data\\.SqlClient\\.|Conversion failed when converting the varchar value .*? to data type int\\.)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:supplied argument is not a valid |SQL syntax.*)MySQL|Column count doesn't match(?: value count at row)?|mysql_fetch_array\\(\\)|on MySQL result index|You have an error in your SQL syntax(?:;| near)|MyS(?:QL server version for the right syntax to use|qlClient\\.)|\\[MySQL\\]\\[ODBC|(?:Table '[^']+' doesn't exis|valid MySQL resul)t|Warning.{1,10}mysql_(?:[\\(\\)_a-z]{1,26})?|(?:ERROR [0-9]{4} \\([0-9a-z]{5}\\)|XPATH syntax error):",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)P(?:ostgreSQL(?: query failed:|.{1,20}ERROR)|G::[a-z]*Error)|(?:pg_(?:query|exec)\\(\\) \\[|org\\.postgresql\\.util\\.PSQLException):|Warning.{1,20}\\bpg_.*|valid PostgreSQL result|Npgsql\\.|Supplied argument is not a valid PostgreSQL .*? resource|(?:Unable to connect to PostgreSQL serv|invalid input syntax for integ)er",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:Warning.*sqlite_.*|Warning.*SQLite3::|SQLite/JDBCDriver|SQLite\\.Exception|System\\.Data\\.SQLite\\.SQLiteException)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:Sybase message:|Warning.{2,20}sybase|Sybase.*Server message.*)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SQL"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@validateByteRange 20, 45-47, 48-57, 65-90, 95, 97-122",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@detectXSS",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<script[^>]*>[\\s\\S]*?",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i).(?:\\b(?:(?:x(?:link:href|html|mlns)|data:text/html|formaction)\\b|pattern[\\s\\x0b]*=)|(?:!ENTITY[\\s\\x0b]+(?:%[\\s\\x0b]+)?[^\\s\\x0b]+[\\s\\x0b]+(?:SYSTEM|PUBLIC)|@import|;base64)\\b)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)[a-z]+=(?:[^:=]+:.+;)*?[^:=]+:url\\(javascript",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<[^0-9<>A-Z_a-z]*(?:[^\\s\\x0b\\\"'<>]*:)?[^0-9<>A-Z_a-z]*[^0-9A-Z_a-z]*?(?:s[^0-9A-Z_a-z]*?(?:c[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?p[^0-9A-Z_a-z]*?t|t[^0-9A-Z_a-z]*?y[^0-9A-Z_a-z]*?l[^0-9A-Z_a-z]*?e|v[^0-9A-Z_a-z]*?g|e[^0-9A-Z_a-z]*?t[^0-9>A-Z_a-z])|f[^0-9A-Z_a-z]*?o[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?m|d[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?l[^0-9A-Z_a-z]*?o[^0-9A-Z_a-z]*?g|m[^0-9A-Z_a-z]*?(?:a[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?q[^0-9A-Z_a-z]*?u[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?e|e[^0-9A-Z_a-z]*?t[^0-9A-Z_a-z]*?a[^0-9>A-Z_a-z])|(?:l[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?n[^0-9A-Z_a-z]*?k|o[^0-9A-Z_a-z]*?b[^0-9A-Z_a-z]*?j[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?c[^0-9A-Z_a-z]*?t|e[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?b[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?d|a[^0-9A-Z_a-z]*?(?:p[^0-9A-Z_a-z]*?p[^0-9A-Z_a-z]*?l[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?t|u[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?o|n[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?t[^0-9A-Z_a-z]*?e)|p[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?m|i?[^0-9A-Z_a-z]*?f[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?e|b[^0-9A-Z_a-z]*?(?:a[^0-9A-Z_a-z]*?s[^0-9A-Z_a-z]*?e|o[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?y|i[^0-9A-Z_a-z]*?n[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?n[^0-9A-Z_a-z]*?g[^0-9A-Z_a-z]*?s)|i[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?a?[^0-9A-Z_a-z]*?g[^0-9A-Z_a-z]*?e?|v[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?o)[^0-9>A-Z_a-z])|(?:<[0-9A-Z_a-z].*[\\s\\x0b/]|[\\\"'](?:.*[\\s\\x0b/])?)(?:background|formaction|lowsrc|on(?:a(?:bort|ctivate|d(?:apteradded|dtrack)|fter(?:print|(?:scriptexecu|upda)te)|lerting|n(?:imation(?:cancel|end|iteration|start)|tennastatechange)|ppcommand|u(?:dio(?:end|process|start)|xclick))|b(?:e(?:fore(?:(?:(?:(?:de)?activa|scriptexecu)t|toggl)e|c(?:opy|ut)|editfocus|input|p(?:aste|rint)|u(?:nload|pdate))|gin(?:Event)?)|l(?:ocked|ur)|oun(?:ce|dary)|roadcast|usy)|c(?:a(?:(?:ch|llschang)ed|nplay(?:through)?|rdstatechange)|(?:ell|fstate)change|h(?:a(?:rging(?:time)?cha)?nge|ecking)|l(?:ick|ose)|o(?:m(?:mand(?:update)?|p(?:lete|osition(?:end|start|update)))|n(?:nect(?:ed|ing)|t(?:extmenu|rolselect))|py)|u(?:echange|t))|d(?:ata(?:(?:availabl|chang)e|error|setc(?:hanged|omplete))|blclick|e(?:activate|livery(?:error|success)|vice(?:found|light|(?:mo|orienta)tion|proximity))|i(?:aling|s(?:abled|c(?:hargingtimechange|onnect(?:ed|ing))))|o(?:m(?:a(?:ctivate|ttrmodified)|(?:characterdata|subtree)modified|focus(?:in|out)|mousescroll|node(?:inserted(?:intodocument)?|removed(?:fromdocument)?))|wnloading)|r(?:ag(?:drop|e(?:n(?:d|ter)|xit)|(?:gestur|leav)e|over|start)|op)|urationchange)|e(?:mptied|n(?:abled|d(?:ed|Event)?|ter)|rror(?:update)?|xit)|f(?:ailed|i(?:lterchange|nish)|o(?:cus(?:in|out)?|rm(?:change|input))|ullscreenchange)|g(?:amepad(?:axismove|button(?:down|up)|(?:dis)?connected)|et)|h(?:ashchange|e(?:adphoneschange|l[dp])|olding)|i(?:cc(?:cardlockerror|infochange)|n(?:coming|put|valid))|key(?:down|press|up)|l(?:evelchange|o(?:ad(?:e(?:d(?:meta)?data|nd)|start)?|secapture)|y)|m(?:ark|essage|o(?:use(?:down|enter|(?:lea|mo)ve|o(?:ut|ver)|up|wheel)|ve(?:end|start)?|z(?:a(?:fterpaint|udioavailable)|(?:beforeresiz|orientationchang|t(?:apgestur|imechang))e|(?:edgeui(?:c(?:ancel|omplet)|start)e|network(?:down|up)loa)d|fullscreen(?:change|error)|m(?:agnifygesture(?:start|update)?|ouse(?:hittest|pixelscroll))|p(?:ointerlock(?:change|error)|resstapgesture)|rotategesture(?:start|update)?|s(?:crolledareachanged|wipegesture(?:end|start|update)?))))|no(?:match|update)|o(?:(?:bsolet|(?:ff|n)lin)e|pen|verflow(?:changed)?)|p(?:a(?:ge(?:hide|show)|int|(?:st|us)e)|lay(?:ing)?|o(?:inter(?:down|enter|(?:(?:lea|mo)v|rawupdat)e|o(?:ut|ver)|up)|p(?:state|up(?:hid(?:den|ing)|show(?:ing|n))))|ro(?:gress|pertychange))|r(?:atechange|e(?:adystatechange|ceived|movetrack|peat(?:Event)?|quest|s(?:et|ize|u(?:lt|m(?:e|ing)))|trieving)|ow(?:e(?:nter|xit)|s(?:delete|inserted)))|s(?:croll(?:end)?|e(?:arch|ek(?:complete|ed|ing)|lect(?:ionchange|start)?|n(?:ding|t)|t)|how|(?:ound|peech)(?:end|start)|t(?:a(?:lled|rt|t(?:echange|uschanged))|k(?:comma|sessione)nd|op)|u(?:bmit|ccess|spend)|vg(?:abort|error|(?:un)?load|resize|scroll|zoom))|t(?:ext|ime(?:out|update)|o(?:ggle|uch(?:cancel|en(?:d|ter)|(?:lea|mo)ve|start))|ransition(?:cancel|end|run|start))|u(?:n(?:derflow|handledrejection|load)|p(?:dateready|gradeneeded)|s(?:erproximity|sdreceived))|v(?:ersion|o(?:ic|lum)e)change|w(?:a(?:it|rn)ing|ebkit(?:animation(?:end|iteration|start)|(?:playbacktargetavailabilitychange|transitionen)d)|heel)|zoom)|ping|s(?:rc|tyle))[\\x08-\\n\\f\\r ]*?=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:\\W|^)(?:javascript:(?:[\\s\\S]+[=\\x5c\\(\\[\\.<]|[\\s\\S]*?(?:\\bname\\b|\\x5c[ux]\\d))|data:(?:(?:[a-z]\\w+/\\w[\\w+-]+\\w)?[;,]|[\\s\\S]*?;[\\s\\S]*?\\b(?:base64|charset=)|[\\s\\S]*?,[\\s\\S]*?<[\\s\\S]*?\\w[\\s\\S]*?>))|@\\W*?i\\W*?m\\W*?p\\W*?o\\W*?r\\W*?t\\W*?(?:/\\*[\\s\\S]*?)?(?:[\\\"']|\\W*?u\\W*?r\\W*?l[\\s\\S]*?\\()|[^-]*?-\\W*?m\\W*?o\\W*?z\\W*?-\\W*?b\\W*?i\\W*?n\\W*?d\\W*?i\\W*?n\\W*?g[^:]*?:\\W*?u\\W*?r\\W*?l[\\s\\S]*?\\(",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm document.cookie document.domain document.write .parentnode .innerhtml window.location -moz-binding <!-- <![cdata[",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:<style.*?>.*?(?:@[i\\x5c]|(?:[:=]|&#x?0*(?:58|3A|61|3D);?).*?(?:[(\\x5c]|&#x?0*(?:40|28|92|5C);?)))",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:<.*[:]?vmlframe.*?[\\s/+]*?src[\\s/+]*=)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:j|&#(?:0*(?:74|106)|x0*[46]A);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:a|&#(?:0*(?:65|97)|x0*[46]1);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:v|&#(?:0*(?:86|118)|x0*[57]6);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:a|&#(?:0*(?:65|97)|x0*[46]1);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:s|&#(?:0*(?:115|83)|x0*[57]3);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:c|&#(?:x0*[46]3|0*(?:99|67));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:r|&#(?:x0*[57]2|0*(?:114|82));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:i|&#(?:x0*[46]9|0*(?:105|73));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:p|&#(?:x0*[57]0|0*(?:112|80));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:t|&#(?:x0*[57]4|0*(?:116|84));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?::|&(?:#(?:0*58|x0*3A);?|colon;)).",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:v|&#(?:0*(?:118|86)|x0*[57]6);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:b|&#(?:0*(?:98|66)|x0*[46]2);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:s|&#(?:0*(?:115|83)|x0*[57]3);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:c|&#(?:x0*[46]3|0*(?:99|67));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:r|&#(?:x0*[57]2|0*(?:114|82));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:i|&#(?:x0*[46]9|0*(?:105|73));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:p|&#(?:x0*[57]0|0*(?:112|80));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:t|&#(?:x0*[57]4|0*(?:116|84));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?::|&(?:#(?:0*58|x0*3A);?|colon;)).",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<EMBED[\\s/+].*?(?:src|type).*?=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <[?]?import[\\s/+\\S]*?implementation[\\s/+]*?=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:<META[\\s/+].*?http-equiv[\\s/+]*=[\\s/+]*[\\\"'`]?(?:(?:c|&#x?0*(?:67|43|99|63);?)|(?:r|&#x?0*(?:82|52|114|72);?)|(?:s|&#x?0*(?:83|53|115|73);?)))",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:<META[\\s/+].*?charset[\\s/+]*=)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<LINK[\\s/+].*?href[\\s/+]*=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<BASE[\\s/+].*?href[\\s/+]*=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<APPLET[\\s/+>]",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)<OBJECT[\\s/+].*?(?:type|codetype|classid|code|data)[\\s/+]*=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\xbc[^\\xbe>]*[\\xbe>]|<[^\\xbe]*\\xbe",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:\\xbc\\s*/\\s*[^\\xbe>]*[\\xbe>])|(?:<\\s*/\\s*[^\\xbe]*\\xbe)",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\+ADw-.*(?:\\+AD4-|>)|<.*\\+AD4-",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ![!+ ]\\[\\]",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:self|document|this|top|window)\\s*(?:/\\*|[\\[)]).+?(?:\\]|\\*/)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)\\b(?:eval|set(?:timeout|interval)|new[\\s\\x0b]+Function|a(?:lert|tob)|btoa|prompt|confirm)[\\s\\x0b]*\\(",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ((?:\\[[^\\]]*\\][^.]*\\.)|Reflect[^.]*\\.).*(?:map|sort|apply)[^.]*\\..*call[^`]*`.*`",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@detectXSS",
+        "location": "REFERER",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)[\\s\\\"'`;/0-9=\\x0B\\x09\\x0C\\x3B\\x2C\\x28\\x3B]on[a-zA-Z]{3,50}[\\s\\x0B\\x09\\x0C\\x3B\\x2C\\x28\\x3B]*?=[^=]",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)\\b(?:s(?:tyle|rc)|href)\\b[\\s\\S]*?=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@contains -->",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <(?:a|abbr|acronym|address|applet|area|audioscope|b|base|basefront|bdo|bgsound|big|blackface|blink|blockquote|body|bq|br|button|caption|center|cite|code|col|colgroup|comment|dd|del|dfn|dir|div|dl|dt|em|embed|fieldset|fn|font|form|frame|frameset|h1|head|hr|html|i|iframe|ilayer|img|input|ins|isindex|kdb|keygen|label|layer|legend|li|limittext|link|listing|map|marquee|menu|meta|multicol|nobr|noembed|noframes|noscript|nosmartquotes|object|ol|optgroup|option|p|param|plaintext|pre|q|rt|ruby|s|samp|script|select|server|shadow|sidebar|small|spacer|span|strike|strong|style|sub|sup|table|tbody|td|textarea|tfoot|th|thead|title|tr|tt|u|ul|var|wbr|xml|xmp)\\W",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:[\\\"'][ ]*(?:[^a-z0-9~_:' ]|in).*?(?:(?:l|\\x5cu006C)(?:o|\\x5cu006F)(?:c|\\x5cu0063)(?:a|\\x5cu0061)(?:t|\\x5cu0074)(?:i|\\x5cu0069)(?:o|\\x5cu006F)(?:n|\\x5cu006E)|(?:n|\\x5cu006E)(?:a|\\x5cu0061)(?:m|\\x5cu006D)(?:e|\\x5cu0065)|(?:o|\\x5cu006F)(?:n|\\x5cu006E)(?:e|\\x5cu0065)(?:r|\\x5cu0072)(?:r|\\x5cu0072)(?:o|\\x5cu006F)(?:r|\\x5cu0072)|(?:v|\\x5cu0076)(?:a|\\x5cu0061)(?:l|\\x5cu006C)(?:u|\\x5cu0075)(?:e|\\x5cu0065)(?:O|\\x5cu004F)(?:f|\\x5cu0066)).*?=)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)[\\\"\\'][ ]*(?:[^a-z0-9~_:\\' ]|in).+?[.].+?=",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx {{.*?}}",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "XSS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile web-shells-php.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>r57 Shell Version [0-9.]+</title>|<title>r57 shell</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html><head><meta http-equiv='Content-Type' content='text/html; charset=(?:Windows-1251|UTF-8)?'><title>.*?(?: -)? W[Ss][Oo] [0-9.]+</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx B4TM4N SH3LL</title>.*<meta name='author' content='k4mpr3t'/>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>Mini Shell</title>.*Developed By LameHacker",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>\\.:: .* ~ Ashiyane V [0-9.]+ ::\\.</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>Symlink_Sa [0-9.]+</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>CasuS [0-9.]+ by MafiABoY</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html>\\r\\n<head>\\r\\n<title>GRP WebShell [0-9.]+",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <small>NGHshell [0-9.]+ by Cr4sh</body></html>\\n$",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>SimAttacker - (?:Version|Vrsion) : [0-9.]+ -",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<!DOCTYPE html>\\n<html>\\n<!-- By Artyum .*<title>Web Shell</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>lama's'hell v. [0-9.]+</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^ *<html>\\n[ ]+<head>\\n[ ]+<title>lostDC -",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<title>PHP Web Shell</title>\\r\\n<html>\\r\\n<body>\\r\\n    <!-- Replaces command with Base64-encoded Data -->",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html>\\n<head>\\n<div align=\\\"left\\\"><font size=\\\"1\\\">Input command :</font></div>\\n<form name=\\\"cmd\\\" method=\\\"POST\\\" enctype=\\\"multipart/form-data\\\">",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html>\\n<head>\\n<title>Ru24PostWebShell",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx <title>s72 Shell v[0-9.]+ Codinf by Cr@zy_King</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html>\\r\\n<head>\\r\\n<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=gb2312\\\">\\r\\n<title>PhpSpy Ver [0-9]+</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^ <html>\\n\\n<head>\\n\\n<title>g00nshell v[0-9.]+",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@contains <title>punkholicshell</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html>\\n      <head>\\n             <title>azrail [0-9.]+ by C-W-M</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx >SmEvK_PaThAn Shell v[0-9]+ coded by <a href=",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^<html>\\n<title>.*? ~ Shell I</title>\\n<head>\\n<style>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^ <html><head><title>:: b374k m1n1 [0-9.]+ ::</title>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@contains <h1 style=\\\"margin-bottom: 0\\\">webadmin.php</h1>",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "SHELLS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "EVALUATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pm gzip compress deflate br zstd",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx [a-z]:\\x5cinetpub\\b",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:Microsoft OLE DB Provider for SQL Server(?:</font>.{1,20}?error '800(?:04005|40e31)'.{1,40}?Timeout expired| \\(0x80040e31\\)<br>Timeout expired<br>)|<h1>internal server error</h1>.*?<h2>part of the server has crashed or it has a configuration error\\.</h2>|cannot connect to the server: timed out)",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile iis-errors.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@rx ^404$",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx \\bServer Error in.{0,50}?\\bApplication\\b",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "IIS"
     },
     {
         "id": "no_id",
@@ -1460,182 +3077,91 @@
         "pattern": "@pm gzip compress deflate br zstd",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
-        "pattern": "!@pmFromFile sql-errors.data",
+        "pattern": "@pmFromFile php-errors.data",
         "location": "RESPONSE_BODY",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?i:JET Database Engine|Access Database Engine|\\[Microsoft\\]\\[ODBC Microsoft Access Driver\\])",
+        "pattern": "@rx (?:\\b(?:f(?:tp_(?:nb_)?f?(?:ge|pu)t|get(?:s?s|c)|scanf|write|open|read)|gz(?:(?:encod|writ)e|compress|open|read)|s(?:ession_start|candir)|read(?:(?:gz)?file|dir)|move_uploaded_file|(?:proc_|bz)open|call_user_func)|\\$_(?:(?:pos|ge)t|session))\\b",
         "location": "RESPONSE_BODY",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?i)\\bORA-[0-9][0-9][0-9][0-9][0-9]:|java\\.sql\\.SQLException|Oracle(?: erro|[^\\(\\)]{0,20}Drive)r|Warning.{1,10}o(?:ci_.{1,30}|ra_.{1,20})",
+        "pattern": "@rx (?i)<\\?(?:=|php)?\\s+",
         "location": "RESPONSE_BODY",
         "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:DB2 SQL error:|\\[IBM\\]\\[CLI Driver\\]\\[DB2/6000\\]|CLI Driver.*DB2|DB2 SQL error|db2_\\w+\\()",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:\\[DM_QUERY_E_SYNTAX\\]|has occurred in the vicinity of:)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)Dynamic SQL Error",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)Exception (?:condition )?\\d+\\. Transaction rollback\\.",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)org\\.hsqldb\\.jdbc",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:An illegal character has been found in the statement|com\\.informix\\.jdbc|Exception.*Informix)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:Warning.*ingres_|Ingres SQLSTATE|Ingres\\W.*Driver)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:<b>Warning</b>: ibase_|Unexpected end of command in statement)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:SQL error.*POS[0-9]+.*|Warning.*maxdb.*)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:System\\.Data\\.OleDb\\.OleDbException|\\[Microsoft\\]\\[ODBC SQL Server Driver\\]|\\[Macromedia\\]\\[SQLServer JDBC Driver\\]|\\[SqlException|System\\.Data\\.SqlClient\\.SqlException|Unclosed quotation mark after the character string|'80040e14'|mssql_query\\(\\)|Microsoft OLE DB Provider for ODBC Drivers|Microsoft OLE DB Provider for SQL Server|Incorrect syntax near|Sintaxis incorrecta cerca de|Syntax error in string in query expression|Procedure or function .* expects parameter|Unclosed quotation mark before the character string|Syntax error .* in query expression|Data type mismatch in criteria expression\\.|ADODB\\.Field \\(0x800A0BCD\\)|the used select statements have different number of columns|OLE DB.*SQL Server|Warning.*mssql_.*|Driver.*SQL[ _-]*Server|SQL Server.*Driver|SQL Server.*[0-9a-fA-F]{8}|Exception.*\\WSystem\\.Data\\.SqlClient\\.|Conversion failed when converting the varchar value .*? to data type int\\.)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:supplied argument is not a valid |SQL syntax.*)MySQL|Column count doesn't match(?: value count at row)?|mysql_fetch_array\\(\\)|on MySQL result index|You have an error in your SQL syntax(?:;| near)|MyS(?:QL server version for the right syntax to use|qlClient\\.)|\\[MySQL\\]\\[ODBC|(?:Table '[^']+' doesn't exis|valid MySQL resul)t|Warning.{1,10}mysql_(?:[\\(\\)_a-z]{1,26})?|(?:ERROR [0-9]{4} \\([0-9a-z]{5}\\)|XPATH syntax error):",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)P(?:ostgreSQL(?: query failed:|.{1,20}ERROR)|G::[a-z]*Error)|(?:pg_(?:query|exec)\\(\\) \\[|org\\.postgresql\\.util\\.PSQLException):|Warning.{1,20}\\bpg_.*|valid PostgreSQL result|Npgsql\\.|Supplied argument is not a valid PostgreSQL .*? resource|(?:Unable to connect to PostgreSQL serv|invalid input syntax for integ)er",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:Warning.*sqlite_.*|Warning.*SQLite3::|SQLite/JDBCDriver|SQLite\\.Exception|System\\.Data\\.SQLite\\.SQLiteException)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:Sybase message:|Warning.{2,20}sybase|Sybase.*Server message.*)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@pmFromFile php-errors-pl2.data",
+        "location": "RESPONSE_BODY",
+        "severity": "medium",
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "SQL"
+        "category": "PHP"
     },
     {
         "id": "no_id",
@@ -1824,1071 +3350,119 @@
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?i:\\.cookie\\b.*?;\\W*?(?:expires|domain)\\W*?=|\\bhttp-equiv\\W+set-cookie\\b)",
+        "pattern": "@rx _(?:\\$\\$ND_FUNC\\$\\$_|_js_function)|(?:\\beval|new[\\s\\x0b]+Function[\\s\\x0b]*)\\(|String\\.fromCharCode|function\\(\\)\\{|this\\.constructor|module\\.exports=|\\([\\s\\x0b]*[^0-9A-Z_a-z]child_process[^0-9A-Z_a-z][\\s\\x0b]*\\)|process(?:\\.(?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?(?:\\.call)?\\(|binding|constructor|env|global|main(?:Module)?|process|require)|\\[[\\\"'`](?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?|binding|constructor|env|global|main(?:Module)?|process|require)[\\\"'`]\\])|(?:binding|constructor|env|global|main(?:Module)?|process|require)\\[|console(?:\\.(?:debug|error|info|trace|warn)(?:\\.call)?\\(|\\[[\\\"'`](?:debug|error|info|trace|warn)[\\\"'`]\\])|require(?:\\.(?:resolve(?:\\.call)?\\(|main|extensions|cache)|\\[[\\\"'`](?:(?:resolv|cach)e|main|extensions)[\\\"'`]\\])",
         "location": "Query-String",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
-        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
+        "pattern": "@pmFromFile ssrf.data",
         "location": "Query-String",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
-        "pattern": "@rx ^(?:ht|f)tps?://(.*?)/",
-        "location": "REFERER",
-        "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@endsWith %{request_headers.host}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
+        "pattern": "@rx (?:__proto__|constructor\\s*(?:\\.|\\[)\\s*prototype)",
         "location": "Query-String",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
-        "pattern": "@eq 0",
-        "location": "UNKNOWN",
+        "pattern": "@rx Process[\\s\\x0b]*\\.[\\s\\x0b]*spawn[\\s\\x0b]*\\(",
+        "location": "Query-String",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx while[\\s\\x0b]*\\([\\s\\x0b\\(]*(?:!+(?:false|null|undefined|NaN|[\\+\\-]?0|\\\"{2}|'{2}|`{2})|(?:!!)*(?:(?:t(?:rue|his)|[\\+\\-]?(?:Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(?:Boolea|Functio)n|Object|Array)\\b|\\{.*\\}|\\[.*\\]|\\\"[^\\\"]+\\\"|'[^']+'|`[^`]+`)).*\\)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^data:(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?:close|exists|fork|(?:ope|spaw)n|re(?:ad|quire)|w(?:atch|rite))[\\s\\x0b]*\\(",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i)(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[0-9]{10}|(?:0x[0-9a-f]{2}\\.){3}0x[0-9a-f]{2}|0x(?:[0-9a-f]{8}|[0-9a-f]{16})|(?:0{1,4}[0-9]{1,3}\\.){3}0{1,4}[0-9]{1,3}|[0-9]{1,3}\\.(?:[0-9]{1,3}\\.[0-9]{5}|[0-9]{8})|(?:\\x5c\\x5c[\\-0-9a-z]\\.?_?)+|\\[[0-:a-f]+(?:[\\.0-9]+|%[0-9A-Z_a-z]+)?\\]|[a-z][\\-\\.0-9A-Z_a-z]{1,255}:[0-9]{1,5}(?:#?[\\s\\x0b]*&?@(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[a-z][\\-\\.0-9A-Z_a-z]{1,255}):[0-9]{1,5}/?)+|[\\.0-9]{0,11}(?:\\xe2(?:\\x91[\\xa0-\\xbf]|\\x92[\\x80-\\xbf]|\\x93[\\x80-\\xa9\\xab-\\xbf])|\\xe3\\x80\\x82)+)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:[^@]|@[^\\{])*@+\\{.*\\}",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "FIXATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))(?:\\.(?:%0[01]|\\?)?|\\?\\.?|%(?:2(?:(?:5(?:2|c0%25a))?e|%45)|c0(?:\\.|%[256aef]e)|u(?:(?:ff0|002)e|2024)|%32(?:%(?:%6|4)5|E)|(?:e|f(?:(?:8|c%80)%8)?0%8)0%80%ae)|0x2e){2,3}(?:[/\\x5c]|%(?:2(?:f|5(?:2f|5c|c(?:1%259c|0%25af))|%46)|5c|c(?:0%(?:[2aq]f|5c|9v)|1%(?:[19p]c|8s|af))|(?:bg%q|(?:e|f(?:8%8)?0%8)0%80%a)f|u(?:221[56]|EFC8|F025|002f)|%3(?:2(?:%(?:%6|4)6|F)|5%%63)|1u)|0x(?:2f|5c))",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:(?:^|[\\x5c/;])\\.{2,3}[\\x5c/;]|[\\x5c/;]\\.{2,3}(?:[\\x5c/;]|$))",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile lfi-os-files.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile restricted-files.data",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile lfi-os-files.data",
-        "location": "REFERER",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx java\\.lang\\.(?:runtime|processbuilder)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:runtime|processbuilder)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:unmarshaller|base64data|java\\.)",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:runtime|processbuilder)",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile java-classes.data",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx .*\\.(?:jsp|jspx)\\.*$",
-        "location": "X-FILENAME",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)(?:[^\\}]{0,15}(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)|jndi|ctx)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)(?:[^\\}]*(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)|jndi|ctx)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\xac\\xed\\x00\\x05",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:rO0ABQ|KztAAU|Cs7QAF)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:clonetransformer|forclosure|instantiatefactory|instantiatetransformer|invokertransformer|prototypeclonefactory|prototypeserializationfactory|whileclosure|getproperty|filewriter|xmldecoder)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx java\\b.+(?:runtime|processbuilder)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:class\\.module\\.classLoader\\.resources\\.context\\.parent\\.pipeline|springframework\\.context\\.support\\.FileSystemXmlApplicationContext)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:cnVudGltZQ|HJ1bnRpbWU|BydW50aW1l|cHJvY2Vzc2J1aWxkZXI|HByb2Nlc3NidWlsZGVy|Bwcm9jZXNzYnVpbGRlcg|Y2xvbmV0cmFuc2Zvcm1lcg|GNsb25ldHJhbnNmb3JtZXI|BjbG9uZXRyYW5zZm9ybWVy|Zm9yY2xvc3VyZQ|GZvcmNsb3N1cmU|Bmb3JjbG9zdXJl|aW5zdGFudGlhdGVmYWN0b3J5|Gluc3RhbnRpYXRlZmFjdG9yeQ|BpbnN0YW50aWF0ZWZhY3Rvcnk|aW5zdGFudGlhdGV0cmFuc2Zvcm1lcg|Gluc3RhbnRpYXRldHJhbnNmb3JtZXI|BpbnN0YW50aWF0ZXRyYW5zZm9ybWVy|aW52b2tlcnRyYW5zZm9ybWVy|Gludm9rZXJ0cmFuc2Zvcm1lcg|BpbnZva2VydHJhbnNmb3JtZXI|cHJvdG90eXBlY2xvbmVmYWN0b3J5|HByb3RvdHlwZWNsb25lZmFjdG9yeQ|Bwcm90b3R5cGVjbG9uZWZhY3Rvcnk|cHJvdG90eXBlc2VyaWFsaXphdGlvbmZhY3Rvcnk|HByb3RvdHlwZXNlcmlhbGl6YXRpb25mYWN0b3J5|Bwcm90b3R5cGVzZXJpYWxpemF0aW9uZmFjdG9yeQ|d2hpbGVjbG9zdXJl|HdoaWxlY2xvc3VyZQ|B3aGlsZWNsb3N1cmU)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:\\$|&dollar;?)(?:\\{|&l(?:brace|cub);?)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx [a-z]:\\x5cinetpub\\b",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:Microsoft OLE DB Provider for SQL Server(?:</font>.{1,20}?error '800(?:04005|40e31)'.{1,40}?Timeout expired| \\(0x80040e31\\)<br>Timeout expired<br>)|<h1>internal server error</h1>.*?<h2>part of the server has crashed or it has a configuration error\\.</h2>|cannot connect to the server: timed out)",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile iis-errors.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@rx ^404$",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\bServer Error in.{0,50}?\\bApplication\\b",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "IIS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile web-shells-php.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>r57 Shell Version [0-9.]+</title>|<title>r57 shell</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html><head><meta http-equiv='Content-Type' content='text/html; charset=(?:Windows-1251|UTF-8)?'><title>.*?(?: -)? W[Ss][Oo] [0-9.]+</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx B4TM4N SH3LL</title>.*<meta name='author' content='k4mpr3t'/>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>Mini Shell</title>.*Developed By LameHacker",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>\\.:: .* ~ Ashiyane V [0-9.]+ ::\\.</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>Symlink_Sa [0-9.]+</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>CasuS [0-9.]+ by MafiABoY</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html>\\r\\n<head>\\r\\n<title>GRP WebShell [0-9.]+",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <small>NGHshell [0-9.]+ by Cr4sh</body></html>\\n$",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>SimAttacker - (?:Version|Vrsion) : [0-9.]+ -",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<!DOCTYPE html>\\n<html>\\n<!-- By Artyum .*<title>Web Shell</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>lama's'hell v. [0-9.]+</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^ *<html>\\n[ ]+<head>\\n[ ]+<title>lostDC -",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<title>PHP Web Shell</title>\\r\\n<html>\\r\\n<body>\\r\\n    <!-- Replaces command with Base64-encoded Data -->",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html>\\n<head>\\n<div align=\\\"left\\\"><font size=\\\"1\\\">Input command :</font></div>\\n<form name=\\\"cmd\\\" method=\\\"POST\\\" enctype=\\\"multipart/form-data\\\">",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html>\\n<head>\\n<title>Ru24PostWebShell",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <title>s72 Shell v[0-9.]+ Codinf by Cr@zy_King</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html>\\r\\n<head>\\r\\n<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=gb2312\\\">\\r\\n<title>PhpSpy Ver [0-9]+</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^ <html>\\n\\n<head>\\n\\n<title>g00nshell v[0-9.]+",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@contains <title>punkholicshell</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html>\\n      <head>\\n             <title>azrail [0-9.]+ by C-W-M</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx >SmEvK_PaThAn Shell v[0-9]+ coded by <a href=",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^<html>\\n<title>.*? ~ Shell I</title>\\n<head>\\n<style>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^ <html><head><title>:: b374k m1n1 [0-9.]+ ::</title>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@contains <h1 style=\\\"margin-bottom: 0\\\">webadmin.php</h1>",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "SHELLS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?i:file|ftps?|https?)://(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:\\binclude\\s*\\([^)]*|mosConfig_absolute_path|_CONF\\[path\\]|_SERVER\\[DOCUMENT_ROOT\\]|GALLERY_BASEDIR|path\\[docroot\\]|appserv_root|config\\[root_dir\\])=(?:file|ftps?|https?)://",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^(?i:file|ftps?|https?).*?\\?+$",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@endsWith .%{request_headers.host}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:(?:url|jar):)?(?:a(?:cap|f[ps]|ttachment)|b(?:eshare|itcoin|lob)|c(?:a(?:llto|p)|id|vs|ompress.(?:zlib|bzip2))|d(?:a(?:v|ta)|ict|n(?:s|tp))|e(?:d2k|xpect)|f(?:(?:ee)?d|i(?:le|nger|sh)|tps?)|g(?:it|o(?:pher)?|lob)|h(?:323|ttps?)|i(?:ax|cap|(?:ma|p)ps?|rc[6s]?)|ja(?:bbe)?r|l(?:dap[is]?|ocal_file)|m(?:a(?:ilto|ven)|ms|umble)|n(?:e(?:tdoc|ws)|fs|ntps?)|ogg|p(?:aparazzi|h(?:ar|p)|op(?:2|3s?)|r(?:es|oxy)|syc)|r(?:mi|sync|tm(?:f?p)?|ar)|s(?:3|ftp|ips?|m(?:[bs]|tps?)|n(?:ews|mp)|sh(?:2(?:.(?:s(?:hell|(?:ft|c)p)|exec|tunnel))?)?|vn(?:\\+ssh)?)|t(?:e(?:amspeak|lnet)|ftp|urns?)|u(?:dp|nreal|t2004)|v(?:entrilo|iew-source|nc)|w(?:ebcal|ss?)|x(?:mpp|ri)|zip)://(?:[^@]+@)?([^/]*)",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@endsWith .%{request_headers.host}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "RFI"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile java-code-leakages.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile java-errors.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "JAVA"
+        "category": "GENERIC"
     },
     {
         "id": "no_id",
@@ -3274,720 +3848,6 @@
         "location": "UNKNOWN",
         "severity": "medium",
         "category": "RCE"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "EVALUATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge 5",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@eq 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@gt 0",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "CORRELATION"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-errors.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:\\b(?:f(?:tp_(?:nb_)?f?(?:ge|pu)t|get(?:s?s|c)|scanf|write|open|read)|gz(?:(?:encod|writ)e|compress|open|read)|s(?:ession_start|candir)|read(?:(?:gz)?file|dir)|move_uploaded_file|(?:proc_|bz)open|call_user_func)|\\$_(?:(?:pos|ge)t|session))\\b",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<\\?(?:=|php)?\\s+",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pmFromFile php-errors-pl2.data",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "PHP"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 1",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "!@validateByteRange 20, 45-47, 48-57, 65-90, 95, 97-122",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@detectXSS",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<script[^>]*>[\\s\\S]*?",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i).(?:\\b(?:(?:x(?:link:href|html|mlns)|data:text/html|formaction)\\b|pattern[\\s\\x0b]*=)|(?:!ENTITY[\\s\\x0b]+(?:%[\\s\\x0b]+)?[^\\s\\x0b]+[\\s\\x0b]+(?:SYSTEM|PUBLIC)|@import|;base64)\\b)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)[a-z]+=(?:[^:=]+:.+;)*?[^:=]+:url\\(javascript",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<[^0-9<>A-Z_a-z]*(?:[^\\s\\x0b\\\"'<>]*:)?[^0-9<>A-Z_a-z]*[^0-9A-Z_a-z]*?(?:s[^0-9A-Z_a-z]*?(?:c[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?p[^0-9A-Z_a-z]*?t|t[^0-9A-Z_a-z]*?y[^0-9A-Z_a-z]*?l[^0-9A-Z_a-z]*?e|v[^0-9A-Z_a-z]*?g|e[^0-9A-Z_a-z]*?t[^0-9>A-Z_a-z])|f[^0-9A-Z_a-z]*?o[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?m|d[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?l[^0-9A-Z_a-z]*?o[^0-9A-Z_a-z]*?g|m[^0-9A-Z_a-z]*?(?:a[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?q[^0-9A-Z_a-z]*?u[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?e|e[^0-9A-Z_a-z]*?t[^0-9A-Z_a-z]*?a[^0-9>A-Z_a-z])|(?:l[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?n[^0-9A-Z_a-z]*?k|o[^0-9A-Z_a-z]*?b[^0-9A-Z_a-z]*?j[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?c[^0-9A-Z_a-z]*?t|e[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?b[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?d|a[^0-9A-Z_a-z]*?(?:p[^0-9A-Z_a-z]*?p[^0-9A-Z_a-z]*?l[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?t|u[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?o|n[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?t[^0-9A-Z_a-z]*?e)|p[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?m|i?[^0-9A-Z_a-z]*?f[^0-9A-Z_a-z]*?r[^0-9A-Z_a-z]*?a[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?e|b[^0-9A-Z_a-z]*?(?:a[^0-9A-Z_a-z]*?s[^0-9A-Z_a-z]*?e|o[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?y|i[^0-9A-Z_a-z]*?n[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?n[^0-9A-Z_a-z]*?g[^0-9A-Z_a-z]*?s)|i[^0-9A-Z_a-z]*?m[^0-9A-Z_a-z]*?a?[^0-9A-Z_a-z]*?g[^0-9A-Z_a-z]*?e?|v[^0-9A-Z_a-z]*?i[^0-9A-Z_a-z]*?d[^0-9A-Z_a-z]*?e[^0-9A-Z_a-z]*?o)[^0-9>A-Z_a-z])|(?:<[0-9A-Z_a-z].*[\\s\\x0b/]|[\\\"'](?:.*[\\s\\x0b/])?)(?:background|formaction|lowsrc|on(?:a(?:bort|ctivate|d(?:apteradded|dtrack)|fter(?:print|(?:scriptexecu|upda)te)|lerting|n(?:imation(?:cancel|end|iteration|start)|tennastatechange)|ppcommand|u(?:dio(?:end|process|start)|xclick))|b(?:e(?:fore(?:(?:(?:(?:de)?activa|scriptexecu)t|toggl)e|c(?:opy|ut)|editfocus|input|p(?:aste|rint)|u(?:nload|pdate))|gin(?:Event)?)|l(?:ocked|ur)|oun(?:ce|dary)|roadcast|usy)|c(?:a(?:(?:ch|llschang)ed|nplay(?:through)?|rdstatechange)|(?:ell|fstate)change|h(?:a(?:rging(?:time)?cha)?nge|ecking)|l(?:ick|ose)|o(?:m(?:mand(?:update)?|p(?:lete|osition(?:end|start|update)))|n(?:nect(?:ed|ing)|t(?:extmenu|rolselect))|py)|u(?:echange|t))|d(?:ata(?:(?:availabl|chang)e|error|setc(?:hanged|omplete))|blclick|e(?:activate|livery(?:error|success)|vice(?:found|light|(?:mo|orienta)tion|proximity))|i(?:aling|s(?:abled|c(?:hargingtimechange|onnect(?:ed|ing))))|o(?:m(?:a(?:ctivate|ttrmodified)|(?:characterdata|subtree)modified|focus(?:in|out)|mousescroll|node(?:inserted(?:intodocument)?|removed(?:fromdocument)?))|wnloading)|r(?:ag(?:drop|e(?:n(?:d|ter)|xit)|(?:gestur|leav)e|over|start)|op)|urationchange)|e(?:mptied|n(?:abled|d(?:ed|Event)?|ter)|rror(?:update)?|xit)|f(?:ailed|i(?:lterchange|nish)|o(?:cus(?:in|out)?|rm(?:change|input))|ullscreenchange)|g(?:amepad(?:axismove|button(?:down|up)|(?:dis)?connected)|et)|h(?:ashchange|e(?:adphoneschange|l[dp])|olding)|i(?:cc(?:cardlockerror|infochange)|n(?:coming|put|valid))|key(?:down|press|up)|l(?:evelchange|o(?:ad(?:e(?:d(?:meta)?data|nd)|start)?|secapture)|y)|m(?:ark|essage|o(?:use(?:down|enter|(?:lea|mo)ve|o(?:ut|ver)|up|wheel)|ve(?:end|start)?|z(?:a(?:fterpaint|udioavailable)|(?:beforeresiz|orientationchang|t(?:apgestur|imechang))e|(?:edgeui(?:c(?:ancel|omplet)|start)e|network(?:down|up)loa)d|fullscreen(?:change|error)|m(?:agnifygesture(?:start|update)?|ouse(?:hittest|pixelscroll))|p(?:ointerlock(?:change|error)|resstapgesture)|rotategesture(?:start|update)?|s(?:crolledareachanged|wipegesture(?:end|start|update)?))))|no(?:match|update)|o(?:(?:bsolet|(?:ff|n)lin)e|pen|verflow(?:changed)?)|p(?:a(?:ge(?:hide|show)|int|(?:st|us)e)|lay(?:ing)?|o(?:inter(?:down|enter|(?:(?:lea|mo)v|rawupdat)e|o(?:ut|ver)|up)|p(?:state|up(?:hid(?:den|ing)|show(?:ing|n))))|ro(?:gress|pertychange))|r(?:atechange|e(?:adystatechange|ceived|movetrack|peat(?:Event)?|quest|s(?:et|ize|u(?:lt|m(?:e|ing)))|trieving)|ow(?:e(?:nter|xit)|s(?:delete|inserted)))|s(?:croll(?:end)?|e(?:arch|ek(?:complete|ed|ing)|lect(?:ionchange|start)?|n(?:ding|t)|t)|how|(?:ound|peech)(?:end|start)|t(?:a(?:lled|rt|t(?:echange|uschanged))|k(?:comma|sessione)nd|op)|u(?:bmit|ccess|spend)|vg(?:abort|error|(?:un)?load|resize|scroll|zoom))|t(?:ext|ime(?:out|update)|o(?:ggle|uch(?:cancel|en(?:d|ter)|(?:lea|mo)ve|start))|ransition(?:cancel|end|run|start))|u(?:n(?:derflow|handledrejection|load)|p(?:dateready|gradeneeded)|s(?:erproximity|sdreceived))|v(?:ersion|o(?:ic|lum)e)change|w(?:a(?:it|rn)ing|ebkit(?:animation(?:end|iteration|start)|(?:playbacktargetavailabilitychange|transitionen)d)|heel)|zoom)|ping|s(?:rc|tyle))[\\x08-\\n\\f\\r ]*?=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:\\W|^)(?:javascript:(?:[\\s\\S]+[=\\x5c\\(\\[\\.<]|[\\s\\S]*?(?:\\bname\\b|\\x5c[ux]\\d))|data:(?:(?:[a-z]\\w+/\\w[\\w+-]+\\w)?[;,]|[\\s\\S]*?;[\\s\\S]*?\\b(?:base64|charset=)|[\\s\\S]*?,[\\s\\S]*?<[\\s\\S]*?\\w[\\s\\S]*?>))|@\\W*?i\\W*?m\\W*?p\\W*?o\\W*?r\\W*?t\\W*?(?:/\\*[\\s\\S]*?)?(?:[\\\"']|\\W*?u\\W*?r\\W*?l[\\s\\S]*?\\()|[^-]*?-\\W*?m\\W*?o\\W*?z\\W*?-\\W*?b\\W*?i\\W*?n\\W*?d\\W*?i\\W*?n\\W*?g[^:]*?:\\W*?u\\W*?r\\W*?l[\\s\\S]*?\\(",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm document.cookie document.domain document.write .parentnode .innerhtml window.location -moz-binding <!-- <![cdata[",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:<style.*?>.*?(?:@[i\\x5c]|(?:[:=]|&#x?0*(?:58|3A|61|3D);?).*?(?:[(\\x5c]|&#x?0*(?:40|28|92|5C);?)))",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:<.*[:]?vmlframe.*?[\\s/+]*?src[\\s/+]*=)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:j|&#(?:0*(?:74|106)|x0*[46]A);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:a|&#(?:0*(?:65|97)|x0*[46]1);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:v|&#(?:0*(?:86|118)|x0*[57]6);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:a|&#(?:0*(?:65|97)|x0*[46]1);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:s|&#(?:0*(?:115|83)|x0*[57]3);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:c|&#(?:x0*[46]3|0*(?:99|67));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:r|&#(?:x0*[57]2|0*(?:114|82));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:i|&#(?:x0*[46]9|0*(?:105|73));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:p|&#(?:x0*[57]0|0*(?:112|80));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:t|&#(?:x0*[57]4|0*(?:116|84));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?::|&(?:#(?:0*58|x0*3A);?|colon;)).",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)(?:v|&#(?:0*(?:118|86)|x0*[57]6);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:b|&#(?:0*(?:98|66)|x0*[46]2);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:s|&#(?:0*(?:115|83)|x0*[57]3);)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:c|&#(?:x0*[46]3|0*(?:99|67));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:r|&#(?:x0*[57]2|0*(?:114|82));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:i|&#(?:x0*[46]9|0*(?:105|73));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:p|&#(?:x0*[57]0|0*(?:112|80));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?:t|&#(?:x0*[57]4|0*(?:116|84));)(?:[\\t\\n\\r]|&(?:#(?:0*(?:9|1[03])|x0*[AD]);?|(?:tab|newline);))*(?::|&(?:#(?:0*58|x0*3A);?|colon;)).",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<EMBED[\\s/+].*?(?:src|type).*?=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <[?]?import[\\s/+\\S]*?implementation[\\s/+]*?=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:<META[\\s/+].*?http-equiv[\\s/+]*=[\\s/+]*[\\\"'`]?(?:(?:c|&#x?0*(?:67|43|99|63);?)|(?:r|&#x?0*(?:82|52|114|72);?)|(?:s|&#x?0*(?:83|53|115|73);?)))",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:<META[\\s/+].*?charset[\\s/+]*=)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<LINK[\\s/+].*?href[\\s/+]*=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<BASE[\\s/+].*?href[\\s/+]*=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<APPLET[\\s/+>]",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)<OBJECT[\\s/+].*?(?:type|codetype|classid|code|data)[\\s/+]*=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\xbc[^\\xbe>]*[\\xbe>]|<[^\\xbe]*\\xbe",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:\\xbc\\s*/\\s*[^\\xbe>]*[\\xbe>])|(?:<\\s*/\\s*[^\\xbe]*\\xbe)",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx \\+ADw-.*(?:\\+AD4-|>)|<.*\\+AD4-",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ![!+ ]\\[\\]",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?:self|document|this|top|window)\\s*(?:/\\*|[\\[)]).+?(?:\\]|\\*/)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)\\b(?:eval|set(?:timeout|interval)|new[\\s\\x0b]+Function|a(?:lert|tob)|btoa|prompt|confirm)[\\s\\x0b]*\\(",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ((?:\\[[^\\]]*\\][^.]*\\.)|Reflect[^.]*\\.).*(?:map|sort|apply)[^.]*\\..*call[^`]*`.*`",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 2",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@detectXSS",
-        "location": "REFERER",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)[\\s\\\"'`;/0-9=\\x0B\\x09\\x0C\\x3B\\x2C\\x28\\x3B]on[a-zA-Z]{3,50}[\\s\\x0B\\x09\\x0C\\x3B\\x2C\\x28\\x3B]*?=[^=]",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)\\b(?:s(?:tyle|rc)|href)\\b[\\s\\S]*?=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@contains -->",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx <(?:a|abbr|acronym|address|applet|area|audioscope|b|base|basefront|bdo|bgsound|big|blackface|blink|blockquote|body|bq|br|button|caption|center|cite|code|col|colgroup|comment|dd|del|dfn|dir|div|dl|dt|em|embed|fieldset|fn|font|form|frame|frameset|h1|head|hr|html|i|iframe|ilayer|img|input|ins|isindex|kdb|keygen|label|layer|legend|li|limittext|link|listing|map|marquee|menu|meta|multicol|nobr|noembed|noframes|noscript|nosmartquotes|object|ol|optgroup|option|p|param|plaintext|pre|q|rt|ruby|s|samp|script|select|server|shadow|sidebar|small|spacer|span|strike|strong|style|sub|sup|table|tbody|td|textarea|tfoot|th|thead|title|tr|tt|u|ul|var|wbr|xml|xmp)\\W",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i:[\\\"'][ ]*(?:[^a-z0-9~_:' ]|in).*?(?:(?:l|\\x5cu006C)(?:o|\\x5cu006F)(?:c|\\x5cu0063)(?:a|\\x5cu0061)(?:t|\\x5cu0074)(?:i|\\x5cu0069)(?:o|\\x5cu006F)(?:n|\\x5cu006E)|(?:n|\\x5cu006E)(?:a|\\x5cu0061)(?:m|\\x5cu006D)(?:e|\\x5cu0065)|(?:o|\\x5cu006F)(?:n|\\x5cu006E)(?:e|\\x5cu0065)(?:r|\\x5cu0072)(?:r|\\x5cu0072)(?:o|\\x5cu006F)(?:r|\\x5cu0072)|(?:v|\\x5cu0076)(?:a|\\x5cu0061)(?:l|\\x5cu006C)(?:u|\\x5cu0075)(?:e|\\x5cu0065)(?:O|\\x5cu004F)(?:f|\\x5cu0066)).*?=)",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx (?i)[\\\"\\'][ ]*(?:[^a-z0-9~_:\\' ]|in).+?[.].+?=",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx {{.*?}}",
-        "location": "Query-String",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 3",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@lt 4",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "XSS"
     },
     {
         "id": "no_id",
@@ -4509,93 +4369,233 @@
     },
     {
         "id": "no_id",
-        "pattern": "@eq 1",
+        "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@pm gzip compress deflate br zstd",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "FIXATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx (?i:\\.cookie\\b.*?;\\W*?(?:expires|domain)\\W*?=|\\bhttp-equiv\\W+set-cookie\\b)",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:ht|f)tps?://(.*?)/",
+        "location": "REFERER",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "!@endsWith %{request_headers.host}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@rx ^(?:jsessionid|aspsessionid|asp\\.net_sessionid|phpsession|phpsessid|weblogicsession|session_id|session-id|cfid|cftoken|cfsid|jservsession|jwsession)$",
+        "location": "Query-String",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 0",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "FIXATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 0",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge 5",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@eq 0",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 2",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.inbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@ge %{tx.outbound_anomaly_score_threshold}",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 3",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@gt 0",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
+    },
+    {
+        "id": "no_id",
+        "pattern": "@lt 4",
+        "location": "UNKNOWN",
+        "severity": "medium",
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 1",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
-        "pattern": "@rx (?:<(?:TITLE>Index of.*?<H|title>Index of.*?<h)1>Index of|>\\[To Parent Directory\\]</[Aa]><br>)",
-        "location": "RESPONSE_BODY",
+        "pattern": "@lt 1",
+        "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^#\\!\\s?/",
-        "location": "RESPONSE_BODY",
-        "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 2",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
-    },
-    {
-        "id": "no_id",
-        "pattern": "@rx ^5\\d{2}$",
-        "location": "UNKNOWN",
-        "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 3",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     },
     {
         "id": "no_id",
         "pattern": "@lt 4",
         "location": "UNKNOWN",
         "severity": "medium",
-        "category": "LEAKAGES"
+        "category": "CORRELATION"
     }
 ]

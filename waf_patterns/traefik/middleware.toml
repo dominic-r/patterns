@@ -3,9 +3,9 @@
 [http.middlewares.waf_enforcement_user_agent]
   [http.middlewares.waf_enforcement_user_agent.plugin.badbot]
     userAgent = [
-      "!@pm AppleWebKit Android",
-      "!@pm AppleWebKit Android Business Enterprise Entreprise",
       "^up",
+      "!@pm AppleWebKit Android Business Enterprise Entreprise",
+      "!@pm AppleWebKit Android",
       "^\$",
     ]
 
